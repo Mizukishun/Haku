@@ -76,6 +76,7 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     //closeBtn->setIconSize(QPixmap(":/images/closeIcon.png").size());
 
     //将各个按钮添加到第一个子布局上
+    firstLayout->setMargin(0);
     firstLayout->addWidget(userImage);
     firstLayout->addWidget(userName);
     firstLayout->addStretch();
@@ -88,7 +89,7 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     firstLayout->addWidget(hideBtn);
     firstLayout->addWidget(minimumBtn);
     firstLayout->addWidget(closeBtn);
-    firstLayout->setMargin(0);
+
 
     /***********************************************************************/
     //创建第二个子布局,之后得补上！！！
@@ -155,6 +156,7 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
 
     //将相关元素添加到第三个子布局上
     threeLayout->addSpacing(50);
+    threeLayout->setMargin(0);
     threeLayout->addWidget(preMusicBtn);
     threeLayout->addWidget(playerBtn);
     threeLayout->addWidget(nextMusicBtn);
