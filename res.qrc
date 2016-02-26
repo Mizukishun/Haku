@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/haku_icon_50.png</file>
+        <file>images/haku_icon_100.png</file>
+        <file>images/haku_icon_25.png</file>
+        <file>images/userImage.png</file>
+        <file>images/closeIcon.png</file>
+        <file>images/minimumIcon.png</file>
+        <file>images/hideIcon.png</file>
+        <file>images/skinIcon.png</file>
+        <file>images/preferenceIcon.png</file>
+        <file>images/controlIcon.png</file>
+        <file>images/searchIcon.png</file>
+    </qresource>
+</RCC>
