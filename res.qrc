@@ -11,5 +11,19 @@
         <file>images/preferenceIcon.png</file>
         <file>images/controlIcon.png</file>
         <file>images/searchIcon.png</file>
+        <file>images/nextMusicIcon.png</file>
+        <file>images/playerIcon.png</file>
+        <file>images/preMusicIcon.png</file>
+        <file>images/downloadIcon.png</file>
+        <file>images/loveIcon.png</file>
+        <file>images/lyricIcon.png</file>
+        <file>images/orderIcon.png</file>
+        <file>images/playQueueIcon.png</file>
+        <file>images/similarIcon.png</file>
+        <file>images/soundEffectsIcon.png</file>
+        <file>images/volumeIcon.png</file>
+        <file>images/LL.jpg</file>
+        <file>images/MAKI.jpg</file>
+        <file>images/MAKI.png</file>
     </qresource>
 </RCC>

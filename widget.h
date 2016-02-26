@@ -36,7 +36,7 @@ private:
     /***************************************************************/
     //整个窗体的主布局,是在垂直方向上再放三个子布局,因为要设置三个子布局有不同的大小，
     //所以主布局选择了QGridLayout
-    QVBoxLayout *mainLayout;
+    QGridLayout *mainLayout;
     //第一个子布局
     QHBoxLayout *firstLayout;
     //第二个子布局
@@ -69,6 +69,33 @@ private:
     QPushButton *closeBtn;
 
     /******************************************************************/
+    //第三个子布局上的元素
+    //播放按钮
+    QPushButton *playerBtn;
+    //上一曲按钮
+    QPushButton *preMusicBtn;
+    //下一曲按钮
+    QPushButton *nextMusicBtn;
+    //我喜欢按钮
+    QPushButton *loveMusicBtn;
+    //下载按钮
+    QPushButton *downloadBtn;
+    //相似歌曲按钮
+    QPushButton *similarBtn;
+    //播放顺序按钮
+    QPushButton *orderBtn;
+    //音量按钮
+    QPushButton *volumeBtn;
+    //音效按钮
+    QPushButton *soundEffectsBtn;
+    //打开桌面歌词按钮
+    QPushButton *lyricBtn;
+    //播放队列按钮
+    QPushButton *playQueueBtn;
+
+    //另外，播放时间那个长条，先用addStretch()替上，之后要补上
+    /***********************************************************************/
+
 
 
     //窗体中按钮的普遍宽度
@@ -100,7 +127,6 @@ private:
 
     //测试用的，等会删除
     QPushButton *testText;
-    QPushButton *testBtn;
 
 
 };
