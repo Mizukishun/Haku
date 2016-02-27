@@ -14,9 +14,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        widget.cpp
+        widget.cpp \
+    secframe.cpp
 
-HEADERS  += widget.h
+HEADERS  += widget.h \
+    secframe.h
 
 RESOURCES += \
     res.qrc

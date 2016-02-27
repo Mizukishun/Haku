@@ -32,6 +32,19 @@ protected:
 //    void mousePressEvent(QMouseEvent *event);
 //    void mouseReleaseEvent(QMouseEvent *event);
 
+signals:
+    //这个信号关联了整个程序的退出函数，而这个信号是由下面的quitEmit()函数发送的
+    void quit();            //这里有个疑问：信号可以不用具体实现吗？？？
+
+
+
+private slots:
+    //关闭按钮的点击事件关联了这个槽函数，而这个槽函数会发送这个窗体的quit()信号
+    void quitEmit();
+
+
+
+
 private:
     /***************************************************************/
     //整个窗体的主布局,是在垂直方向上再放三个子布局,因为要设置三个子布局有不同的大小，

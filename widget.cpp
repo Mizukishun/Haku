@@ -90,6 +90,9 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     firstLayout->addWidget(minimumBtn);
     firstLayout->addWidget(closeBtn);
 
+    //添加信号槽，暂时只实现退出按钮，其余的之后得补上！
+    connect(closeBtn, SIGNAL(clicked()), this, SLOT(quitEmit()));
+
 
     /***********************************************************************/
     //创建第二个子布局,之后得补上！！！
@@ -184,5 +187,12 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
 Widget::~Widget()
 {
 
+}
+
+//实现quitEmit()槽函数，使得当点击关闭按钮时，连接上这个函数，
+//而这个函数继而能够发送窗体的quit()信号，再进而关联上整个程序的退出函数
+void Widget::quitEmit()
+{
+    emit quit();
 }
 
