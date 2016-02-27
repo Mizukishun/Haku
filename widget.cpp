@@ -96,7 +96,8 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
 
     /***********************************************************************/
     //创建第二个子布局,之后得补上！！！
-
+    secFrameLayout = new SecFrame;
+    secondLayout->addWidget(secFrameLayout);
 
 
 
@@ -172,14 +173,6 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     threeLayout->addWidget(soundEffectsBtn);
     threeLayout->addWidget(lyricBtn);
     threeLayout->addWidget(playQueueBtn);
-
-
-
-
-    //测试，待会删除
-    testText = new QPushButton;
-    testText->setText("SecondButton");
-    secondLayout->addWidget(testText);
 
 
 }

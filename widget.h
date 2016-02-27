@@ -16,6 +16,7 @@
 #include <QLineEdit>
 #include <QToolButton>
 #include <QSize>
+#include "secframe.h"
 
 
 class Widget : public QWidget
@@ -81,6 +82,10 @@ private:
     //关闭按钮
     QPushButton *closeBtn;
 
+    /*****************************************************************/
+    //第二个子布局
+    SecFrame *secFrameLayout;
+
     /******************************************************************/
     //第三个子布局上的元素
     //播放按钮
@@ -111,35 +116,23 @@ private:
 
 
 
-    //窗体中按钮的普遍宽度
-    const qint16 w = 50;
-    //窗体中按钮的普遍高度
-    const qint16 h = 50;
-    //普遍尺寸
-    QSize *sz = new QSize(w, h);
+//    //窗体中按钮的普遍宽度
+//    const qint16 w = 50;
+//    //窗体中按钮的普遍高度
+//    const qint16 h = 50;
+//    //普遍尺寸
+//    QSize *sz = new QSize(w, h);
 
-    //半按钮宽度
-    const qint16 hw = w /2;
-    //半按钮高度
-    const qint16 hh = h / 2;
-    //半尺寸
-    QSize *hsz = new QSize(hw, hh);
-
-
+//    //半按钮宽度
+//    const qint16 hw = w /2;
+//    //半按钮高度
+//    const qint16 hh = h / 2;
+//    //半尺寸
+//    QSize *hsz = new QSize(hw, hh);
 
 
 
 
-
-
-
-
-
-
-
-
-    //测试用的，等会删除
-    QPushButton *testText;
 
 
 };

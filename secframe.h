@@ -10,6 +10,7 @@
 
 #include <QFrame>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QListWidget>
 #include <QStackedWidget>
 #include <QPushButton>
@@ -44,6 +45,9 @@ public:
     QPushButton *downloadBtn2;
     //更多按钮
     QPushButton *moreBtn;
+
+    //第一个小布局上布局
+    QVBoxLayout *secVLayout;
 
 
 

@@ -25,5 +25,8 @@
         <file>images/LL.jpg</file>
         <file>images/MAKI.jpg</file>
         <file>images/MAKI.png</file>
+        <file>images/miku.jpg</file>
+        <file>images/fmBtn.png</file>
+        <file>images/downloadIcon2.png</file>
     </qresource>
 </RCC>
