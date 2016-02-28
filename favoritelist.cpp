@@ -10,7 +10,7 @@ FavoriteList::FavoriteList(QWidget *parent) : QWidget(parent)
 
     //设置窗体的背景颜色
     QPalette Fp;
-    Fp.setColor(QPalette::Background, Qt::red);
+    Fp.setColor(QPalette::Background, Qt::green);
     setAutoFillBackground(true);
     setPalette(Fp);
 

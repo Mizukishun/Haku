@@ -23,6 +23,7 @@
 #include "download.h"
 #include "more.h"
 #include "lyframe.h"
+#include "packupwidget.h"
 
 
 class SecFrame : public QFrame
@@ -57,6 +58,8 @@ public:
     QPushButton *downloadBtn2;
     //更多按钮
     QPushButton *moreBtn;
+    //收起按钮
+    QPushButton *packUpBtn;
 
 
     /**************************************************************/
@@ -66,6 +69,7 @@ public:
     MobileManage *mobileWidget;
     Download *downloadWidget;
     More *moreWidget;
+    packUpWidget *puWidget;
     /**************************************************************/
     //第三个小布局上的元素
 
@@ -78,6 +82,7 @@ private slots:
     void on_mobileBtn_clicked();
     void on_downloadBtn_clicked();
     void on_moreBtn_clicked();
+    void on_packUpBtn_clicked();
 
 
 };

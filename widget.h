@@ -7,6 +7,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QPixmap>
+#include <QPalette>
 #include <QIcon>
 #include <QStackedWidget>
 #include <QPushButton>
@@ -16,6 +17,7 @@
 #include <QLineEdit>
 #include <QToolButton>
 #include <QSize>
+#include <QFont>
 #include "secframe.h"
 
 
@@ -115,6 +117,14 @@ private:
     //另外，播放时间那个长条，先用addStretch()替上，之后要补上
     /***********************************************************************/
 
+    //皮肤图片
+    QPixmap skinPic = QPixmap(":/images/miao2.jpg");
+    //字体
+    QFont font;
+
+private:
+    //设置背景图片
+    void setSkin(QPixmap);
 
 
 

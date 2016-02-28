@@ -3,6 +3,8 @@
 SecFrame::SecFrame(QWidget *parent)
     : QFrame(parent)
 {
+    //设置它的透明度
+    setWindowOpacity(0.8);
     //主布局
     secMainLayout = new QHBoxLayout(this);
 
@@ -50,6 +52,13 @@ SecFrame::SecFrame(QWidget *parent)
     moreBtn->setIconSize(QPixmap(":/images/moreIcon.png").size());
     moreBtn->setToolTip(tr("更多"));
 
+    packUpBtn = new QPushButton;
+    packUpBtn->setFlat(true);
+    packUpBtn->setFixedSize(50, 50);
+    packUpBtn->setIcon(QPixmap(":/images/packup.png"));
+    packUpBtn->setIconSize(QPixmap(":/images/packup.png").size());
+    packUpBtn->setToolTip(tr("收起列表"));
+
     //添加上面这些按钮的事件关联，是的当点击按钮时，能够切换到相应的窗体
     //音乐列表按钮与堆栈窗体的第一个窗体管理
     connect(musicListBtn, SIGNAL(clicked()), this, SLOT(on_musicListBtn_clicked()));
@@ -57,6 +66,7 @@ SecFrame::SecFrame(QWidget *parent)
     connect(mobileBtn, SIGNAL(clicked()), this, SLOT(on_mobileBtn_clicked()));
     connect(downloadBtn2, SIGNAL(clicked()), this, SLOT(on_downloadBtn_clicked()));
     connect(moreBtn, SIGNAL(clicked()), this, SLOT(on_moreBtn_clicked()));
+    connect(packUpBtn, SIGNAL(clicked()), this, SLOT(on_packUpBtn_clicked()));
 
 
     /***************************************************************************/
@@ -72,6 +82,7 @@ SecFrame::SecFrame(QWidget *parent)
     secVLayout->addWidget(mobileBtn);
     secVLayout->addWidget(downloadBtn2);
     secVLayout->addWidget(moreBtn);
+    secVLayout->addWidget(packUpBtn);
     secVLayout->addStretch();
 
     /****************************************************************************/
@@ -88,11 +99,13 @@ SecFrame::SecFrame(QWidget *parent)
     mobileWidget = new MobileManage();
     downloadWidget = new Download();
     moreWidget = new More();
+    puWidget = new packUpWidget();
     secStack->addWidget(muList);
     secStack->addWidget(faList);
     secStack->addWidget(mobileWidget);
     secStack->addWidget(downloadWidget);
     secStack->addWidget(moreWidget);
+    secStack->addWidget(puWidget);
 
     /******************************************************************************/
     //创建第三个小布局，也即歌词窗口那部分
@@ -140,4 +153,9 @@ void SecFrame::on_downloadBtn_clicked()
 void SecFrame::on_moreBtn_clicked()
 {
     emit secStack->setCurrentIndex(4);
+}
+
+void SecFrame::on_packUpBtn_clicked()
+{
+    emit secStack->setCurrentIndex(5);
 }

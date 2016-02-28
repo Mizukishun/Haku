@@ -1,13 +1,14 @@
 #include "widget.h"
 
 
+
 Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     : QWidget(parent, flags)
 {
     //设置窗体最小的尺寸
     setMinimumSize(1000, 650);
     //设置窗体图标
-    setWindowIcon(QPixmap(":/images/MAKI.jpg"));
+    setWindowIcon(QPixmap(":/images/winIcon_100.png"));
 
     //设置窗体标题
     setWindowTitle(tr("Haku"));
@@ -16,6 +17,13 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     flags = Qt::CustomizeWindowHint;
     //flags |= Qt::FramelessWindowHint; //无边框，会无法移动以及缩放
     setWindowFlags(flags);
+
+    //设置皮肤
+    setSkin(skinPic);
+
+    //设置窗体的字体
+    font = QFont("ZYSong18030", 14);
+    setFont(font);
 
     /***************************************************************************/
     //创建主布局及三个子布局，并设置布局
@@ -207,5 +215,13 @@ void Widget::quitEmit()
 void Widget::minWidget()
 {
     setWindowState(Qt::WindowMinimized);
+}
+
+void Widget::setSkin(QPixmap pic)
+{
+    this->setAutoFillBackground(true);
+    QPalette mainPalette;
+    mainPalette.setBrush(QPalette::Background, QBrush(pic));
+    this->setPalette(mainPalette);
 }
 

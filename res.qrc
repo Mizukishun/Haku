@@ -33,5 +33,12 @@
         <file>images/mobileIcon.png</file>
         <file>images/moreIcon.png</file>
         <file>images/haku_icon_40.png</file>
+        <file>images/miao.jpg</file>
+        <file>images/default_skin.png</file>
+        <file>images/miao2.jpg</file>
+        <file>images/packup.png</file>
+        <file>images/winIcon_40.png</file>
+        <file>images/winIcon_50.png</file>
+        <file>images/winIcon_100.png</file>
     </qresource>
 </RCC>
