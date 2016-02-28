@@ -13,7 +13,7 @@ MusicList::MusicList(QWidget *parent) : QWidget(parent)
     QPalette p;
     p.setColor(QPalette::Background, Qt::lightGray);
     setAutoFillBackground(true);
-    setWindowOpacity(0.3);
+    //setWindowOpacity(0.3);
     this->setPalette(p);
 
 

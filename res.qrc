@@ -32,5 +32,6 @@
         <file>images/musicListIcon.png</file>
         <file>images/mobileIcon.png</file>
         <file>images/moreIcon.png</file>
+        <file>images/haku_icon_40.png</file>
     </qresource>
 </RCC>

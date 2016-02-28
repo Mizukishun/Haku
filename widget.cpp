@@ -34,7 +34,7 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     //创建第一个子布局
     userImage = new QPushButton;
     userImage->setFlat(true);
-    userImagePix = new QPixmap(":/images/userImage.png");
+    userImagePix = new QPixmap(":/images/haku_icon_40.png");
     userImage->setIcon(*userImagePix);
     userImage->setIconSize((*userImagePix).size());
     userImage->setToolTip(tr("更换头像"));
@@ -48,43 +48,36 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     searchBtn = new QPushButton;
     searchBtn->setFlat(true);
     searchBtn->setIcon(QPixmap(":/images/searchIcon.png"));
-    //searchBtn->setIconSize(QPixmap(":/images/searchIcon.png").size());
     searchBtn->setToolTip(tr("搜索歌曲"));
 
     skinBtn = new QPushButton;
     skinBtn->setFlat(true);
     skinBtn->setIcon(QPixmap(":/images/skinIcon.png"));
-    //skinBtn->setIconSize(QPixmap(":/images/skinIcon.png").size());
     skinBtn->setToolTip(tr("更换皮肤"));
 
     preferenceBtn = new QPushButton;
     preferenceBtn->setFlat(true);
     preferenceBtn->setIcon(QPixmap(":/images/preferenceIcon.png"));
-    //preferenceBtn->setIconSize(QPixmap(":/images/preferenceIcon.png").size());
     preferenceBtn->setToolTip(tr("设置"));
 
     controlBtn = new QPushButton;
     controlBtn->setFlat(true);
     controlBtn->setIcon(QPixmap(":/images/controlIcon.png"));
-    //controlBtn->setIconSize(QPixmap(":/images/controlIcon.png").size());
     controlBtn->setToolTip(tr("遥控器"));
 
     hideBtn = new QPushButton;
     hideBtn->setFlat(true);
     hideBtn->setIcon(QPixmap(":/images/hideIcon.png"));
-    //hideBtn->setIconSize(QPixmap(":/images/hideIcon.png").size());
     hideBtn->setToolTip(tr("隐藏音乐库"));
 
     minimumBtn = new QPushButton;
     minimumBtn->setFlat(true);
     minimumBtn->setIcon(QPixmap(":/images/minimumIcon.png"));
-    //minimumBtn->setIconSize(QPixmap(":/images/minimumIcon.png").size());
     minimumBtn->setToolTip(tr("最小化窗口"));
 
     closeBtn = new QPushButton;
     closeBtn->setFlat(true);
     closeBtn->setIcon(QPixmap(":/images/closeIcon.png"));
-    //closeBtn->setIconSize(QPixmap(":/images/closeIcon.png").size());
     closeBtn->setToolTip(tr("关闭"));
 
     //将各个按钮添加到第一个子布局上
@@ -104,10 +97,11 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
 
     //添加信号槽，暂时只实现退出按钮，其余的之后得补上！
     connect(closeBtn, SIGNAL(clicked()), this, SLOT(quitEmit()));
+    connect(minimumBtn, SIGNAL(clicked()), this, SLOT(minWidget()));
 
 
     /***********************************************************************/
-    //创建第二个子布局,之后得补上！！！
+    //创建第二个子布局
     secFrameLayout = new SecFrame;
     secondLayout->addWidget(secFrameLayout);
 
@@ -175,7 +169,7 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     playQueueBtn = new QPushButton;
     playQueueBtn->setFlat(true);
     playQueueBtn->setIcon(QPixmap(":/images/playQueueIcon.png"));
-    playQueueBtn->setIconSize(QPixmap(":/imagee/playQueueIcon.png").size());
+    playQueueBtn->setIconSize(QPixmap(":/images/playQueueIcon.png").size());
     playQueueBtn->setToolTip(tr("播放队列"));
 
     //将相关元素添加到第三个子布局上
@@ -207,5 +201,11 @@ Widget::~Widget()
 void Widget::quitEmit()
 {
     emit quit();
+}
+
+//最小化窗体
+void Widget::minWidget()
+{
+    setWindowState(Qt::WindowMinimized);
 }
 

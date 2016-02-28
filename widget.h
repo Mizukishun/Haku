@@ -42,7 +42,8 @@ signals:
 private slots:
     //关闭按钮的点击事件关联了这个槽函数，而这个槽函数会发送这个窗体的quit()信号
     void quitEmit();
-
+    //点击最小化按钮所关联的槽函数
+    void minWidget();
 
 
 
@@ -114,21 +115,6 @@ private:
     //另外，播放时间那个长条，先用addStretch()替上，之后要补上
     /***********************************************************************/
 
-
-
-//    //窗体中按钮的普遍宽度
-//    const qint16 w = 50;
-//    //窗体中按钮的普遍高度
-//    const qint16 h = 50;
-//    //普遍尺寸
-//    QSize *sz = new QSize(w, h);
-
-//    //半按钮宽度
-//    const qint16 hw = w /2;
-//    //半按钮高度
-//    const qint16 hh = h / 2;
-//    //半尺寸
-//    QSize *hsz = new QSize(hw, hh);
 
 
 

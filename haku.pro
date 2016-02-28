@@ -17,12 +17,22 @@ SOURCES += main.cpp\
         widget.cpp \
     secframe.cpp \
     musiclist.cpp \
-    favoritelist.cpp
+    favoritelist.cpp \
+    mobilemanage.cpp \
+    download.cpp \
+    more.cpp \
+    lyricwidget.cpp \
+    lyframe.cpp
 
 HEADERS  += widget.h \
     secframe.h \
     musiclist.h \
-    favoritelist.h
+    favoritelist.h \
+    mobilemanage.h \
+    download.h \
+    more.h \
+    lyricwidget.h \
+    lyframe.h
 
 RESOURCES += \
     res.qrc

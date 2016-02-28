@@ -19,6 +19,10 @@
 #include <QSpinBox>
 #include "musiclist.h"
 #include "favoritelist.h"
+#include "mobilemanage.h"
+#include "download.h"
+#include "more.h"
+#include "lyframe.h"
 
 
 class SecFrame : public QFrame
@@ -29,10 +33,16 @@ public:
 
     //整体布局
     QHBoxLayout *secMainLayout;
-    //第一个小布局上的窗体
-    QListWidget *secList;
+    //第一个小布局上的布局
+    QVBoxLayout *secVLayout;
     //第二个小布局上的窗体
     QStackedWidget *secStack;
+    //第三个小布局上的布局及窗体
+    //QHBoxLayout *lyLayout;
+    //LyricWidget *lyWidget;
+    lyFrame *lyf;
+
+
 
     //第一个小布局上的六个按钮
     //音乐列表按钮
@@ -48,24 +58,27 @@ public:
     //更多按钮
     QPushButton *moreBtn;
 
-    //第一个小布局上布局
-    QVBoxLayout *secVLayout;
 
     /**************************************************************/
     //第二个小布局上的各个列表窗体
     MusicList *muList;
     FavoriteList *faList;
+    MobileManage *mobileWidget;
+    Download *downloadWidget;
+    More *moreWidget;
+    /**************************************************************/
+    //第三个小布局上的元素
+
 
 
     //以下是尝试对按钮点击事件的重载，希望能够实现切换不同的窗体(待删除
+private slots:
+    void on_favoriteBtn_clicked();
+    void on_musicListBtn_clicked();
+    void on_mobileBtn_clicked();
+    void on_downloadBtn_clicked();
+    void on_moreBtn_clicked();
 
-
-//    //以下只是对第二个小布局上的部件的模拟，之后得用相应的“*****.h"这样的补上(之后得删！！！）
-//    QTextEdit *delText;
-//    QPushButton *delSecBtn;
-//    QPushButton *delSecBtn2;
-//    QLabel *delLabel;
-//    QSpinBox *delSpinBox;
 
 };
 
