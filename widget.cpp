@@ -15,8 +15,13 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
 
     //设置窗体标题栏，自定义，此时可以缩放，但不能移动，所以可能需要重新实现鼠标移动事件
     flags = Qt::CustomizeWindowHint;
-    //flags |= Qt::FramelessWindowHint; //无边框，会无法移动以及缩放
+    flags |= Qt::FramelessWindowHint; //无边框，会无法移动以及缩放
+    //flags |= Qt::WindowStaysOnTopHint;
     setWindowFlags(flags);
+    //setAttribute(Qt::WA_TranslucentBackground,true);
+
+    //设置透明
+    //setWindowOpacity(0);
 
     //设置皮肤
     setSkin(skinPic);
@@ -223,5 +228,18 @@ void Widget::setSkin(QPixmap pic)
     QPalette mainPalette;
     mainPalette.setBrush(QPalette::Background, QBrush(pic));
     this->setPalette(mainPalette);
+}
+
+//重载鼠标按下事件
+void Widget::mousePressEvent(QMouseEvent *event)
+{
+    startPos = this->pos();
+    mousePos = event->globalPos();
+    disPos = mousePos - startPos;
+}
+
+void Widget::mouseMoveEvent(QMouseEvent *event)
+{
+    this->move(event->globalPos() - disPos);
 }
 

@@ -1,5 +1,8 @@
 #include "musiclist.h"
 #include <QPalette>
+//下面是测试用
+#include <QVBoxLayout>
+#include "toolgroup/toolgroup.h"
 
 MusicList::MusicList(QWidget *parent) : QWidget(parent)
 {
@@ -13,8 +16,14 @@ MusicList::MusicList(QWidget *parent) : QWidget(parent)
     QPalette p;
     p.setColor(QPalette::Background, Qt::white);
     setAutoFillBackground(true);
-    //setWindowOpacity(0.3);
     this->setPalette(p);
+
+    //下面是测试用
+    ToolGroup *test1 = new ToolGroup();
+    QVBoxLayout *testly = new QVBoxLayout(this);
+    testly->setMargin(0);
+    testly->setSpacing(0);
+    testly->addWidget(test1);
 
 
 

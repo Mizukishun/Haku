@@ -18,6 +18,7 @@
 #include <QToolButton>
 #include <QSize>
 #include <QFont>
+#include <QPoint>
 #include "secframe.h"
 
 
@@ -31,8 +32,8 @@ public:
 
 protected:
     //还未实现，重现实现鼠标移动事件，使得窗体能够移动
-//    void mouseMoveEvent(QMouseEvent *event);
-//    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 //    void mouseReleaseEvent(QMouseEvent *event);
 
 signals:
@@ -121,6 +122,11 @@ private:
     QPixmap skinPic = QPixmap(":/images/miao2.jpg");
     //字体
     QFont font;
+
+    //保存鼠标按下位置的私有变量
+    QPoint startPos;
+    QPoint mousePos;
+    QPoint disPos;
 
 private:
     //设置背景图片
