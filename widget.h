@@ -62,7 +62,7 @@ private:
     //第一个子布局上的元素
     //用户头像按钮及名字
     QPushButton *userImage;
-    QLabel *userName;
+    QPushButton *userName;
     QPixmap *userImagePix;
 
     //搜索框及其按钮

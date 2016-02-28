@@ -15,10 +15,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         widget.cpp \
-    secframe.cpp
+    secframe.cpp \
+    musiclist.cpp \
+    favoritelist.cpp
 
 HEADERS  += widget.h \
-    secframe.h
+    secframe.h \
+    musiclist.h \
+    favoritelist.h
 
 RESOURCES += \
     res.qrc

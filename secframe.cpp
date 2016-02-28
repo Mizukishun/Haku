@@ -10,31 +10,47 @@ SecFrame::SecFrame(QWidget *parent)
     musicListBtn = new QPushButton;
     musicListBtn->setFlat(true);
     musicListBtn->setFixedSize(50, 50);
+    musicListBtn->setIcon(QPixmap(":/images/musicListIcon.png"));
+    musicListBtn->setIconSize(QPixmap(":/images/musicListIcon.png").size());
+    musicListBtn->setToolTip(tr("音乐列表"));
 
     favoriteBtn = new QPushButton;
     favoriteBtn->setFlat(true);
     favoriteBtn->setFixedSize(50, 50);
-    favoriteBtn->setIcon(QPixmap(":/images/miku.jpg"));
-    favoriteBtn->setIconSize(QPixmap(":/images/miku.jpg").size());
+    favoriteBtn->setIcon(QPixmap(":/images/favoriteIcon.png"));
+    favoriteBtn->setIconSize(QPixmap(":/images/favoriteIcon.png").size());
+    favoriteBtn->setToolTip(tr("我的收藏"));
 
-    fmBtn = new QPushButton;
-    fmBtn->setFlat(true);
-    //fmBtn->setFixedSize(50, 50);
-    fmBtn->setIcon(QPixmap(":/images/fmBtn.png"));
-    //fmBtn->setIconSize(QPixmap(":/images/fmBtn.png").size());
-    //fmBtn->setContentsMargins(0, 0, 0, 0);
+//    fmBtn = new QPushButton;
+//    fmBtn->setFlat(true);
+//    //fmBtn->setFixedSize(50, 50);
+//    fmBtn->setIcon(QPixmap(":/images/fmBtn.png"));
+//    fmBtn->setIconSize(QPixmap(":/images/fmBtn.png").size());
+//    //fmBtn->setContentsMargins(0, 0, 0, 0);
 
     mobileBtn = new QPushButton;
     mobileBtn->setFlat(true);
+    mobileBtn->setIcon(QPixmap(":/images/mobileIcon.png"));
+    mobileBtn->setIconSize(QPixmap(":/images/mobileIcon.png").size());
+    mobileBtn->setToolTip(tr("手机管理"));
 
     downloadBtn2 = new QPushButton;
     downloadBtn2->setFlat(true);
     downloadBtn2->setIcon(QPixmap(":/images/downloadIcon.png"));
     downloadBtn2->setIconSize(QPixmap(":/images/downloadIcon.png").size());
     downloadBtn2->setFixedSize(50, 50);
+    downloadBtn2->setToolTip(tr("下载"));
 
     moreBtn = new QPushButton;
     moreBtn->setFlat(true);
+    moreBtn->setIcon(QPixmap(":/images/moreIcon.png"));
+    moreBtn->setIconSize(QPixmap(":/images/moreIcon.png").size());
+    moreBtn->setToolTip(tr("更多"));
+
+    //添加上面这些按钮的事件关联，是的当点击按钮时，能够切换到相应的窗体
+    //音乐列表按钮与堆栈窗体的第一个窗体管理
+//    connect(musicListBtn, SIGNAL(clicked()), secStack, SLOT(setCurrentIndex(int)));
+//    connect(favoriteBtn, SIGNAL(clicked()), secStack, SLOT(setCurrentIndex(int)));
 
 //    //创建一个QListWidget对象
 //    secList = new QListWidget;
@@ -54,7 +70,7 @@ SecFrame::SecFrame(QWidget *parent)
     //secVLayout->setSizeConstraint(QLayout::SetFixedSize);
     secVLayout->addWidget(musicListBtn);
     secVLayout->addWidget(favoriteBtn);
-    secVLayout->addWidget(fmBtn);
+    //secVLayout->addWidget(fmBtn);
     secVLayout->addWidget(mobileBtn);
     secVLayout->addWidget(downloadBtn2);
     secVLayout->addWidget(moreBtn);
@@ -65,18 +81,23 @@ SecFrame::SecFrame(QWidget *parent)
     //设置堆栈窗口的风格
     //secStacke->setFrameStyle(QFrame::Panel);
 
-    //以下是第二小布局上的待删除元素
-    delText = new QTextEdit;
-    delSecBtn = new QPushButton;
-    delSecBtn2 = new QPushButton;
-    delLabel = new QLabel;
-    delSpinBox = new QSpinBox;
-    //将上面的元素添加到第二小布局上
-    secStack->addWidget(delText);
-    secStack->addWidget(delSecBtn);
-    secStack->addWidget(delSecBtn2);
-    secStack->addWidget(delLabel);
-    secStack->addWidget(delSpinBox);
+    muList = new MusicList();
+    faList = new FavoriteList();
+    secStack->addWidget(muList);
+    secStack->addWidget(faList);
+
+//    //以下是第二小布局上的待删除元素
+//    delText = new QTextEdit;
+//    delSecBtn = new QPushButton;
+//    delSecBtn2 = new QPushButton;
+//    delLabel = new QLabel;
+//    delSpinBox = new QSpinBox;
+//    //将上面的元素添加到第二小布局上
+//    secStack->addWidget(delText);
+//    secStack->addWidget(delSecBtn);
+//    secStack->addWidget(delSecBtn2);
+//    secStack->addWidget(delLabel);
+//    secStack->addWidget(delSpinBox);
 
 
 
@@ -87,6 +108,8 @@ SecFrame::SecFrame(QWidget *parent)
     //添加第二个小布局
     secMainLayout->addWidget(secStack);
     secMainLayout->addSpacing(650);
+    //secMainLayout->setSizeConstraint(QLayout::SetFixedSize);
+
 
 
 

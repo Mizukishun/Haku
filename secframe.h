@@ -17,6 +17,8 @@
 #include <QTextEdit>
 #include <QLabel>
 #include <QSpinBox>
+#include "musiclist.h"
+#include "favoritelist.h"
 
 
 class SecFrame : public QFrame
@@ -38,7 +40,7 @@ public:
     //收藏按钮
     QPushButton *favoriteBtn;
     //音乐电台按钮
-    QPushButton *fmBtn;
+    //QPushButton *fmBtn;
     //手机管理按钮
     QPushButton *mobileBtn;
     //下载按钮2（区别主窗体中第三个子布局上的下载按钮)
@@ -49,14 +51,21 @@ public:
     //第一个小布局上布局
     QVBoxLayout *secVLayout;
 
+    /**************************************************************/
+    //第二个小布局上的各个列表窗体
+    MusicList *muList;
+    FavoriteList *faList;
 
 
-    //以下只是对第二个小布局上的部件的模拟，之后得用相应的“*****.h"这样的补上(之后得删！！！）
-    QTextEdit *delText;
-    QPushButton *delSecBtn;
-    QPushButton *delSecBtn2;
-    QLabel *delLabel;
-    QSpinBox *delSpinBox;
+    //以下是尝试对按钮点击事件的重载，希望能够实现切换不同的窗体(待删除
+
+
+//    //以下只是对第二个小布局上的部件的模拟，之后得用相应的“*****.h"这样的补上(之后得删！！！）
+//    QTextEdit *delText;
+//    QPushButton *delSecBtn;
+//    QPushButton *delSecBtn2;
+//    QLabel *delLabel;
+//    QSpinBox *delSpinBox;
 
 };
 

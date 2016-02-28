@@ -28,5 +28,9 @@
         <file>images/miku.jpg</file>
         <file>images/fmBtn.png</file>
         <file>images/downloadIcon2.png</file>
+        <file>images/favoriteIcon.png</file>
+        <file>images/musicListIcon.png</file>
+        <file>images/mobileIcon.png</file>
+        <file>images/moreIcon.png</file>
     </qresource>
 </RCC>

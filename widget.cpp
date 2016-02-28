@@ -20,6 +20,8 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     /***************************************************************************/
     //创建主布局及三个子布局，并设置布局
     mainLayout = new QGridLayout(this);
+    mainLayout->setSpacing(0);
+    mainLayout->setMargin(0);
     firstLayout = new QHBoxLayout;
     secondLayout = new QHBoxLayout;
     threeLayout = new QHBoxLayout;
@@ -35,45 +37,55 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     userImagePix = new QPixmap(":/images/userImage.png");
     userImage->setIcon(*userImagePix);
     userImage->setIconSize((*userImagePix).size());
+    userImage->setToolTip(tr("更换头像"));
 
-    userName = new QLabel;
+    userName = new QPushButton;
+    userName->setFlat(true);
     userName->setText(tr("Haku520"));
+    userName->setToolTip(tr("更改用户名"));
 
     searchEdit = new QLineEdit;
     searchBtn = new QPushButton;
     searchBtn->setFlat(true);
     searchBtn->setIcon(QPixmap(":/images/searchIcon.png"));
     //searchBtn->setIconSize(QPixmap(":/images/searchIcon.png").size());
+    searchBtn->setToolTip(tr("搜索歌曲"));
 
     skinBtn = new QPushButton;
     skinBtn->setFlat(true);
     skinBtn->setIcon(QPixmap(":/images/skinIcon.png"));
     //skinBtn->setIconSize(QPixmap(":/images/skinIcon.png").size());
+    skinBtn->setToolTip(tr("更换皮肤"));
 
     preferenceBtn = new QPushButton;
     preferenceBtn->setFlat(true);
     preferenceBtn->setIcon(QPixmap(":/images/preferenceIcon.png"));
     //preferenceBtn->setIconSize(QPixmap(":/images/preferenceIcon.png").size());
+    preferenceBtn->setToolTip(tr("设置"));
 
     controlBtn = new QPushButton;
     controlBtn->setFlat(true);
     controlBtn->setIcon(QPixmap(":/images/controlIcon.png"));
     //controlBtn->setIconSize(QPixmap(":/images/controlIcon.png").size());
+    controlBtn->setToolTip(tr("遥控器"));
 
     hideBtn = new QPushButton;
     hideBtn->setFlat(true);
     hideBtn->setIcon(QPixmap(":/images/hideIcon.png"));
     //hideBtn->setIconSize(QPixmap(":/images/hideIcon.png").size());
+    hideBtn->setToolTip(tr("隐藏音乐库"));
 
     minimumBtn = new QPushButton;
     minimumBtn->setFlat(true);
     minimumBtn->setIcon(QPixmap(":/images/minimumIcon.png"));
     //minimumBtn->setIconSize(QPixmap(":/images/minimumIcon.png").size());
+    minimumBtn->setToolTip(tr("最小化窗口"));
 
     closeBtn = new QPushButton;
     closeBtn->setFlat(true);
     closeBtn->setIcon(QPixmap(":/images/closeIcon.png"));
     //closeBtn->setIconSize(QPixmap(":/images/closeIcon.png").size());
+    closeBtn->setToolTip(tr("关闭"));
 
     //将各个按钮添加到第一个子布局上
     firstLayout->setMargin(0);
@@ -122,44 +134,52 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     loveMusicBtn->setFlat(true);
     loveMusicBtn->setIcon(QPixmap(":/images/loveIcon.png"));
     loveMusicBtn->setIconSize(QPixmap(":/images/loveIcon.png").size());
+    loveMusicBtn->setToolTip(tr("收藏"));
 
     downloadBtn = new QPushButton;
     downloadBtn->setFlat(true);
     downloadBtn->setIcon(QPixmap(":/images/downloadIcon.png"));
     downloadBtn->setIconSize(QPixmap(":/images/downloadIcon.png").size());
+    downloadBtn->setToolTip(tr("下载"));
 
     similarBtn = new QPushButton;
     similarBtn->setFlat(true);
     similarBtn->setIcon(QPixmap(":/images/similarIcon.png"));
     similarBtn->setIconSize(QPixmap(":/images/similarIcon.png").size());
+    similarBtn->setToolTip(tr("相似歌曲"));
 
     orderBtn = new QPushButton;
     orderBtn->setFlat(true);
     orderBtn->setIcon(QPixmap(":/images/orderIcon.png"));
     orderBtn->setIconSize(QPixmap(":/images/orderIcon.png").size());
+    orderBtn->setToolTip(tr("播放顺序"));
 
     volumeBtn = new QPushButton;
     volumeBtn->setFlat(true);
     volumeBtn->setIcon(QPixmap(":/images/volumeIcon.png"));
     volumeBtn->setIconSize(QPixmap(":/images/volumeIcon.png").size());
+    volumeBtn->setToolTip(tr("音量"));
 
     soundEffectsBtn = new QPushButton;
     soundEffectsBtn->setFlat(true);
     soundEffectsBtn->setIcon(QPixmap(":/images/soundEffectsIcon.png"));
     soundEffectsBtn->setIconSize(QPixmap(":/images/soundEffectsIcon.png").size());
+    soundEffectsBtn->setToolTip(tr("音效"));
 
     lyricBtn = new QPushButton;
     lyricBtn->setFlat(true);
     lyricBtn->setIcon(QPixmap(":/images/lyricIcon.png"));
     lyricBtn->setIconSize(QPixmap(":/images/lyricIcon.png").size());
+    lyricBtn->setToolTip(tr("歌词"));
 
     playQueueBtn = new QPushButton;
     playQueueBtn->setFlat(true);
     playQueueBtn->setIcon(QPixmap(":/images/playQueueIcon.png"));
     playQueueBtn->setIconSize(QPixmap(":/imagee/playQueueIcon.png").size());
+    playQueueBtn->setToolTip(tr("播放队列"));
 
     //将相关元素添加到第三个子布局上
-    threeLayout->addSpacing(50);
+    threeLayout->addSpacing(60);
     threeLayout->setMargin(0);
     threeLayout->addWidget(preMusicBtn);
     threeLayout->addWidget(playerBtn);
