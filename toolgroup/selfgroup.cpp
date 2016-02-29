@@ -9,33 +9,25 @@ SelfGroup::SelfGroup(QWidget *parent) : QWidget(parent)
     setAutoFillBackground(true);
     setPalette(sGPalette);
 
-    //开头那横杠的元素及布局
-//    arrow = new QPushButton;
-//    arrow->setFlat(true);
-//    arrow->setText(tr("> "));
+    //第一个开头横杠
     groupName = new QPushButton;
     groupName->setFlat(true);
     //分组名在之后要用%1.arg()这样的形式进行重新设置
-    groupName->setText(tr("%1新建列表").arg(arrowString));
-    //设置这个按钮的最小宽度
-    //groupName->setMinimumWidth(250);
+    groupName->setText(tr("%1   新建列表").arg(arrowString));
 
-    //点击上面两个按钮中的任何一个，都会触发arrowChange()槽事件
-    //connect(arrow, SIGNAL(clicked()), this, SLOT(arrowChange()));
     connect(groupName, SIGNAL(clicked()), this, SLOT(arrowChange()));
+
 
     threeLine = new QPushButton;
     threeLine->setFlat(true);
     //这个按钮的图标在之后也要重新设置
     threeLine->setIcon(QPixmap(":/images/playQueueIcon.png"));
-    //threeLine->setIconSize(QPixmap(":/images/playQueueIcon.png").size());
 
     startLayout = new QHBoxLayout;
     startLayout->setMargin(0);
     startLayout->setSpacing(0);
-    //startLayout->addWidget(arrow);
     startLayout->addWidget(groupName);
-    //startLayout->addStretch();
+    startLayout->addStretch();
     startLayout->addWidget(threeLine);
 
     //初始的窗体及其中元素布局
@@ -44,6 +36,11 @@ SelfGroup::SelfGroup(QWidget *parent) : QWidget(parent)
     newMusic = new QPushButton;
     newMusic->setFlat(true);
     newMusic->setText(tr("+ 添加本地歌曲"));
+    //连接鼠标单击事件与打开文件选择对话框事件
+    //connect(newMusic, SIGNAL(clicked()), this, SLOT(showAudioFile()));
+    connect(newMusic, SIGNAL(clicked()), this, SLOT(showFiles()));
+    connect(this, SIGNAL(filesuccess()), this, SLOT(arrowChange()));
+
     newMusicFile = new QPushButton;
     newMusicFile->setFlat(true);
     newMusicFile->setText(tr("+ 添加本地歌曲文件夹"));
@@ -62,16 +59,32 @@ SelfGroup::SelfGroup(QWidget *parent) : QWidget(parent)
     initLayout->addLayout(initLayout1);
     initLayout->addLayout(initLayout2);
 
-    //果然还是可以隐藏的
-    initWidget->hide();
+    //初始时这个窗体是显示出来的，只有当添加了歌曲文件后才隐藏
+    //initWidget->hide();
 
+    /**********************************************************************************/
+    //以下是测试用，测试少数歌曲时的添加
+    //音乐歌曲列表的窗体
+
+    test_list = new QListWidget;
+
+
+    test_widget = new QWidget;
+    widgetLayout = new QVBoxLayout(test_widget);
+    widgetLayout->setMargin(0);
+    widgetLayout->setSpacing(0);
+    widgetLayout->addWidget(test_list);
+    test_widget->hide();
+
+    /**********************************************************************************/
     //整体窗体的布局
     selfGroupLayout = new QVBoxLayout(this);
     selfGroupLayout->setSpacing(0);
     selfGroupLayout->setMargin(0);
+
     selfGroupLayout->addLayout(startLayout);
+    selfGroupLayout->addWidget(test_widget);
     selfGroupLayout->addWidget(initWidget);
-    //selfGroupLayout->addStretch();
 
 };
 
@@ -82,24 +95,36 @@ void SelfGroup::arrowChange()
     if(arrowString == "> ")
     {
         arrowString = "v ";
-        groupName->setText(tr("%1新建列表").arg(arrowString));
+        groupName->setText(tr("%1   新建列表").arg(arrowString));
+        initWidget->hide();
+        test_widget->show();
     }
     else
     {
         arrowString = "> ";
-        groupName->setText(tr("%1新建列表").arg(arrowString));
+        groupName->setText(tr("%1   新建列表").arg(arrowString));
+        initWidget->hide();
+        test_widget->hide();
     }
 
-
-//    if(arrow->text() == "> ")
-//        arrow->setText(tr("v "));
-//    else
-//        arrow->setText(tr("> "));
-
-    //测试用，之后得删除！
-    if(initWidget->isHidden())
-        initWidget->show();
-    else
-        initWidget->hide();
 }
+
+
+
+void SelfGroup::showFiles()
+{
+    musicPathList = QFileDialog::getOpenFileNames(this, tr("Select Music"), "/",
+                                              tr("Music files(*.mp3 *.ape *.flac)"));
+    foreach(const QString s, musicPathList)
+    {
+        musicName = QFileInfo(s).fileName();
+        musicNameList.append(musicName);
+    }
+
+    test_list->addItems(musicNameList);
+
+    emit filesuccess();
+    //test_widget->show();
+}
+
 
