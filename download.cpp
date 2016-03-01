@@ -9,7 +9,8 @@ Download::Download(QWidget *parent) : QWidget(parent)
     setFixedWidth(300);
     //设置背景颜色
     QPalette Dp;
-    Dp.setColor(QPalette::Background, Qt::red);
+    Dp.setColor(QPalette::Background, Qt::white);
+    setWindowOpacity(1);
     setAutoFillBackground(true);
     setPalette(Dp);
 

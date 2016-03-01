@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     lyframe.cpp \
     packupwidget.cpp \
     toolgroup/toolgroup.cpp \
-    toolgroup/selfgroup.cpp
+    toolgroup/selfgroup.cpp \
+
 
 HEADERS  += widget.h \
     secframe.h \
@@ -38,7 +39,8 @@ HEADERS  += widget.h \
     lyframe.h \
     packupwidget.h \
     toolgroup/toolgroup.h \
-    toolgroup/selfgroup.h
+    toolgroup/selfgroup.h \
+
 
 RESOURCES += \
     res.qrc
