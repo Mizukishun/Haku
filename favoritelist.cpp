@@ -1,6 +1,6 @@
 #include "favoritelist.h"
 #include <QPalette>
-#include "toolgroup/selfgroup.h"
+#include "toolgroup/audiolist.h"
 
 FavoriteList::FavoriteList(QWidget *parent) : QWidget(parent)
 {
@@ -19,10 +19,10 @@ FavoriteList::FavoriteList(QWidget *parent) : QWidget(parent)
     favoriteLayout->setMargin(0);
     favoriteLayout->setSpacing(0);
 
-    SelfGroup *faTestWidget = new SelfGroup();
-    SelfGroup *faTestWidget2 = new SelfGroup();
-    favoriteLayout->addWidget(faTestWidget);
-    favoriteLayout->addWidget(faTestWidget2);
+    AudioList *newList = new AudioList();
+    favoriteLayout->addWidget(newList);
+    AudioList *secondList = new AudioList();
+    favoriteLayout->addWidget(secondList);
     favoriteLayout->addStretch();
 
 }

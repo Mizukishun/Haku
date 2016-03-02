@@ -1,4 +1,6 @@
 #include "singlemusic.h"
+#include <QFont>
+
 
 SingleMusic::SingleMusic(QWidget *parent) : QWidget(parent)
 {
@@ -20,12 +22,20 @@ void SingleMusic::createInterface()
     musicianBtn->setIcon(QPixmap(":/images/winIcon_40.png"));
     musicianBtn->setIconSize(QPixmap(":/images/winIcon_50.png").size());
 
-    musicNameBtn = new QPushButton;
-    musicNameBtn->setFlat(true);
-    musicNameBtn->setText(tr("待添加的音乐名"));               //之后得修改
+    //注意：歌曲名按钮不是QPushButton类型，而是QLabel,以方便设置文本的对齐方式！
+    musicNameBtn = new QLabel;
+    //musicNameBtn->setFlat(true);
+    musicNameBtn->setMaximumWidth(200);     //设置歌曲名的最大宽度
+    musicNameBtn->setAlignment(Qt::AlignLeft);
+    //对歌曲名按钮的文字进行设置
+    QFont Bf;
+    Bf.setPointSize(10);
+    musicNameBtn->setFont(Bf);
+
 
     //歌曲名右侧的歌曲总时长标签,00::00只是测试用，之后得删除！！
     musicNameLengthLabel = new QLabel;
+    musicNameLengthLabel->setFont(Bf);
 
     downloadedBtn = new QPushButton;
     downloadedBtn->setFlat(true);
@@ -46,6 +56,13 @@ void SingleMusic::createInterface()
     playedLengthLabel = new QLabel(tr("00:00/"));               //00::00测试用
     musicLengthLabel = new QLabel;                 //之后得删除
 
+    //对时长标签的文字进行大小设置
+    QFont f;
+    f.setPointSize(10);
+    playedLengthLabel->setFont(f);
+    musicLengthLabel->setFont(f);
+
+
     /******************布局***************************************/
     rightBottomFrame = new QFrame;
     rightBottomLayout = new QHBoxLayout(rightBottomFrame);
@@ -53,15 +70,19 @@ void SingleMusic::createInterface()
     rightBottomLayout->setSpacing(0);
     rightBottomLayout->addWidget(playedLengthLabel);
     rightBottomLayout->addWidget(musicLengthLabel);
-    rightBottomLayout->addWidget(downloadedBtn);
     rightBottomLayout->addStretch();
+    rightBottomLayout->addWidget(downloadedBtn);
     rightBottomLayout->addWidget(loveBtn);
     rightBottomLayout->addWidget(deleteBtn);
     rightBottomLayout->addWidget(detailBtn);
+
     rightBottomFrame->hide();                       //初始要隐藏这一部分的组件
+    musicianBtn->hide();                            //歌手图片也要先隐藏
 
     //歌曲名及歌曲总时长部分的布局
     musicNameLayout = new QHBoxLayout;
+    musicNameLayout->setMargin(0);
+    musicNameLayout->setSpacing(0);
     musicNameLayout->addWidget(musicNameBtn);
     musicNameLayout->addStretch();
     musicNameLayout->addWidget(musicNameLengthLabel);
@@ -137,11 +158,11 @@ void SingleMusic::musicPlayed(qint64 mT)
     if(secT < 10)
         secString = "0" + secString;
 
-    //已播放时长的字符串表示
-    QString playedLength = minString + ":" + secString + "/";
+    //已播放时长的字符串表
+    QString playeddLength = minString + ":" + secString + "/";
 
     //修正已播放时长标签的文本
-    playedLengthLabel->setText(playedLength);
+    playedLengthLabel->setText(playeddLength);
 }
 
 //控制音乐的播放与暂停
@@ -158,6 +179,7 @@ void SingleMusic::playAndPause()
         player->play();
 
         //播放该首歌曲的同时，也要显示出隐藏的框架,并隐藏歌曲名旁边的标签
+        musicianBtn->show();
         rightBottomFrame->show();
         musicNameLengthLabel->hide();
 
@@ -167,15 +189,40 @@ void SingleMusic::playAndPause()
 //重载鼠标双击事件，使得其重头开始播放这首音乐
 void SingleMusic::mouseDoubleClickEvent(QMouseEvent *)
 {
-    playAndPause();
+    //playAndPause();
     //先暂时直接关联播放/暂停事件，之后在修改成下面这个从头开始播放的功能
-//    player->setPosition(0);
-//    player->play();
-//    rightBottomFrame->show();
-//    musicNameLengthLabel->hide();
+    player->setPosition(0);
+    player->play();
+    musicianBtn->show();
+    rightBottomFrame->show();
+    musicNameLengthLabel->hide();
 }
 
 void SingleMusic::active()
 {
     createObject();
+}
+
+//重载鼠标单击事件，如果单击了，则说明这首可以进行播放了，其他的歌就不能播放
+void SingleMusic::mousePressEvent(QMouseEvent *event)
+{
+    //如果是鼠标左键的按下事件
+    if(event->button() == Qt::LeftButton)
+    {
+        //这首歌选中可以播放了
+        ok = true;
+        emit OkToPlay(this);
+    }
+
+}
+
+//恢复成初始的界面状态，也即只含有歌曲名与歌曲总时长，而隐藏其他按钮
+void SingleMusic::resetGUI()
+{
+    //完全停止播放
+    player->stop();
+    //隐藏右下侧的按钮框架
+    rightBottomFrame->hide();
+    //显示歌曲名后面的总时长标签
+    musicNameLengthLabel->show();
 }

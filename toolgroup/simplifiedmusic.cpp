@@ -37,16 +37,18 @@ void SimplifiedMusic::createInterface()
 //重载鼠标按下事件，使得当数遍按下时，箭头按钮方向发生改变，也即替换了图片显示
 void SimplifiedMusic::mousePressEvent(QMouseEvent *)
 {
-    if(!closeBtn)
+    if(closeBtn)
     {
         openAndCloseBtn->setIcon(QPixmap(":/images/closeListIcon.png"));
-        closeBtn = true;
+        closeBtn = false;
     }
     else
     {
         openAndCloseBtn->setIcon(QPixmap(":/images/openListIcon.png"));
-        closeBtn = false;
+        closeBtn = true;
     }
+    emit isPressed(true);
+    //transformIcon();
 }
 
 //以下三个鼠标没事实现具体功能，但仍写出函数体框架
@@ -75,6 +77,7 @@ void SimplifiedMusic::transformIcon()
         openAndCloseBtn->setIcon(QPixmap(":/images/openListIcon.png"));
         closeBtn = false;
     }
+    emit isPressed(true);
 }
 
 

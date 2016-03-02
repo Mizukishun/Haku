@@ -27,15 +27,18 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent *);
 
 
-private:
-    //创建主界面，要定义成私有的吗？？？
-    void createInterface();
 
 signals:
+    //监视是否有鼠标按下，若有，则通知上层窗体隐藏或修改歌曲列表
+    void isPressed(bool);
 
 public slots:
     //切换图标
     void transformIcon();
+
+private:
+    //创建主界面，要定义成私有的吗？？？
+    void createInterface();
 
 private:
     //展开关闭按钮
@@ -48,6 +51,7 @@ private:
     //布局
     QHBoxLayout *listLayout;
 
+public:
     //一个布尔值，用于判断是打开、还是关闭列表，
     //其实也就是用于切换openAndCloseBtn用哪个图标而已,默认是关闭的
     bool closeBtn = true;

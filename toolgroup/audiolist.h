@@ -30,6 +30,15 @@ public slots:
     //向窗体中添加歌曲
     void addMusic();
 
+    //通过监视simplifiedmusic对象的鼠标按下事件，来显示或隐藏歌曲列表
+    void AudioFrameHideOrShow(bool);
+
+    //由这里控制音乐的播放与暂停
+    //void playAudio();
+
+    //监视音乐对象，如果有某首歌曲的名字发送过来，就说明该可以播放该首歌，其他的则要暂停恢复初始状态
+    void OkToPlayMusic(SingleMusic *);
+
 private:
     /************************添加歌曲按钮的框架部分*******************/
     //”添加本地歌曲“按钮
@@ -63,6 +72,12 @@ private:
 
     //维护一个歌曲对象列表
     QList<SingleMusic *> musicObjectList;
+
+public:
+    //维护一首选中的歌曲，若没有歌曲选中，则默认是列表中的第一首歌曲
+    //如果有歌曲被选中，也是被存在这个变量中，向上层窗体继续传递，
+    //以便进行歌曲的播放控制,所以也需定义成public
+    SingleMusic *temp;
 
 
 

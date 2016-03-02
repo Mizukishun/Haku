@@ -35,6 +35,8 @@ AudioList::AudioList(QWidget *parent) : QWidget(parent)
 void AudioList::createList()
 {
     SimplifiedMusic *newList = new SimplifiedMusic();
+    //通过监视SimplifiedMusic对象的鼠标按下事件，来显示豁隐藏歌曲列表
+    connect(newList, SIGNAL(isPressed(bool)), this, SLOT(AudioFrameHideOrShow(bool)));
     AudioLayout->addWidget(newList);
     AudioLayout->addWidget(addLocateFrame);
 
@@ -72,16 +74,53 @@ void AudioList::addMusic()
         music->SingleMusicName = musicName;
         music->active();
 
+        //如果某个音乐对象被选中，则会发送音乐名称信号出来
+        connect(music, SIGNAL(OkToPlay(SingleMusic *)),
+                this, SLOT(OkToPlayMusic(SingleMusic *)));
+
         newAudioLayout->addWidget(music);
 
         musicObjectList.insert(musicObjectList.end(), music);
     }
+
+    //此列表默认维护着第一首歌曲
+    temp = musicObjectList.at(0);
+
     //添加歌曲文件后，就隐藏之前的“添加本地歌曲”那块区域，而现实歌曲列表
     newAudioFrame->show();
     addLocateFrame->hide();
 }
 
+//通过监视SimplifiedMusic对象的鼠标按下事件，来显示或隐藏歌曲列表
+void AudioList::AudioFrameHideOrShow(bool)
+{
+    if(newAudioFrame->isHidden())
+        newAudioFrame->show();
+    else
+        newAudioFrame->hide();
+}
 
+
+//将从信号接收来的SingleMusic对象作为实参进行操作，如果两者指向相同的歌曲
+//则可以进行播放，否则，就要重置其他所有歌曲的状态
+void AudioList::OkToPlayMusic(SingleMusic *m)
+{
+    //说明是这首歌曲被选中，所以此时歌曲列表要记住是这首歌曲要播放
+    temp = m;
+    //遍历歌曲列表中的歌曲，找到了这首歌曲，则可以进行播放，如果不是，则恢复成初始界面状态
+    foreach(SingleMusic *s, musicObjectList)
+    {
+        //如果选中的是这首歌，则可以对其进行播放暂停等操作
+        if(s == m)
+        {
+            m->playAndPause();
+        }
+        else
+        {
+            s->resetGUI();
+        }
+    }
+}
 
 
 
