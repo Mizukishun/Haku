@@ -5,7 +5,8 @@
 #-------------------------------------------------
 
 QT       += core gui
-Qt       += core
+QT       += core
+QT       += multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,8 +25,10 @@ SOURCES += main.cpp\
     lyricwidget.cpp \
     lyframe.cpp \
     packupwidget.cpp \
-    toolgroup/toolgroup.cpp \
     toolgroup/selfgroup.cpp \
+    toolgroup/singlemusic.cpp \
+    toolgroup/simplifiedmusic.cpp \
+    toolgroup/audiolist.cpp
 
 
 HEADERS  += widget.h \
@@ -38,8 +41,10 @@ HEADERS  += widget.h \
     lyricwidget.h \
     lyframe.h \
     packupwidget.h \
-    toolgroup/toolgroup.h \
     toolgroup/selfgroup.h \
+    toolgroup/singlemusic.h \
+    toolgroup/simplifiedmusic.h \
+    toolgroup/audiolist.h
 
 
 RESOURCES += \

@@ -40,5 +40,9 @@
         <file>images/winIcon_40.png</file>
         <file>images/winIcon_50.png</file>
         <file>images/winIcon_100.png</file>
+        <file>images/AdditionIcon.png</file>
+        <file>images/threeLineIcon.png</file>
+        <file>images/closeListIcon.png</file>
+        <file>images/openListIcon.png</file>
     </qresource>
 </RCC>
