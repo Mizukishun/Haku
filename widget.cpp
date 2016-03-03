@@ -189,13 +189,22 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     playQueueBtn->setIconSize(QPixmap(":/images/playQueueIcon.png").size());
     playQueueBtn->setToolTip(tr("播放队列"));
 
+    /*********************************进度条的定义**********************************/
+
+
+    /********************************以上是进度条的定义*****************************/
+
     //将相关元素添加到第三个子布局上
     threeLayout->addSpacing(60);
     threeLayout->setMargin(0);
     threeLayout->addWidget(preMusicBtn);
     threeLayout->addWidget(playerBtn);
     threeLayout->addWidget(nextMusicBtn);
-    threeLayout->addStretch();
+
+    //添加进度条
+    createSlider();
+    threeLayout->addWidget(sliderFrame);
+
     threeLayout->addWidget(loveMusicBtn);
     threeLayout->addWidget(downloadBtn);
     threeLayout->addWidget(similarBtn);
@@ -253,6 +262,12 @@ void Widget::playOrpauseMusic(SingleMusic *para)
 {
     //这就是要播放或暂停的歌曲
     mainMusic = para;
+    mainMusicName = mainMusic->SingleMusicName;
+    mainMusicTotalTime = mainMusic->musicTotalTime;
+    mainMusicPlayedTime = mainMusic->musicPlayedTime;
+
+    connect(mainMusic->player, SIGNAL(positionChanged(qint64)),
+            this, SLOT(setSliderValue(qint64)));
 
     //暂停或播放这首歌曲
     mainMusic->playAndPause();
@@ -269,4 +284,67 @@ void Widget::player()
         return;
     }
     this->playOrpauseMusic(mainMusic);
+}
+
+void Widget::createSlider()
+{
+    playSlider = new QSlider(Qt::Horizontal);
+    //设置进度条的样式(注意其参数是QString类型的，所以都要加双引号！）
+    playSlider->setStyleSheet(
+                "QSlider::groove:horizontal{     "
+                "   height: 4px;                 "
+                "   border: 0px;                 "
+                "}                               "
+                "QSlider::handle:horizontal{     "
+                "   background: white;           "
+                "   width: 10px;                 "
+                "   border-radius: 5px;          "
+                "   margin: -3px, 0px, -3px, 0px;"
+                "}                               "
+                "QSlider::sub-page:horizontal{   "
+                "   background: white;           "
+                "}                               "
+                "QSlider::add-page:horizontal{   "
+                "   background: lightgray;       "
+                "}                               "
+                );
+
+
+
+
+    musicNameSlider = new QLabel;
+    playedTimeSlider = new QLabel;
+    totalTimeSlider = new QLabel;
+
+
+
+    upSliderLayout = new QHBoxLayout;
+    upSliderLayout->setMargin(0);
+    upSliderLayout->setSpacing(0);
+    upSliderLayout->addWidget(musicNameSlider);
+    upSliderLayout->addStretch();
+    upSliderLayout->addWidget(playedTimeSlider);
+    upSliderLayout->addWidget(totalTimeSlider);
+
+    sliderFrame = new QFrame;
+    sliderFrame->setMaximumHeight(40);
+    sliderLayout = new QVBoxLayout(sliderFrame);
+    sliderLayout->setSpacing(0);
+    sliderLayout->setMargin(0);
+    sliderLayout->addLayout(upSliderLayout);
+    sliderLayout->addWidget(playSlider);
+}
+
+void Widget::setSliderValue(qint64 val)
+{
+
+    playSlider->setRange(0, mainMusicTotalTime);
+    playSlider->setEnabled(true);
+    playSlider->setPageStep(mainMusicTotalTime / 10);
+
+    musicNameSlider->setText(mainMusic->musicNameBtn->text());
+    playedTimeSlider->setText(mainMusic->playedLengthLabel->text());
+    totalTimeSlider->setText(mainMusic->musicLengthLabel->text());
+
+    playSlider->setValue(val);
 }

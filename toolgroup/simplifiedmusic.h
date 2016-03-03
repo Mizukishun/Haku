@@ -54,7 +54,7 @@ private:
 public:
     //一个布尔值，用于判断是打开、还是关闭列表，
     //其实也就是用于切换openAndCloseBtn用哪个图标而已,默认是关闭的
-    bool closeBtn = true;
+    bool closeBtn;
 
 
 };

@@ -20,6 +20,7 @@ class SingleMusic : public QWidget
     Q_OBJECT
 public:
     explicit SingleMusic(QWidget *parent = 0);
+    ~SingleMusic();
 
 private:
     //创建主界面的函数, 要定义成私有的吗？？？
@@ -68,10 +69,7 @@ private:
     QPushButton *deleteBtn;
     //详细信息按钮
     QPushButton *detailBtn;
-    //已播放时长
-    QLabel *playedLengthLabel;
-    //音乐总时长
-    QLabel *musicLengthLabel;
+
 
 
     /**********************************布局*****************************/
@@ -96,13 +94,24 @@ public:
     //保存单首歌曲名
     QString SingleMusicName;
 
+    //已播放时长
+    QLabel *playedLengthLabel;
+    //音乐总时长
+    QLabel *musicLengthLabel;
+
+    //保存歌曲总时长，供其它部件使用
+    qint64 musicTotalTime;
+    //保存歌曲已播放时长，供其它部件使用
+    qint64 musicPlayedTime;
+
     //在这个最底层窗体中定义一个QMediaPlayer对象，由它来控制歌曲的播放
     QMediaPlayer *player;
+
     //激活窗体，其实就是创建QMediaPlayer对象，并修改时长等按钮的文本
     void active();
 
     //如果选中(或者说单击）了这首歌，就可以进行播放,默认是不播放的
-    bool ok = false;
+    bool ok;
 
 
 

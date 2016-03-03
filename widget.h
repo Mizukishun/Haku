@@ -20,6 +20,9 @@
 #include <QFont>
 #include <QPoint>
 #include <QMediaPlayer>
+#include <QSlider>
+#include <QFrame>
+#include <QStyle>
 #include "secframe.h"
 #include "toolgroup/singlemusic.h"
 #include "toolgroup/audiolist.h"
@@ -33,11 +36,15 @@ public:
     Widget(QWidget *parent = 0, Qt::WindowFlags flags = 0);
     ~Widget();
 
+
+
 protected:
     //还未实现，重现实现鼠标移动事件，使得窗体能够移动
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
 //    void mouseReleaseEvent(QMouseEvent *event);
+
+
 
 signals:
     //这个信号关联了整个程序的退出函数，而这个信号是由下面的quitEmit()函数发送的
@@ -56,6 +63,10 @@ private slots:
 
     //由按钮传递过来的信号，控制歌曲的播放
     void player();
+
+    void setSliderValue(qint64);
+
+
 
 
 private:
@@ -123,6 +134,22 @@ private:
     //播放队列按钮
     QPushButton *playQueueBtn;
 
+    /***************进度条部件********************/
+    //播放进度条
+    QSlider *playSlider;
+    //进度条上的音乐名
+    QLabel *musicNameSlider;
+    //进度条上的已播时间
+    QLabel *playedTimeSlider;
+    //进度条上的总时长
+    QLabel *totalTimeSlider;
+    //进度条的布局
+    QHBoxLayout *upSliderLayout;
+    QVBoxLayout *sliderLayout;
+    //进度条的整体框架
+    QFrame *sliderFrame;
+
+
     //另外，播放时间那个长条，先用addStretch()替上，之后要补上
     /***********************************************************************/
 
@@ -140,11 +167,21 @@ private:
     //设置背景图片
     void setSkin(QPixmap);
 
+    //创建歌曲播放进度条，并关联歌曲的播放进度，同时尝试设置进度条的样式
+    void createSlider();
+
 public:
     //用于统一只播放一首歌曲
     SingleMusic *mainMusic;
+    //歌曲名
+    QString mainMusicName;
+    //歌曲总时长
+    qint64 mainMusicTotalTime;
+    //歌曲已播放时长
+    qint64 mainMusicPlayedTime;
+
     //用于统一只有一个列表被展开
-    AudioList *mainAudioList;
+    //AudioList *mainAudioList;
 
 
 

@@ -120,6 +120,9 @@ void SingleMusic::createObject()
 //获得歌曲总时长
 void SingleMusic::musicLength(qint64 mT)
 {
+    //获取歌曲总时长，供其它部件使用
+    musicTotalTime = mT;
+
     //将时间单位转换成秒
     qint64 T = mT / 1000;
     //获得分钟
@@ -146,6 +149,9 @@ void SingleMusic::musicLength(qint64 mT)
 //获得歌曲已播放时长
 void SingleMusic::musicPlayed(qint64 mT)
 {
+    //先获取歌曲已播放时长，供其它部件使用
+    musicPlayedTime = mT;
+
     //与上面相似的转换
     qint64 T = mT / 1000;
     QVariant minT = T / 60;
@@ -225,4 +231,8 @@ void SingleMusic::resetGUI()
     rightBottomFrame->hide();
     //显示歌曲名后面的总时长标签
     musicNameLengthLabel->show();
+}
+
+SingleMusic::~SingleMusic()
+{
 }
