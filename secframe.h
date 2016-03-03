@@ -24,6 +24,8 @@
 #include "more.h"
 #include "lyframe.h"
 #include "packupwidget.h"
+#include "toolgroup/singlemusic.h"
+#include "toolgroup/singlemusic.h"
 
 
 class SecFrame : public QFrame
@@ -73,7 +75,9 @@ public:
     /**************************************************************/
     //第三个小布局上的元素
 
-
+signals:
+    //通知最顶层窗体，可以对这首歌曲进行播放控制了
+    void SendToTop(SingleMusic *);
 
     //以下是尝试对按钮点击事件的重载，希望能够实现切换不同的窗体(待删除
 private slots:
@@ -83,6 +87,15 @@ private slots:
     void on_downloadBtn_clicked();
     void on_moreBtn_clicked();
     void on_packUpBtn_clicked();
+
+    //接收从六个小窗体中传递过来的可以播放的信号Ok()，通知最顶层窗体可以播放这首歌曲了
+    //但要注意：要在这里控制每次只能播放一首歌曲，每个不同小窗体传递过来的Ok信号都会触发
+    //一首歌曲可以播放，所以要在这里控制住，使得每传递过来一个信号，就只播放这一首歌曲，而
+    //完全关闭其它歌曲的播放
+    void OkSendToTop(SingleMusic *);
+public:
+    //只能播放这首歌曲
+    SingleMusic *OnlyMusic;
 
 
 };

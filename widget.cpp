@@ -118,7 +118,9 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     secFrameLayout = new SecFrame;
     secondLayout->addWidget(secFrameLayout);
 
-
+    //接收从第二个子布局发送过来的可以播放的信号，对传递过来的这首歌曲进行播放控制
+    connect(secFrameLayout, SIGNAL(SendToTop(SingleMusic *)),
+            this, SLOT(playOrpauseMusic(SingleMusic*)));
 
     /***********************************************************************/
     //创建第三个子布局
@@ -126,6 +128,8 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     playerBtn->setFlat(true);
     playerBtn->setIcon(QPixmap(":/images/playerIcon.png"));
     playerBtn->setIconSize(QPixmap(":/images/playerIcon.png").size());
+    //关联上歌曲的播放控制事件
+    connect(playerBtn, SIGNAL(clicked()), this, SLOT(player()));
 
     preMusicBtn = new QPushButton;
     preMusicBtn->setFlat(true);
@@ -243,3 +247,26 @@ void Widget::mouseMoveEvent(QMouseEvent *event)
     this->move(event->globalPos() - disPos);
 }
 
+
+//控制歌曲的播放
+void Widget::playOrpauseMusic(SingleMusic *para)
+{
+    //这就是要播放或暂停的歌曲
+    mainMusic = para;
+
+    //暂停或播放这首歌曲
+    mainMusic->playAndPause();
+
+
+}
+
+//由于Qt信号槽机制的类型安全，所以由下面这个函数中介一下对音乐的播放控制
+void Widget::player()
+{
+    //判断是否有歌曲被选中
+    if(mainMusic->player->state() == QMediaPlayer::InvalidMedia)
+    {
+        return;
+    }
+    this->playOrpauseMusic(mainMusic);
+}

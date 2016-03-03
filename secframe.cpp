@@ -107,6 +107,10 @@ SecFrame::SecFrame(QWidget *parent)
     secStack->addWidget(moreWidget);
     secStack->addWidget(puWidget);
 
+    //将六个小窗体发送过来的可以播放的信号，传递给顶层的窗体
+    connect(muList, SIGNAL(fromMusicListToSecFrame(SingleMusic*)),
+            this, SLOT(OkSendToTop(SingleMusic *)));
+
     /******************************************************************************/
     //创建第三个小布局，也即歌词窗口那部分
     lyf = new lyFrame();
@@ -158,4 +162,15 @@ void SecFrame::on_moreBtn_clicked()
 void SecFrame::on_packUpBtn_clicked()
 {
     emit secStack->setCurrentIndex(5);
+}
+
+//接收从六个小窗体传递过来的可以播放信号，但这里要控制住，使得只能播放一首歌曲
+void SecFrame::OkSendToTop(SingleMusic *sFmusic)
+{
+    OnlyMusic = sFmusic;
+
+    //暂时还没有实现唯一播放的控制，之后得补上！
+
+    //先暂时只是将播放歌曲传递给最顶层的窗体
+    emit SendToTop(OnlyMusic);
 }

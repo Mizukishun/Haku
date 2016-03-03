@@ -23,6 +23,8 @@ public:
 
 
 signals:
+    //发送信号，通知再上一层的窗体，可以播放这首音乐了
+    void OkToPlayAudio(SingleMusic *);
 
 public slots:
     //创建一条新的“新建列表"

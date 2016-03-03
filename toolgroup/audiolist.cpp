@@ -43,6 +43,8 @@ void AudioList::createList()
     //定义成静态的类型，即使函数结束也还保存其值
     newAudioFrame = new QFrame(this);
     newAudioLayout = new QVBoxLayout(newAudioFrame);
+    newAudioLayout->setMargin(0);
+    newAudioLayout->setSpacing(0);
     //先暂时隐藏这个框架，添加了歌曲文件之后再显示出来
     newAudioFrame->hide();
     AudioLayout->addWidget(newAudioFrame);
@@ -120,6 +122,7 @@ void AudioList::OkToPlayMusic(SingleMusic *m)
             s->resetGUI();
         }
     }
+    emit OkToPlayAudio(temp);
 }
 
 

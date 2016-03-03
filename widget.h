@@ -19,7 +19,10 @@
 #include <QSize>
 #include <QFont>
 #include <QPoint>
+#include <QMediaPlayer>
 #include "secframe.h"
+#include "toolgroup/singlemusic.h"
+#include "toolgroup/audiolist.h"
 
 
 class Widget : public QWidget
@@ -48,6 +51,11 @@ private slots:
     //点击最小化按钮所关联的槽函数
     void minWidget();
 
+    //最顶层窗体，接收内层窗体发送过来的可以播放歌曲的信号,控制传递过来的歌曲的播放与暂停
+    void playOrpauseMusic(SingleMusic *);
+
+    //由按钮传递过来的信号，控制歌曲的播放
+    void player();
 
 
 private:
@@ -132,7 +140,11 @@ private:
     //设置背景图片
     void setSkin(QPixmap);
 
-
+public:
+    //用于统一只播放一首歌曲
+    SingleMusic *mainMusic;
+    //用于统一只有一个列表被展开
+    AudioList *mainAudioList;
 
 
 
