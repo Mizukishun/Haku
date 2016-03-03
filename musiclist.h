@@ -7,6 +7,8 @@
 #include <QFrame>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QMenu>
+#include <QAction>
 
 
 class MusicList : public QWidget
@@ -21,6 +23,14 @@ public:
 private:
     //创建新建列表，并将其添加到窗体中，但也要维护播放的唯一性
     void createAudioList();
+
+    //下面是尝试在音乐列表窗口创建右键菜单，但对是否应该是private有疑惑？？？？
+    //创建菜单命令
+    void createActions();
+
+public:
+    //重载上下文菜单函数
+    void contextMenuEvent(QContextMenuEvent *);
 
 signals:
     //同时发送信号OkToPlayFinally，通知最顶层的窗体可以播放这首歌曲了
@@ -39,6 +49,24 @@ private:
     QFrame *mulistFrame;
     //框架的布局
     QVBoxLayout *mulistFrameLayout;
+
+    /***********************右键菜单*****************************************/
+    //音乐列表的右键菜单，定义成私有的，只能在这里窗体里被调用
+    QMenu *rightMenu;
+    //右键菜单中命令项
+    //新建列表命令
+    QAction *newListAction;
+    //添加本地歌曲命令
+    QAction *addLocateMusicAction;
+    //添加本地歌曲文件夹命令
+    QAction *addLocateMusicFileAction;
+    //清空列表命令
+    QAction *clearListAction;
+    //删除列表命令
+    QAction *deleteListAction;
+    //重命名命令
+    QAction *renameAction;
+
 public:
     //在这个窗体中也要维护一个唯一能够播放的音乐
     SingleMusic *tempMusicList;

@@ -4,7 +4,8 @@
 #include <QVBoxLayout>
 
 
-MusicList::MusicList(QWidget *parent) : QWidget(parent)
+MusicList::MusicList(QWidget *parent)
+    : QWidget(parent)
 {
     musicListNetID = false;
 
@@ -93,4 +94,57 @@ void MusicList::closeAllMusicList()
         d->hideList();
     }
     musicListNetID = false;
+}
+
+//创建右键菜单
+void MusicList::createActions()
+{
+    //创建右键菜单对象
+    rightMenu = new QMenu();
+
+    //创建右键菜单中要显示命令（也即菜单项)
+    newListAction = new QAction(this);
+    newListAction->setText(tr("新建列表"));
+
+    addLocateMusicAction = new QAction(this);
+    addLocateMusicAction->setText(tr("添加本地歌曲"));
+
+    addLocateMusicFileAction = new QAction(this);
+    addLocateMusicFileAction->setText(tr("添加本地歌曲文件夹"));
+
+    clearListAction = new QAction(this);
+    clearListAction->setText(tr("清空列表"));
+
+    deleteListAction = new QAction(this);
+    deleteListAction->setText(tr("删除列表"));
+
+    renameAction = new QAction(this);
+    renameAction->setText(tr("重命名"));
+
+    //每一个菜单项都要关联具体的实现函数,暂时还未实现，之后得补上！！！！
+    //connect
+
+}
+
+//重载上下文菜单函数
+void MusicList::contextMenuEvent(QContextMenuEvent *event)
+{
+    //先清除原先的菜单项
+    rightMenu->clear();
+
+    //向菜单中添加菜单项
+    rightMenu->addAction(newListAction);
+    rightMenu->addAction(addLocateMusicAction);
+    rightMenu->addAction(addLocateMusicFileAction);
+
+    //添加分隔条
+    rightMenu->addSeparator();
+
+    rightMenu->addAction(clearListAction);
+    rightMenu->addAction(deleteListAction);
+    rightMenu->addAction(renameAction);
+
+    //让右键菜单出现在鼠标当前出现的位置
+    rightMenu->exec(QCursor::pos());
+    event->accept();
 }
