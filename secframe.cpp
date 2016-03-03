@@ -108,8 +108,13 @@ SecFrame::SecFrame(QWidget *parent)
     secStack->addWidget(puWidget);
 
     //将六个小窗体发送过来的可以播放的信号，传递给顶层的窗体
+
     connect(muList, SIGNAL(fromMusicListToSecFrame(SingleMusic*, bool)),
-            this, SLOT(OkSendToTop(SingleMusic *, bool)));
+                    this, SLOT(OkSendToTop(SingleMusic *, bool)));
+
+    connect(faList, SIGNAL(fromFavoriteToSecFrame(SingleMusic*, bool)),
+                    this, SLOT(OkSendToTop(SingleMusic *, bool)));
+
 
     /******************************************************************************/
     //创建第三个小布局，也即歌词窗口那部分
@@ -137,11 +142,13 @@ SecFrame::SecFrame(QWidget *parent)
 void SecFrame::on_favoriteBtn_clicked()
 {
     emit secStack->setCurrentIndex(1);
+
 }
 
 void SecFrame::on_musicListBtn_clicked()
 {
     emit secStack->setCurrentIndex(0);
+
 }
 
 void SecFrame::on_mobileBtn_clicked()
@@ -169,8 +176,15 @@ void SecFrame::OkSendToTop(SingleMusic *sFmusic, bool bOk)
 {
     OnlyMusic = sFmusic;
 
-    //暂时还没有实现唯一播放的控制，之后得补上！
+    //通过控制当前选中的索引号来控制另外一个窗体的所欲列表音乐都关闭
+    if(secStack->currentIndex() == 0)
+        faList->closeAllFavoriteList();
+    else if(secStack->currentIndex() == 1)
+        muList->closeAllMusicList();
+    else
+        ;   //什么都不做
 
-    //先暂时只是将播放歌曲传递给最顶层的窗体
+
+    //将播放歌曲传递给最顶层的窗体
     emit SendToTop(OnlyMusic);
 }

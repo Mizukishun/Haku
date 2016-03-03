@@ -25,29 +25,28 @@ MusicList::MusicList(QWidget *parent) : QWidget(parent)
     mulistLayout->setMargin(0);
     mulistLayout->setSpacing(0);
 
+    //添加列表的框架
+    mulistFrame = new QFrame;
+    mulistFrameLayout = new QVBoxLayout(mulistFrame);
+    mulistFrameLayout->setSpacing(0);
+    mulistFrameLayout->setMargin(0);
+    mulistLayout->addWidget(mulistFrame);
+    mulistLayout->addStretch();
+
     /**************************************************************************/
-    //以下仍旧是测试用，之后可能需要通过右键点击，并关联槽函数来创建新窗体
-    AudioList *firstList = new AudioList();
-    //接收下层窗体发送来的可以播放歌曲的信号OkToPlayAudio，并执行槽函数OkToPlayMusicOver
-    //在槽函数中又进一步通知最顶层窗体，让顶层窗体可以控制歌曲的播放
-//    connect(firstList, SIGNAL(OkToPlayAudio(SingleMusic *)),
-//            this, SLOT(OkToPlayMusicOver(SingleMusic*)));
-
-//    mulistLayout->addWidget(firstList);
-//    mulistLayout->addStretch();
-
     //下面两个测试用，看是否能只播放一个列表中的歌曲
     createAudioList();
     createAudioList();
-
-    mulistLayout->addStretch();
 }
 
 //创建新建列表栏
 void MusicList::createAudioList()
 {
     AudioList *tempList = new AudioList;
-    mulistLayout->addWidget(tempList);
+    mulistFrameLayout->addWidget(tempList);
+
+    //要怎样才能在最后一个新建的列表中添加下面这一句
+    //使得整个窗体更加有序？？？
     //mulistLayout->addStretch();
 
     newlistList.insert(newlistList.end(), tempList);
@@ -56,6 +55,7 @@ void MusicList::createAudioList()
     connect(onlyNewList, SIGNAL(OkToPlayAudio(SingleMusic*, bool)),
             this, SLOT(OkToPlayMusicOver(SingleMusic*, bool)));
 }
+
 
 void MusicList::OkToPlayMusicOver(SingleMusic *okmusic, bool b)
 {
@@ -84,3 +84,13 @@ void MusicList::OkToPlayMusicOver(SingleMusic *okmusic, bool b)
     }
 }
 
+//关闭这个窗体的所有音乐了列表
+void MusicList::closeAllMusicList()
+{
+    foreach(AudioList *d, newlistList)
+    {
+        d->closeAllMusicInList();
+        d->hideList();
+    }
+    musicListNetID = false;
+}

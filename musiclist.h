@@ -4,6 +4,9 @@
 #include <QWidget>
 #include "toolgroup/singlemusic.h"
 #include "toolgroup/audiolist.h"
+#include <QFrame>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 
 class MusicList : public QWidget
@@ -11,6 +14,9 @@ class MusicList : public QWidget
     Q_OBJECT
 public:
     explicit MusicList(QWidget *parent = 0);
+
+    //关闭所有的音乐了列表
+    void closeAllMusicList();
 
 private:
     //创建新建列表，并将其添加到窗体中，但也要维护播放的唯一性
@@ -29,6 +35,10 @@ private:
     QList<AudioList *> newlistList;
     //音乐列表中的总体布局
     QVBoxLayout *mulistLayout;
+    //增添一个中介的框架，使得能够使添加的新建列表后面总是有一个addStretch()
+    QFrame *mulistFrame;
+    //框架的布局
+    QVBoxLayout *mulistFrameLayout;
 public:
     //在这个窗体中也要维护一个唯一能够播放的音乐
     SingleMusic *tempMusicList;
