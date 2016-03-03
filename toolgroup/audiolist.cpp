@@ -3,6 +3,7 @@
 AudioList::AudioList(QWidget *parent) : QWidget(parent)
 {
 
+    NetID = false;
     /****************************************************************/
     //添加歌曲两按钮的框架布局
     addLocateFrame = new QFrame;
@@ -91,15 +92,22 @@ void AudioList::addMusic()
     //添加歌曲文件后，就隐藏之前的“添加本地歌曲”那块区域，而现实歌曲列表
     newAudioFrame->show();
     addLocateFrame->hide();
+    isShow = true;
 }
 
 //通过监视SimplifiedMusic对象的鼠标按下事件，来显示或隐藏歌曲列表
 void AudioList::AudioFrameHideOrShow(bool)
 {
     if(newAudioFrame->isHidden())
+    {
         newAudioFrame->show();
+        isShow = true;
+    }
     else
+    {
         newAudioFrame->hide();
+        isShow = false;
+    }
 }
 
 
@@ -122,11 +130,26 @@ void AudioList::OkToPlayMusic(SingleMusic *m)
             s->resetGUI();
         }
     }
-    emit OkToPlayAudio(temp);
+    NetID = true;
+    emit OkToPlayAudio(temp, NetID);
 }
 
+//关闭这个列表中所有歌曲的播放
+void AudioList::closeAllMusicInList()
+{
+    foreach(SingleMusic *e, musicObjectList)
+    {
+        e->resetGUI();
+    }
+}
 
+//单纯的关闭这里列表的显示，而展示出开头栏
+void AudioList::hideList()
+{
+    newAudioFrame->hide();
+    isShow = false;
 
+}
 
 
 

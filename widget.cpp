@@ -200,11 +200,13 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     threeLayout->addWidget(preMusicBtn);
     threeLayout->addWidget(playerBtn);
     threeLayout->addWidget(nextMusicBtn);
+    threeLayout->addSpacing(3);
 
     //添加进度条
     createSlider();
     threeLayout->addWidget(sliderFrame);
 
+    threeLayout->addSpacing(3);
     threeLayout->addWidget(loveMusicBtn);
     threeLayout->addWidget(downloadBtn);
     threeLayout->addWidget(similarBtn);
@@ -293,16 +295,17 @@ void Widget::createSlider()
     playSlider->setStyleSheet(
                 "QSlider::groove:horizontal{     "
                 "   height: 4px;                 "
-                "   border: 0px;                 "
+                "   border: 1px;                 "
                 "}                               "
                 "QSlider::handle:horizontal{     "
                 "   background: white;           "
                 "   width: 10px;                 "
+                "   border:1px;                 "
                 "   border-radius: 5px;          "
-                "   margin: -3px, 0px, -3px, 0px;"
+                "   margin: -3px, -3px, -3px, -3px;"
                 "}                               "
                 "QSlider::sub-page:horizontal{   "
-                "   background: white;           "
+                "   background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0 cyan, stop:1 yellow);  "
                 "}                               "
                 "QSlider::add-page:horizontal{   "
                 "   background: lightgray;       "

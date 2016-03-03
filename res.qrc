@@ -44,5 +44,6 @@
         <file>images/threeLineIcon.png</file>
         <file>images/closeListIcon.png</file>
         <file>images/openListIcon.png</file>
+        <file>images/musicianIcon.png</file>
     </qresource>
 </RCC>

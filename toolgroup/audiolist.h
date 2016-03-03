@@ -20,11 +20,18 @@ class AudioList : public QWidget
 public:
     explicit AudioList(QWidget *parent = 0);
 
+    //关闭这个列表中的所有歌曲的播放
+    void closeAllMusicInList();
+
+    //单纯的关闭列表的功能
+    void hideList();
+
+
 
 
 signals:
     //发送信号，通知再上一层的窗体，可以播放这首音乐了
-    void OkToPlayAudio(SingleMusic *);
+    void OkToPlayAudio(SingleMusic *, bool);
 
 public slots:
     //创建一条新的“新建列表"
@@ -80,6 +87,13 @@ public:
     //如果有歌曲被选中，也是被存在这个变量中，向上层窗体继续传递，
     //以便进行歌曲的播放控制,所以也需定义成public
     SingleMusic *temp;
+
+    //判断这个列表是展开了，还是关闭了，如果展开了，则它可以选择音乐进行播放，
+    //如果没有展开，则它里面的所有歌曲都不能播放
+    bool isShow;
+
+    //唯一性值,便于上层窗体判断是哪个AudioList被激活了
+    bool NetID;
 
 
 

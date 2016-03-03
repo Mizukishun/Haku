@@ -15,21 +15,23 @@ void SingleMusic::createInterface()
     /***********************按钮标签的定义********************/
     AdditionBtn = new QPushButton;
     AdditionBtn->setFlat(true);
-    AdditionBtn->setIcon(QPixmap(":/images/AdditionIcon.png"));
+    AdditionBtn->setText(tr("+"));
+    //AdditionBtn->setIcon(QPixmap(":/images/AdditionIcon.png"));
+    AdditionBtn->setMaximumSize(20,20);
 
     musicianBtn = new QPushButton;
     musicianBtn->setFlat(true);
-    musicianBtn->setIcon(QPixmap(":/images/winIcon_40.png"));
-    musicianBtn->setIconSize(QPixmap(":/images/winIcon_50.png").size());
+    musicianBtn->setIcon(QPixmap(":/images/musicianIcon.png"));
+    musicianBtn->setIconSize(QPixmap(":/images/musicianIcon.png").size());
+    musicianBtn->setMaximumSize(40,40);
 
     //注意：歌曲名按钮不是QPushButton类型，而是QLabel,以方便设置文本的对齐方式！
     musicNameBtn = new QLabel;
-    //musicNameBtn->setFlat(true);
     musicNameBtn->setMaximumWidth(200);     //设置歌曲名的最大宽度
     musicNameBtn->setAlignment(Qt::AlignLeft);
     //对歌曲名按钮的文字进行设置
     QFont Bf;
-    Bf.setPointSize(10);
+    Bf.setPointSize(12);
     musicNameBtn->setFont(Bf);
 
 
@@ -86,6 +88,7 @@ void SingleMusic::createInterface()
     musicNameLayout->addWidget(musicNameBtn);
     musicNameLayout->addStretch();
     musicNameLayout->addWidget(musicNameLengthLabel);
+    musicNameLayout->addSpacing(3);
 
     //右侧部分的总布局
     rightLayout = new QVBoxLayout;
@@ -100,6 +103,7 @@ void SingleMusic::createInterface()
     mainLayout->setSpacing(0);
     mainLayout->addWidget(AdditionBtn);
     mainLayout->addWidget(musicianBtn);
+    mainLayout->addSpacing(5);
     mainLayout->addLayout(rightLayout);
 }
 
@@ -202,6 +206,7 @@ void SingleMusic::mouseDoubleClickEvent(QMouseEvent *)
     musicianBtn->show();
     rightBottomFrame->show();
     musicNameLengthLabel->hide();
+
 }
 
 void SingleMusic::active()
@@ -229,6 +234,7 @@ void SingleMusic::resetGUI()
     player->stop();
     //隐藏右下侧的按钮框架
     rightBottomFrame->hide();
+    musicianBtn->hide();
     //显示歌曲名后面的总时长标签
     musicNameLengthLabel->show();
 }

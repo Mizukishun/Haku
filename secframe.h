@@ -92,7 +92,7 @@ private slots:
     //但要注意：要在这里控制每次只能播放一首歌曲，每个不同小窗体传递过来的Ok信号都会触发
     //一首歌曲可以播放，所以要在这里控制住，使得每传递过来一个信号，就只播放这一首歌曲，而
     //完全关闭其它歌曲的播放
-    void OkSendToTop(SingleMusic *);
+    void OkSendToTop(SingleMusic *, bool);
 public:
     //只能播放这首歌曲
     SingleMusic *OnlyMusic;
