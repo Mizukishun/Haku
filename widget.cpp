@@ -125,7 +125,7 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
             this, SLOT(playOrpauseMusic(SingleMusic*)));
 
     //接收从主界面传递过来的搜索音乐的信号，让downloadDisplay窗体直接进行实际的搜索
-    connect(this, SIGNAL(searchMusicStrinng(QString)),
+    connect(this, SIGNAL(searchMusicString(QString)),
             secFrameLayout->downloadDisplay,
             SLOT(search(QString)));
 
