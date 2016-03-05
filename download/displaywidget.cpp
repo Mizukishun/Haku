@@ -121,6 +121,7 @@ void DisplayWidget::search(QString s)
 
 
 
+
 }
 
 void DisplayWidget::requireMusicInfo(QString rs)
@@ -148,6 +149,16 @@ void DisplayWidget::handFinished(QNetworkReply *reply)
 
         //解析获得歌曲信息
         parseReply(results);
+
+        //测试用，将所得歌曲名都显示出来
+        static QString w = "";
+        for(int m = 0; m < 5; ++m)
+        {
+            QString s = songnameList.at(m);
+            w = w +s + "\n";
+        }
+        TextEdit2->setText(w);
+
 
 
     }
@@ -387,7 +398,11 @@ void DisplayWidget::parseReply(QString ps)
     //分别是song、album、order、error_code、artist，其中有用的主要是song部分，
     //特别是利用songid，通过另外的一个借口方法获得歌曲的具体地址，获得地址之后方可
     //进行下载和播放。当然，我这里将返回的几乎所有的歌曲信息都分别保存到QList中了，
-    //方便之后的使用
+    //方便之后的使用。
+    /*接下来，就应该将搜索到的这些歌曲名称显示出来，
+     * 当用户点击具体某一首歌曲的时候，则将
+     * 该首歌曲的songid传送给另一函数，请求得到该首歌曲的地址，并进行播放
+     */
 
 }
 
