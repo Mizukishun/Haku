@@ -50,6 +50,8 @@ signals:
     //这个信号关联了整个程序的退出函数，而这个信号是由下面的quitEmit()函数发送的
     void quit();            //这里有个疑问：信号可以不用具体实现吗？？？
 
+    void searchMusicString(QString);
+
 
 
 private slots:
@@ -65,6 +67,9 @@ private slots:
     void player();
 
     void setSliderValue(qint64);
+
+    //搜索歌曲，将搜索框中文本传递给下载窗体的相关元素
+    void searchMusic();
 
 
 
@@ -182,6 +187,9 @@ public:
 
     //用于统一只有一个列表被展开
     //AudioList *mainAudioList;
+
+    //要搜索的歌曲名
+    QString searchMusicName;
 
 
 

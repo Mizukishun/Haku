@@ -118,7 +118,9 @@ SecFrame::SecFrame(QWidget *parent)
 
     /******************************************************************************/
     //创建第三个小布局，也即歌词窗口那部分
-    lyf = new lyFrame();
+    //lyf = new lyFrame();
+    downloadDisplay = new DisplayWidget();
+
 
     /*****************************************************************************/
     //对主布局的完成
@@ -129,7 +131,7 @@ SecFrame::SecFrame(QWidget *parent)
     //添加第二个小布局
     secMainLayout->addWidget(secStack);
     //添加第三个小布局
-    secMainLayout->addWidget(lyf);
+    secMainLayout->addWidget(downloadDisplay);
 
 
 }

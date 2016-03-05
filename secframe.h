@@ -26,6 +26,7 @@
 #include "packupwidget.h"
 #include "toolgroup/singlemusic.h"
 #include "toolgroup/singlemusic.h"
+#include "download/displaywidget.h"
 
 
 class SecFrame : public QFrame
@@ -43,7 +44,7 @@ public:
     //第三个小布局上的布局及窗体
     //QHBoxLayout *lyLayout;
     //LyricWidget *lyWidget;
-    lyFrame *lyf;
+    //lyFrame *lyf;
 
 
 
@@ -74,6 +75,7 @@ public:
     packUpWidget *puWidget;
     /**************************************************************/
     //第三个小布局上的元素
+    DisplayWidget *downloadDisplay;
 
 signals:
     //通知最顶层窗体，可以对这首歌曲进行播放控制了

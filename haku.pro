@@ -7,6 +7,7 @@
 QT       += core gui
 QT       += core
 QT       += multimedia
+QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,7 +29,8 @@ SOURCES += main.cpp\
     toolgroup/selfgroup.cpp \
     toolgroup/singlemusic.cpp \
     toolgroup/simplifiedmusic.cpp \
-    toolgroup/audiolist.cpp
+    toolgroup/audiolist.cpp \
+    download/displaywidget.cpp
 
 
 HEADERS  += widget.h \
@@ -44,7 +46,8 @@ HEADERS  += widget.h \
     toolgroup/selfgroup.h \
     toolgroup/singlemusic.h \
     toolgroup/simplifiedmusic.h \
-    toolgroup/audiolist.h
+    toolgroup/audiolist.h \
+    download/displaywidget.h
 
 
 RESOURCES += \

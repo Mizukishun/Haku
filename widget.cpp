@@ -62,6 +62,8 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     searchBtn->setFlat(true);
     searchBtn->setIcon(QPixmap(":/images/searchIcon.png"));
     searchBtn->setToolTip(tr("搜索歌曲"));
+    //点击则搜索歌曲
+    connect(searchBtn, SIGNAL(clicked()), this, SLOT(searchMusic()));
 
     skinBtn = new QPushButton;
     skinBtn->setFlat(true);
@@ -121,6 +123,11 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     //接收从第二个子布局发送过来的可以播放的信号，对传递过来的这首歌曲进行播放控制
     connect(secFrameLayout, SIGNAL(SendToTop(SingleMusic *)),
             this, SLOT(playOrpauseMusic(SingleMusic*)));
+
+    //接收从主界面传递过来的搜索音乐的信号，让downloadDisplay窗体直接进行实际的搜索
+    connect(this, SIGNAL(searchMusicStrinng(QString)),
+            secFrameLayout->downloadDisplay,
+            SLOT(search(QString)));
 
     /***********************************************************************/
     //创建第三个子布局
@@ -350,4 +357,28 @@ void Widget::setSliderValue(qint64 val)
     totalTimeSlider->setText(mainMusic->musicLengthLabel->text());
 
     playSlider->setValue(val);
+}
+
+
+//搜索歌曲
+void Widget::searchMusic()
+{
+    //如果搜索框为空，则什么都不做
+    if(searchEdit->text().isEmpty())
+    {
+        return;
+    }
+
+    searchMusicName = searchEdit->text();
+
+    //发送搜索音乐的信号，让其下层窗体接收并最终让downloadDisplay窗体进行实际的搜索查询
+    emit searchMusicString(searchMusicName);
+    //如果搜索框不为空，则将搜索框中的文本传递给下载窗体，进行搜索
+//    searchMusicName = searchEdit->text();
+//    connect(this->secFrameLayout->downloadDisplay,
+//            SIGNAL(secFrameLayout->downloadDisplay->searchMusic(searchMusicName)),
+//            this->secFrameLayout->downloadDisplay,
+//            SLOT(this->secFrameLayout->downloadDisplay->search(searchMusicName)));
+
+
 }
