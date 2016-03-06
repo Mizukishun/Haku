@@ -45,5 +45,9 @@
         <file>images/closeListIcon.png</file>
         <file>images/openListIcon.png</file>
         <file>images/musicianIcon.png</file>
+        <file>images/addToList_30.png</file>
+        <file>images/addToList_40.png</file>
+        <file>images/tri_30.png</file>
+        <file>images/tri_40.png</file>
     </qresource>
 </RCC>

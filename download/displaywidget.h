@@ -29,7 +29,7 @@
 #include <QJsonValue>
 #include <QJsonParseError>
 
-
+#include "singledisplay.h"
 
 
 class DisplayWidget : public QWidget
@@ -37,6 +37,9 @@ class DisplayWidget : public QWidget
     Q_OBJECT
 public:
     explicit DisplayWidget(QWidget *parent = 0);
+
+    //创建显示出来的歌曲列表
+    void createMusicListD();
 
 private:
     //创建主界面
@@ -84,17 +87,20 @@ private:
     QPushButton *firstControlBtn;
 
     //框架中的歌曲显示
-    QHBoxLayout *secondLayout;              //之后可能要被其他船体替代掉
-    //测试用，之后删除
-    QCheckBox *secondTestCheckBox;
-    QLineEdit *secondTestLineEdit;
-    //测试用，用于展示获得的歌曲的各项信息
-    QTextEdit *TextEdit1;
-    QLineEdit *LineEdit1;
-    QLineEdit *LineEdit2;
-    QTextEdit *TextEdit2;
-    QLineEdit *LineEdit3;
-    QTextEdit *TextEdit3;
+    QVBoxLayout *secondLayout;              //之后可能要被其他船体替代掉
+//    //测试用，之后删除
+//    QCheckBox *secondTestCheckBox;
+//    QLineEdit *secondTestLineEdit;
+//    //测试用，用于展示获得的歌曲的各项信息
+//    QTextEdit *TextEdit1;
+//    QLineEdit *LineEdit1;
+//    QLineEdit *LineEdit2;
+//    QTextEdit *TextEdit2;
+//    QLineEdit *LineEdit3;
+//    QTextEdit *TextEdit3;
+
+//    //测试用，之后删除
+//    QVBoxLayout *testNetLayout;
 
 
     /************************************歌曲的信息元素等**********************************/

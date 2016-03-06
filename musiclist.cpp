@@ -17,7 +17,7 @@ MusicList::MusicList(QWidget *parent)
 
     //设置窗体的背景颜色
     QPalette p;
-    p.setColor(QPalette::Background, Qt::white);
+    p.setColor(QPalette::Background, Qt::lightGray);
     setAutoFillBackground(true);
     this->setPalette(p);
 

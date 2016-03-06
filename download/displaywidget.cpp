@@ -9,7 +9,7 @@ void DisplayWidget::createInterface()
 {
     /****************************设置窗体背景颜色等*********************/
     QPalette p;
-    p.setColor(QPalette::Background, Qt::lightGray);
+    p.setColor(QPalette::Background, Qt::white);
     setAutoFillBackground(true);
     setPalette(p);
 
@@ -54,34 +54,34 @@ void DisplayWidget::createInterface()
     firstLayout->addWidget(firstControlBtn);
 
     //测试用，显示搜索出来的歌曲
-    secondLayout = new QHBoxLayout;
-    secondTestCheckBox = new QCheckBox;
-    secondTestLineEdit = new QLineEdit;
+    secondLayout = new QVBoxLayout;
+//    secondTestCheckBox = new QCheckBox;
+//    secondTestLineEdit = new QLineEdit;
 
-    LineEdit1 = new QLineEdit;
-    LineEdit2 = new QLineEdit;
-    LineEdit3 = new QLineEdit;
-    TextEdit1 = new QTextEdit;
-    TextEdit2 = new QTextEdit;
-    TextEdit3 = new QTextEdit;
+//    LineEdit1 = new QLineEdit;
+//    LineEdit2 = new QLineEdit;
+//    LineEdit3 = new QLineEdit;
+//    TextEdit1 = new QTextEdit;
+//    TextEdit2 = new QTextEdit;
+//    TextEdit3 = new QTextEdit;
 
-    QVBoxLayout *testNetLayout = new QVBoxLayout;
-    testNetLayout->addLayout(secondLayout);
-    testNetLayout->addWidget(LineEdit1);
-    testNetLayout->addWidget(LineEdit2);
-    testNetLayout->addWidget(LineEdit3);
-    testNetLayout->addWidget(TextEdit1);
-    testNetLayout->addWidget(TextEdit2);
-    testNetLayout->addWidget(TextEdit3);
+//    testNetLayout = new QVBoxLayout;
+//    testNetLayout->addLayout(secondLayout);
+////    testNetLayout->addWidget(LineEdit1);
+////    testNetLayout->addWidget(LineEdit2);
+////    testNetLayout->addWidget(LineEdit3);
+////    testNetLayout->addWidget(TextEdit1);
+//    testNetLayout->addWidget(TextEdit2);
+//    testNetLayout->addWidget(TextEdit3);
 
-    secondLayout->addWidget(secondTestCheckBox);
-    secondLayout->addWidget(secondTestLineEdit);
+//    secondLayout->addWidget(secondTestCheckBox);
+//    secondLayout->addWidget(secondTestLineEdit);
 
 
 
     //将上面两个布局添加到显示搜索结果的框架中
     displayFrameLayout->addLayout(firstLayout);
-    displayFrameLayout->addLayout(testNetLayout);
+    displayFrameLayout->addLayout(secondLayout);
 
     /**********************************主布局**************************************/
     mainLayout = new QVBoxLayout(this);
@@ -143,21 +143,29 @@ void DisplayWidget::handFinished(QNetworkReply *reply)
         //将字节信息转换为字符串
         QString results(bytes);
 
-        //测试用，将这些获得的字符串展示出来
-        TextEdit1->setText(results);
+//        //测试用，将这些获得的字符串展示出来
+//        TextEdit1->setText(results);
 
 
         //解析获得歌曲信息
         parseReply(results);
 
-        //测试用，将所得歌曲名都显示出来
-        static QString w = "";
-        for(int m = 0; m < 5; ++m)
-        {
-            QString s = songnameList.at(m);
-            w = w +s + "\n";
-        }
-        TextEdit2->setText(w);
+//        //测试用，将所得歌曲名都显示出来
+//        QString w = "";
+//        for(int m = 0; m < 5; ++m)
+//        {
+//            QString s = songnameList.at(m);
+//            w = w +s + "\n";
+//        }
+//        TextEdit2->setText(w);
+
+//        QString nbb = "";
+//        for(int d = 0; d < 5; ++d)
+//        {
+//            QString x = songidList.at(d);
+//            nbb =  nbb + x + "\n";
+//        }
+//        TextEdit3->setText(nbb);
 
 
 
@@ -404,10 +412,27 @@ void DisplayWidget::parseReply(QString ps)
      * 该首歌曲的songid传送给另一函数，请求得到该首歌曲的地址，并进行播放
      */
 
+
+
+    //测试用
+    createMusicListD();
 }
 
 
+void DisplayWidget::createMusicListD()
+{
 
+    //int countsMusic = songnameList.size();
+    //为了更好测试，所以暂时性地只显示4个条目
+    for(int k = 0; k < 5; ++k)
+    {
+        QString singleName = songnameList.at(k);
+        SingleDisplay *oneSong = new SingleDisplay();
+        oneSong->DsingleMusicBtn->setText(singleName);
+        secondLayout->addWidget(oneSong);
+    }
+
+}
 
 
 
