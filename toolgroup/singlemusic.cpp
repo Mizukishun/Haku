@@ -111,7 +111,9 @@ void SingleMusic::createInterface()
 void SingleMusic::createObject()
 {
     player = new QMediaPlayer;
-    player->setMedia(QUrl::fromLocalFile(SingleMusicPath));
+    //为了能够播网络上的音乐，所以暂时下面这句注释掉，而补充下下句
+    //player->setMedia(QUrl::fromLocalFile(SingleMusicPath));
+    player->setMedia(QUrl(SingleMusicPath));
     player->setVolume(100);
 
     musicNameBtn->setText(SingleMusicName);

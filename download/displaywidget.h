@@ -30,6 +30,7 @@
 #include <QJsonParseError>
 
 #include "singledisplay.h"
+#include "toolgroup/singlemusic.h"
 
 
 class DisplayWidget : public QWidget
@@ -54,6 +55,19 @@ private:
     //在每次搜索时都要把前面搜索过的内容清除掉，防止对本次搜索的干扰
     void clearList();
 
+    //处理用song.play方法获得歌曲信息，其中包含了歌曲的播放地址信息
+    void parseSongInfo(QString);
+
+
+
+    //播放歌曲，（其实就是要将歌曲地址传递到主程序中的，让主程序播放)
+    void playMusic(QString musicName);
+
+    //通过歌曲名找到歌曲id
+    QString searchMusicID(QString musicname);
+
+    //根据歌曲id找到歌曲的播放地址,根据的是songplay方法
+    void songPlay(QString sid);
 
 
 signals:
@@ -64,6 +78,10 @@ public slots:
 
     //处理QNetworkAccessManager对象的finished信号的槽函数
     void handFinished(QNetworkReply*);
+    //获取歌曲的试听的地址
+    void getAuditionLink(QNetworkReply*);
+    //接收下层小窗体的信号，播放其上的歌曲
+    void DWplayThisMusic(QString musicname);
 
 private:
     /************************主界面上的元素***********************/
@@ -92,20 +110,6 @@ private:
 
     //框架中的歌曲显示
     QVBoxLayout *secondLayout;              //之后可能要被其他船体替代掉
-//    //测试用，之后删除
-//    QCheckBox *secondTestCheckBox;
-//    QLineEdit *secondTestLineEdit;
-//    //测试用，用于展示获得的歌曲的各项信息
-//    QTextEdit *TextEdit1;
-//    QLineEdit *LineEdit1;
-//    QLineEdit *LineEdit2;
-//    QTextEdit *TextEdit2;
-//    QLineEdit *LineEdit3;
-//    QTextEdit *TextEdit3;
-
-//    //测试用，之后删除
-//    QVBoxLayout *testNetLayout;
-
 
     /************************************歌曲的信息元素等**********************************/
     //要搜索的歌曲名
@@ -123,12 +127,18 @@ private:
     //设置网络请求对象
     QNetworkRequest *requester;
 
-    /*****************************搜索时从网络获取的歌曲信息******************************/
+    QByteArray sendData2;
+    QString sendURL2;
+    QNetworkAccessManager *manager2;
+    QNetworkRequest *requester2;
+
+
+    /********************搜索时search.catalogSug从网络获取的歌曲信息**************************/
     //歌曲名
     QList<QString> songnameList;
     //歌手名
     QList<QString> artistnameList;
-    //歌曲的id
+    //歌曲的id,应该是与歌曲名一一对应的（在search.catalogSug方法中）
     QList<QString> songidList;
     //是否有mv
     QList<bool> has_mvList;
@@ -166,7 +176,19 @@ private:
 
 public:
     //获得的歌曲链接地址,因为可能要传递其他窗体进行播放，所以定义成public的
-    QString MusicLink;
+    QString AuditionLink;
+    //播放的这首歌的相应的大壁纸地址
+    QString pic_hugeLink;
+    //播放的这首歌的歌词地址
+    QString lrclink;
+    //要试听的歌曲id
+    QString AuditionID;
+
+    //要播放的歌曲名，应该控制只有一首歌曲在播放
+    QString DWmusic;
+
+    //获取播放的功能
+    SingleMusic *DWsingleMusic;
 
 
 

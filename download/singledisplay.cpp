@@ -11,6 +11,9 @@ void SingleDisplay::createDsingleInterface()
     singleCheckBox = new QCheckBox;
     DsingleMusicBtn = new QPushButton;
     DsingleMusicBtn->setFlat(true);
+    //当鼠标单击歌曲名按钮时，就播放这首歌曲
+    connect(DsingleMusicBtn, SIGNAL(clicked()), this, SLOT(playThisMusic()));
+
     DsingleAlbumBtn = new QPushButton;
     DsingleAlbumBtn->setFlat(true);
     DsingleTimeBtn = new QPushButton;
@@ -18,6 +21,9 @@ void SingleDisplay::createDsingleInterface()
     DsinglePlayBtn = new QPushButton;
     DsinglePlayBtn->setFlat(true);
     DsinglePlayBtn->setIcon(QPixmap(":/images/tri_30.png"));
+//    connect(DsinglePlayBtn, SIGNAL(clicked()),
+//            this, SLOT(playThisMusic()));
+
     DsingleAddBtn = new QPushButton;
     DsingleAddBtn->setFlat(true);
     DsingleAddBtn->setIcon(QPixmap(":/images/addToList_30.png"));
@@ -39,5 +45,19 @@ void SingleDisplay::createDsingleInterface()
     DsingleLayout->addWidget(DsingleTimeBtn);
     DsingleLayout->addStretch();
     DsingleLayout->addLayout(threeBtnLayout);
+}
 
+//当鼠标单击歌曲名按钮时，就播放这首歌曲
+void SingleDisplay::playThisMusic()
+{
+    DsMusicName = DsingleMusicBtn->text();
+    //发送信号，接收信号的上层窗体接收到要播放的歌曲名
+
+    emit DsinglePlayThisMusic(DsMusicName);
+}
+
+//实现鼠标双击事件，仍是播放这首歌
+void SingleDisplay::mouseDoubleClickEvent(QMouseEvent *)
+{
+//    playThisMusic();
 }

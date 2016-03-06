@@ -16,7 +16,7 @@ void SimplifiedMusic::createInterface()
 
     listNameBtn = new QPushButton;
     listNameBtn->setFlat(true);
-    listNameBtn->setText(tr("新建列表"));
+    listNameBtn->setText(tr("默认列表"));
 
     connect(openAndCloseBtn, SIGNAL(clicked()), this, SLOT(transformIcon()));
     connect(listNameBtn, SIGNAL(clicked()), this, SLOT(transformIcon()));

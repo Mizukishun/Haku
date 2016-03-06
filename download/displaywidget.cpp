@@ -1,4 +1,5 @@
 #include "displaywidget.h"
+#include <QMediaPlayer>
 
 DisplayWidget::DisplayWidget(QWidget *parent) : QWidget(parent)
 {
@@ -65,6 +66,10 @@ void DisplayWidget::createInterface()
     mainLayout->addWidget(topFrame);
     mainLayout->addWidget(displayFrame);
     mainLayout->addStretch();
+
+    //测试用，看把它放在这里能不能直播一首歌
+    DWsingleMusic = new SingleMusic();
+    DWsingleMusic->active();
 }
 
 //从网络上搜索歌曲,要如何处理呢？？？
@@ -379,7 +384,15 @@ void DisplayWidget::createMusicListD()
         QString singleName = songnameList.at(k);
         SingleDisplay *oneSong = new SingleDisplay();
         oneSong->DsingleMusicBtn->setText(singleName);
+
+
+        //但也要注意，当单击了不同的按钮后，要能够控制只有一首歌曲在播放！！！
+        //所以应该就控制只传递一首歌曲名上去
         secondLayout->addWidget(oneSong);
+
+        //关联事件，当单机这个小窗体的歌曲名按钮时能够播放这个小窗体所含有的那首歌曲名
+        connect(oneSong, SIGNAL(DsinglePlayThisMusic(QString)),
+                this, SLOT(DWplayThisMusic(QString)));
     }
 }
 
@@ -447,8 +460,187 @@ void DisplayWidget::clearList()
 
 }
 
+//根据歌曲名找到歌曲的id，注意是根据上面已有的歌曲名的！
+QString DisplayWidget::searchMusicID(QString musicname)
+{
+    QString songName = musicname;
+
+    //找到这首歌曲名在歌曲名列表中位置，则相应的位置上就是该首歌曲的歌曲id
+    int pos = songnameList.indexOf(songName);
+
+    QString musicID = songidList.at(pos);
+    return musicID;
+}
 
 
+//根据传递过来的歌曲id，获得歌曲的播放地址
+void DisplayWidget::songPlay(QString sid)
+{
+    AuditionID = sid;
+
+    //这是获得歌曲地址要发送的数据
+    sendData2.append("from=webapp_music&");
+    sendData2.append("method=baidu.ting.song.play&");
+    sendData2.append("format=json&");
+    sendData2.append("songid=" + AuditionID);
+
+    //发送出去的完整地址,仍是用百度音乐的全接口，加上相应的方法（song.play方法）
+    sendURL2 = url_baidu_api + QString(sendData2);
+
+    //同样设置网络发送与接收的对象
+    manager2 = new QNetworkAccessManager;
+    requester2 = new QNetworkRequest;
+    //将地址发送出去
+    requester2->setUrl(QUrl(sendURL2));
+    manager2->get(*requester2);
+
+    connect(manager2, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(getAuditionLink(QNetworkReply*)));
+}
+
+void DisplayWidget::getAuditionLink(QNetworkReply* reply2)
+{
+    //获取这次的状态码信息
+    QVariant statusCode2 = reply2->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    //如果没有发生错误
+    if(reply2->error() == QNetworkReply::NoError)
+    {
+        //获取收到的字节信息
+        QByteArray bytes2 = reply2->readAll();
+        //将字节信息转换为字符串
+        QString results2(bytes2);
+        //处理字符串的信息
+        parseSongInfo(results2);
+    }
+}
+
+//处理通过song.play方法获得的歌曲信息，其中包含了歌曲播放的地址
+void DisplayWidget::parseSongInfo(QString ps2)
+{
+    //要处理的信息字符串
+    QString infoString = ps2;
+    //创建QJsonParseError对象
+    QJsonParseError error2;
+    //获取QJsonDocument对象
+    QJsonDocument jsondocument2 = QJsonDocument::fromJson(infoString.toUtf8(), &error2);
+    //获取了QJsonDocument对象后，就对齐进行解析
+    if(error2.error == QJsonParseError::NoError)
+    {
+        if(!(jsondocument2.isNull() || jsondocument2.isEmpty()))
+        {
+            if(jsondocument2.isObject())
+            {
+                QJsonObject jsonObject2 = jsondocument2.object();
+                //直接先取到歌曲的播放地址再说
+                if(jsonObject2.contains("bitrate"))
+                {
+                    QJsonValue bitrateValue = jsonObject2.take("bitrate");
+                    if(bitrateValue.isObject())
+                    {
+                        QJsonObject bitrateObject = bitrateValue.toObject();
+                        if(bitrateObject.contains("file_link"))
+                        {
+                            QJsonValue AuditionLinkValue = bitrateObject.take("file_link");
+                            if(AuditionLinkValue.isString())
+                            {
+                                //下面这个变革这首歌曲的（试听？）地址
+                                AuditionLink = AuditionLinkValue.toString();
+                            }
+                        }
+                        //以上，便从bitrate字段获得了歌曲的播放地址，
+                        //当然，在bitrate字段下还有其他信息
+                        //暂时就只获取这个吧，之后如果需要其他信息，
+                        //则继续从这里补完bitrate字段所含有的信息
+                    }
+                }
+                //以上就是整个JSon对象中bitrate字段有能够拥有的信息,可以继续补完
+                //而以下则是字段songinfo所含有的信息，这里也就只截去了部分信息而已
+                if(jsonObject2.contains("songinfo"))
+                {
+                    QJsonValue songinfoValue = jsonObject2.take("songinfo");
+                    if(songinfoValue.isObject())
+                    {
+                        QJsonObject songinfoObject = songinfoValue.toObject();
+                        //获取这首歌的大壁纸地址
+                        if(songinfoObject.contains("pic_huge"))
+                        {
+                            QJsonValue pic_hugeValue = songinfoObject.take("pix_huge");
+                            if(pic_hugeValue.isString())
+                            {
+                                pic_hugeLink = pic_hugeValue.toString();
+                            }
+                        }
+                        //这首歌的歌词地址
+                        if(songinfoObject.contains("lrclink"))
+                        {
+                            QJsonValue lrclinkValue = songinfoObject.take("lrclink");
+                            if(lrclinkValue.isString())
+                            {
+                                lrclink = lrclinkValue.toString();
+                            }
+                        }
+                        //以上便从songinfo字段中获取了这首歌曲的大壁纸地址以及歌词的地址
+                        //之后还需要相应的信息的话，还可以对这个字段进行分析获取，现在暂时只
+                        //获取上面的这些信息
+
+                    }
+                }
+            }
+        }
+    }
+
+    /*获取了歌曲的播放地址后，便可以进行播放了
+     * 现在暂时尝试下，看能不能实现在自己的这个程序中实现播放的功能
+     */
+
+
+}
+
+//这个函数实现播放这个窗体的音乐？？？？？
+void DisplayWidget::playMusic(QString musicName)
+{
+
+
+}
+
+//接收从下层小窗体传递过来的信号，播放该首歌曲，但要控制只播放一首歌曲
+void DisplayWidget::DWplayThisMusic(QString musicname)
+{
+    DWmusic = musicname;
+
+    //通过歌曲名找到歌曲id,并找到歌曲的播放地址
+    songPlay(searchMusicID(DWmusic));
+    //通过上面两个函数，则AuditionLink便确定出来的，
+
+
+//    //测试用,看获得的地址是怎么回事
+//    QTextEdit *testM = new QTextEdit;
+//    testM->setText(AuditionLink);
+//    secondLayout->addWidget(testM);
+
+//    QMediaPlayer *mpl = new QMediaPlayer(this);
+//    mpl->setMedia(QUrl(AuditionLink));
+//    mpl->setVolume(50);
+//    mpl->play();
+
+
+
+
+
+
+
+    //接下便是根据这个地址进行播放
+
+
+
+    //DWsingleMusic->SingleMusicPath = AuditionLink;
+
+    //双击歌曲名能够播放，但有个问题
+    /*当双击一首歌播放之后，再单击 另一首歌，可能会播放前一次点击的那首歌
+     */
+    DWsingleMusic->player->setMedia(QUrl(AuditionLink));
+    DWsingleMusic->player->play();
+}
 
 
 

@@ -23,9 +23,17 @@ public:
     //创建主界面
     void createDsingleInterface();
 
+protected:
+    void mouseDoubleClickEvent(QMouseEvent *);
+
+
 signals:
+    //发送信号，让上层窗体接收这个信号发送的歌曲名,从而进一步地播放这首歌
+    void DsinglePlayThisMusic(QString musicname);
 
 public slots:
+    //当鼠标单击歌曲名按钮时，播放这首歌曲
+    void playThisMusic();
 
 public:
     //开头的CheckBox
@@ -46,6 +54,10 @@ public:
     QHBoxLayout *threeBtnLayout;
     //大布局
     QHBoxLayout *DsingleLayout;
+
+
+    //要播放的歌曲名
+    QString DsMusicName;
 
 };
 
