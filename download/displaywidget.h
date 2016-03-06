@@ -51,6 +51,10 @@ private:
     //解析获得的歌曲信息
     void parseReply(QString);
 
+    //在每次搜索时都要把前面搜索过的内容清除掉，防止对本次搜索的干扰
+    void clearList();
+
+
 
 signals:
     //void searchMusics(QString);

@@ -55,29 +55,6 @@ void DisplayWidget::createInterface()
 
     //测试用，显示搜索出来的歌曲
     secondLayout = new QVBoxLayout;
-//    secondTestCheckBox = new QCheckBox;
-//    secondTestLineEdit = new QLineEdit;
-
-//    LineEdit1 = new QLineEdit;
-//    LineEdit2 = new QLineEdit;
-//    LineEdit3 = new QLineEdit;
-//    TextEdit1 = new QTextEdit;
-//    TextEdit2 = new QTextEdit;
-//    TextEdit3 = new QTextEdit;
-
-//    testNetLayout = new QVBoxLayout;
-//    testNetLayout->addLayout(secondLayout);
-////    testNetLayout->addWidget(LineEdit1);
-////    testNetLayout->addWidget(LineEdit2);
-////    testNetLayout->addWidget(LineEdit3);
-////    testNetLayout->addWidget(TextEdit1);
-//    testNetLayout->addWidget(TextEdit2);
-//    testNetLayout->addWidget(TextEdit3);
-
-//    secondLayout->addWidget(secondTestCheckBox);
-//    secondLayout->addWidget(secondTestLineEdit);
-
-
 
     //将上面两个布局添加到显示搜索结果的框架中
     displayFrameLayout->addLayout(firstLayout);
@@ -94,6 +71,8 @@ void DisplayWidget::createInterface()
 void DisplayWidget::search(QString s)
 {
     searchMusic = s;
+
+    clearList();
 
     //利用了第三方的百度音乐的api接口
     url_baidu_api = "http://tingapi.ting.baidu.com/v1/restserver/ting?";
@@ -116,12 +95,6 @@ void DisplayWidget::search(QString s)
     connect(manager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(handFinished(QNetworkReply*)));
 
-
-
-
-
-
-
 }
 
 void DisplayWidget::requireMusicInfo(QString rs)
@@ -143,31 +116,8 @@ void DisplayWidget::handFinished(QNetworkReply *reply)
         //将字节信息转换为字符串
         QString results(bytes);
 
-//        //测试用，将这些获得的字符串展示出来
-//        TextEdit1->setText(results);
-
-
         //解析获得歌曲信息
         parseReply(results);
-
-//        //测试用，将所得歌曲名都显示出来
-//        QString w = "";
-//        for(int m = 0; m < 5; ++m)
-//        {
-//            QString s = songnameList.at(m);
-//            w = w +s + "\n";
-//        }
-//        TextEdit2->setText(w);
-
-//        QString nbb = "";
-//        for(int d = 0; d < 5; ++d)
-//        {
-//            QString x = songidList.at(d);
-//            nbb =  nbb + x + "\n";
-//        }
-//        TextEdit3->setText(nbb);
-
-
 
     }
 
@@ -179,6 +129,8 @@ void DisplayWidget::handFinished(QNetworkReply *reply)
 //注意此时的results是JSon格式的数据！！！
 void DisplayWidget::parseReply(QString ps)
 {
+
+
     //创建QJsonParseError对象， 用来获取解析结果
     QJsonParseError error;
     //使用静态函数获取JSonDocument对象
@@ -421,8 +373,6 @@ void DisplayWidget::parseReply(QString ps)
 
 void DisplayWidget::createMusicListD()
 {
-
-    //int countsMusic = songnameList.size();
     //为了更好测试，所以暂时性地只显示4个条目
     for(int k = 0; k < 5; ++k)
     {
@@ -431,11 +381,71 @@ void DisplayWidget::createMusicListD()
         oneSong->DsingleMusicBtn->setText(singleName);
         secondLayout->addWidget(oneSong);
     }
-
 }
 
 
+//清除前次搜索的内容，防止对本次搜索的干扰
+void DisplayWidget::clearList()
+{
+    if(!songnameList.isEmpty())
+        songnameList.clear();
+    if(!artistnameList.isEmpty())
+        artistnameList.clear();
+    if(!songidList.isEmpty())
+        songidList.clear();
+    if(!has_mvList.isEmpty())
+        has_mvList.clear();
+    if(!encrypted_songidList.isEmpty())
+        encrypted_songidList.clear();
 
+    if(!albumnameList.isEmpty())
+        albumnameList.clear();
+    if(!album_artistpicList.isEmpty())
+        album_artistpicList.clear();
+    if(!albumidList.isEmpty())
+        albumidList.clear();
+    if(!album_artistnameList.isEmpty())
+        album_artistnameList.clear();
+
+    if(!orderList.isEmpty())
+        orderList.clear();
+    if(!error_codeList.isEmpty())
+        error_codeList.clear();
+    if(!artistidList.isEmpty())
+        artistidList.clear();
+    if(!artist_artistnameList.isEmpty())
+        artist_artistnameList.clear();
+    if(!artist_artistpicList.isEmpty())
+        artist_artistpicList.clear();
+
+    if(!sendData.isEmpty())
+        sendData.clear();
+
+
+    //删除之前显示过的歌曲列表
+    if(!secondLayout->isEmpty())
+    {
+        QLayoutItem *ite;
+        QWidget *widg;
+        while((ite = secondLayout->takeAt(0)))
+        {
+            if((widg = ite->widget())!= 0)
+            {
+                widg->hide();
+                delete widg;
+            }
+            else
+                delete ite;
+        }
+        delete secondLayout;
+        //在删除之前的secondLayout之后，还要重新再创建一个新的空白secondLayout
+        //并添加到原布局上
+        secondLayout = new QVBoxLayout;
+        displayFrameLayout->addLayout(secondLayout);
+    }
+
+
+}
 
 
 
