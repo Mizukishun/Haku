@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     toolgroup/simplifiedmusic.cpp \
     toolgroup/audiolist.cpp \
     download/displaywidget.cpp \
-    download/singledisplay.cpp
+    download/singledisplay.cpp \
+    download/download.cpp
 
 
 HEADERS  += widget.h \
@@ -49,7 +50,8 @@ HEADERS  += widget.h \
     toolgroup/simplifiedmusic.h \
     toolgroup/audiolist.h \
     download/displaywidget.h \
-    download/singledisplay.h
+    download/singledisplay.h \
+    download/download.h
 
 
 RESOURCES += \
