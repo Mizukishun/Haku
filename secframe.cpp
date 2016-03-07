@@ -84,7 +84,7 @@ SecFrame::SecFrame(QWidget *parent)
     secVLayout->addWidget(moreBtn);
     secVLayout->addWidget(packUpBtn);
     secVLayout->addStretch();
-    secVLayout->setGeometry(QRect(QPoint(40, 40), QSize(40, this->geometry().height())));
+    //secVLayout->setGeometry(QRect(QPoint(40, 40), QSize(40, this->geometry().height())));
 
     /****************************************************************************/
     //创建第二个小布局的QStackedWidget
@@ -125,12 +125,16 @@ SecFrame::SecFrame(QWidget *parent)
     //连接displaywidget的发送的播放歌曲的信号
     connect(downloadDisplay, SIGNAL(DWplayMusic(SingleMusic*,bool)),
             this, SLOT(OkSendToTop(SingleMusic*, bool)));
+    //当有搜索结果时，就通知是否显示搜索结果页面
+    connect(downloadDisplay, SIGNAL(okToShow(bool)),
+            this, SLOT(okToShowDownload(bool)));
+    //当没有搜索时，这个窗体时隐藏的，只有当有搜索结果时才显示出来
+    downloadDisplay->hide();
 
-    //空窗体，有第三小布局时就隐藏，没有就显示
+    //空窗体，有第三小布局(也即搜索结果）时就隐藏，其他视乎就显示
     emptyWidget = new QWidget;
     emptyLayout = new QHBoxLayout(emptyWidget);
     emptyLayout->addStretch();
-    emptyWidget->hide();
 
 
     /*****************************************************************************/
@@ -184,19 +188,9 @@ void SecFrame::on_moreBtn_clicked()
 void SecFrame::on_packUpBtn_clicked()
 {
     emit secStack->setCurrentIndex(5);
-    if(okToCloseThreeWidget)
-    {
-        closeDisplayWidget();
-        okToCloseThreeWidget = false;
-        emptyWidget->show();
-        //secMainLayout->addStretch();
-    }
-    else
-    {
-        downloadDisplay->show();
-        emptyWidget->hide();
-        okToCloseThreeWidget = true;
-    }
+
+    //显示或隐藏空窗体及搜索结果显示窗体
+    closeDisplayWidget();
 }
 
 //接收从六个小窗体传递过来的可以播放信号，但这里要控制住，使得只能播放一首歌曲
@@ -228,10 +222,43 @@ void SecFrame::OkSendToTop(SingleMusic *sFmusic, bool bOk)
 }
 
 
-//专门用来隐藏第三小布局的方法
+//显示或隐藏空窗体及搜索结果显示窗体
 void SecFrame::closeDisplayWidget()
 {
-    downloadDisplay->hide();
-
+    if(!okToShowDownloadBool)
+    {
+        //如果没有搜索，则不管怎样都是要显示空窗体的
+        emptyWidget->show();
+    }
+    else
+    {
+        //如果有搜索结果了，则要看点击按钮的情况,
+        if(okToShowEmptyWidget)
+        {
+            //如果允许你空窗体显示就显示空窗体，隐藏搜索结果窗体
+            emptyWidget->show();
+            downloadDisplay->hide();
+            //同时设置下次就隐藏空窗体，显示搜索结果窗体
+            okToShowEmptyWidget = false;
+        }
+        else
+        {
+            //如果不允许空窗体显示，就隐藏空窗体，显示搜索窗体
+            emptyWidget->hide();
+            downloadDisplay->show();
+            //同时设置下次就可以显示空窗体了
+            okToShowEmptyWidget = true;
+        }
+    }
 
 }
+
+void SecFrame::okToShowDownload(bool b)
+{
+    okToShowDownloadBool = true;
+    //显示搜索结果的窗体
+    downloadDisplay->show();
+    //同时也要将空窗体隐藏
+    emptyWidget->hide();
+}
+

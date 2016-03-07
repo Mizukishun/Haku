@@ -71,6 +71,9 @@ private slots:
     //搜索歌曲，将搜索框中文本传递给下载窗体的相关元素
     void searchMusic();
 
+    //接收最底层的singlemusic.h窗体的通知，知道现在是在播放音乐
+    void currentIsPlaying(bool);
+
 
 
 
@@ -159,8 +162,8 @@ private:
     //另外，播放时间那个长条，先用addStretch()替上，之后要补上
     /***********************************************************************/
 
-    //皮肤图片
-    QPixmap skinPic = QPixmap(":/images/miao2.jpg");
+    //这是桌面背景 皮肤图片
+    QPixmap skinPic = QPixmap(":/images/default_skin.png");
     //字体
     QFont font;
 

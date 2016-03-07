@@ -184,6 +184,7 @@ void SingleMusic::playAndPause()
     {
         //如果歌曲正在播放，则暂停音乐的播放
         player->pause();
+        emit isPlaying(false);
     }
     else
     {
@@ -195,6 +196,8 @@ void SingleMusic::playAndPause()
         rightBottomFrame->show();
         musicNameLengthLabel->hide();
 
+        emit isPlaying(true);
+
     }
 }
 
@@ -205,6 +208,8 @@ void SingleMusic::mouseDoubleClickEvent(QMouseEvent *)
     //先暂时直接关联播放/暂停事件，之后在修改成下面这个从头开始播放的功能
     player->setPosition(0);
     player->play();
+    emit isPlaying(true);
+
     musicianBtn->show();
     rightBottomFrame->show();
     musicNameLengthLabel->hide();

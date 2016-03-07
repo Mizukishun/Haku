@@ -96,14 +96,19 @@ private slots:
     //完全关闭其它歌曲的播放
     void OkSendToTop(SingleMusic *, bool);
 
+    //专门用来接收搜索结果显示时的信号，此时要讲搜索结果显示出来
+    void okToShowDownload(bool);
+
 public:
-    //专门用来关闭第三个小布局的方法
+    //显示或隐藏空窗体及搜索结果显示窗体
     void closeDisplayWidget();
 public:
     //只能播放这首歌曲
     SingleMusic *OnlyMusic;
-    //用来确定是否关闭第三个小布局
-    bool okToCloseThreeWidget = true;
+    //用来确定是否要显示搜索结果,默认是不显示，只有当有搜索了才显示
+    bool okToShowDownloadBool = false;
+    //用来确定是否显示空窗体，默认是显示的
+    bool okToShowEmptyWidget = true;
     //一个空的窗体，主要是为了在隐藏第三个小布局时不会使得第一、二个小布局跑到中间去
     QWidget *emptyWidget;
     //空窗体的布局

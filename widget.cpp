@@ -283,6 +283,8 @@ void Widget::playOrpauseMusic(SingleMusic *para)
     //暂停或播放这首歌曲
 
     mainMusic->playAndPause();
+    connect(mainMusic, SIGNAL(isPlaying(bool)), this, SLOT(currentIsPlaying(bool)));
+
 
 
 }
@@ -297,16 +299,16 @@ void Widget::player()
     }
     this->playOrpauseMusic(mainMusic);
 
-    if(playBool)
-    {
-        playerBtn->setIcon(QPixmap(":/images/playerIcon2.png"));
-        playBool = false;
-    }
-    else
-    {
-        playerBtn->setIcon(QPixmap(":/images/playerIcon.png"));
-        playBool = true;
-    }
+//    if(playBool)
+//    {
+//        playerBtn->setIcon(QPixmap(":/images/playerIcon2.png"));
+//        playBool = false;
+//    }
+//    else
+//    {
+//        playerBtn->setIcon(QPixmap(":/images/playerIcon.png"));
+//        playBool = true;
+//    }
 
 
 }
@@ -368,7 +370,9 @@ void Widget::setSliderValue(qint64 val)
     playSlider->setEnabled(true);
     playSlider->setPageStep(mainMusicTotalTime / 10);
 
-    musicNameSlider->setText(mainMusic->musicNameBtn->text());
+    //直接使用singlemusic.h中的public变量SingleMusicName，方便统一显示歌名
+    musicNameSlider->setText(mainMusic->SingleMusicName);
+
     playedTimeSlider->setText(mainMusic->playedLengthLabel->text());
     totalTimeSlider->setText(mainMusic->musicLengthLabel->text());
 
@@ -397,4 +401,25 @@ void Widget::searchMusic()
 //            SLOT(this->secFrameLayout->downloadDisplay->search(searchMusicName)));
 
 
+}
+
+
+//知道了现在是在播放音乐，所以要修改相应的按钮图标
+void Widget::currentIsPlaying(bool playingBool)
+{
+    playBool = playingBool;
+    if(playBool)
+    {
+        playerBtn->setIcon(QPixmap(":/images/playerIcon2.png"));
+        //playBool = false;
+    }
+    else
+    {
+        playerBtn->setIcon(QPixmap(":/images/playerIcon.png"));
+        //playBool = true;
+    }
+
+    //是时间条的滑块也相应地变化
+    connect(mainMusic->player, SIGNAL(positionChanged(qint64)),
+            this, SLOT(setSliderValue(qint64)));
 }

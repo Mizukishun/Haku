@@ -21,11 +21,12 @@ void SingleDisplay::createDsingleInterface()
     DsingleAlbumBtn->setFlat(true);
     DsingleTimeBtn = new QPushButton;
     DsingleTimeBtn->setFlat(true);
+
     DsinglePlayBtn = new QPushButton;
     DsinglePlayBtn->setFlat(true);
     DsinglePlayBtn->setIcon(QPixmap(":/images/tri_30.png"));
-//    connect(DsinglePlayBtn, SIGNAL(clicked()),
-//            this, SLOT(playThisMusic()));
+    connect(DsinglePlayBtn, SIGNAL(clicked()),
+            this, SLOT(playThisMusic()));
 
     DsingleAddBtn = new QPushButton;
     DsingleAddBtn->setFlat(true);

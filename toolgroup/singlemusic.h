@@ -31,6 +31,11 @@ private:
 signals:
     void OkToPlay(SingleMusic *);
 
+    //通知最顶层的窗体，现在是在播放音乐
+    void isPlaying(bool);
+
+
+
 public slots:
     //重载鼠标双击事件,使得重头开始播放该首音乐
     void mouseDoubleClickEvent(QMouseEvent *);

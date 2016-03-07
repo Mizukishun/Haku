@@ -83,6 +83,9 @@ void DisplayWidget::search(QString s)
 {
     searchMusic = s;
 
+    //这里要通知上层窗体将查询的结果显示出来
+    emit okToShow(true);
+
     clearList();
 
     //利用了第三方的百度音乐的api接口
@@ -712,7 +715,7 @@ void DisplayWidget::playMusic(QNetworkReply* reply2)
         //处理字符串的信息
         parseSongInfo(results2);
     }
-
+    DWsingleMusic->SingleMusicName = DWmusic;
     DWsingleMusic->player->setMedia(QUrl(AuditionLink));
     //DWsingleMusic->SingleMusicPath = AuditionLink;
     //设置为true，说明有来自这个窗体的歌曲要播放

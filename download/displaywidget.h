@@ -79,6 +79,9 @@ signals:
     //发送信号给上层窗体，让其将歌曲传递给上一层窗体，进而播放该首歌曲
     void DWplayMusic(SingleMusic*, bool);
 
+    //通知secFrame显示搜索结果
+    void okToShow(bool);
+
 public slots:
     void search(QString);
 
