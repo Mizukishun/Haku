@@ -62,7 +62,8 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     searchBtn->setFlat(true);
     searchBtn->setIcon(QPixmap(":/images/searchIcon.png"));
     searchBtn->setToolTip(tr("搜索歌曲"));
-    //点击则搜索歌曲
+    //输入完毕或点击搜索按钮则搜索歌曲
+    connect(searchEdit, SIGNAL(editingFinished()), this, SLOT(searchMusic()));
     connect(searchBtn, SIGNAL(clicked()), this, SLOT(searchMusic()));
 
     skinBtn = new QPushButton;
@@ -136,6 +137,7 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     playerBtn->setIcon(QPixmap(":/images/playerIcon.png"));
     playerBtn->setIconSize(QPixmap(":/images/playerIcon.png").size());
     //关联上歌曲的播放控制事件
+    playBool = true;
     connect(playerBtn, SIGNAL(clicked()), this, SLOT(player()));
 
     preMusicBtn = new QPushButton;
@@ -279,6 +281,7 @@ void Widget::playOrpauseMusic(SingleMusic *para)
             this, SLOT(setSliderValue(qint64)));
 
     //暂停或播放这首歌曲
+
     mainMusic->playAndPause();
 
 
@@ -293,6 +296,19 @@ void Widget::player()
         return;
     }
     this->playOrpauseMusic(mainMusic);
+
+    if(playBool)
+    {
+        playerBtn->setIcon(QPixmap(":/images/playerIcon2.png"));
+        playBool = false;
+    }
+    else
+    {
+        playerBtn->setIcon(QPixmap(":/images/playerIcon.png"));
+        playBool = true;
+    }
+
+
 }
 
 void Widget::createSlider()

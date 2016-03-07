@@ -84,6 +84,7 @@ SecFrame::SecFrame(QWidget *parent)
     secVLayout->addWidget(moreBtn);
     secVLayout->addWidget(packUpBtn);
     secVLayout->addStretch();
+    secVLayout->setGeometry(QRect(QPoint(40, 40), QSize(40, this->geometry().height())));
 
     /****************************************************************************/
     //创建第二个小布局的QStackedWidget
@@ -121,6 +122,16 @@ SecFrame::SecFrame(QWidget *parent)
     //lyf = new lyFrame();
     downloadDisplay = new DisplayWidget();
 
+    //连接displaywidget的发送的播放歌曲的信号
+    connect(downloadDisplay, SIGNAL(DWplayMusic(SingleMusic*,bool)),
+            this, SLOT(OkSendToTop(SingleMusic*, bool)));
+
+    //空窗体，有第三小布局时就隐藏，没有就显示
+    emptyWidget = new QWidget;
+    emptyLayout = new QHBoxLayout(emptyWidget);
+    emptyLayout->addStretch();
+    emptyWidget->hide();
+
 
     /*****************************************************************************/
     //对主布局的完成
@@ -132,6 +143,8 @@ SecFrame::SecFrame(QWidget *parent)
     secMainLayout->addWidget(secStack);
     //添加第三个小布局
     secMainLayout->addWidget(downloadDisplay);
+    secMainLayout->addWidget(emptyWidget);
+    //secMainLayout->setStretch(0);
 
 
 }
@@ -171,6 +184,19 @@ void SecFrame::on_moreBtn_clicked()
 void SecFrame::on_packUpBtn_clicked()
 {
     emit secStack->setCurrentIndex(5);
+    if(okToCloseThreeWidget)
+    {
+        closeDisplayWidget();
+        okToCloseThreeWidget = false;
+        emptyWidget->show();
+        //secMainLayout->addStretch();
+    }
+    else
+    {
+        downloadDisplay->show();
+        emptyWidget->hide();
+        okToCloseThreeWidget = true;
+    }
 }
 
 //接收从六个小窗体传递过来的可以播放信号，但这里要控制住，使得只能播放一首歌曲
@@ -179,14 +205,33 @@ void SecFrame::OkSendToTop(SingleMusic *sFmusic, bool bOk)
     OnlyMusic = sFmusic;
 
     //通过控制当前选中的索引号来控制另外一个窗体的所欲列表音乐都关闭
-    if(secStack->currentIndex() == 0)
-        faList->closeAllFavoriteList();
-    else if(secStack->currentIndex() == 1)
-        muList->closeAllMusicList();
+    if(!downloadDisplay->DWoktoplay)
+    {
+        downloadDisplay->DWsingleMusic->player->stop();
+
+        if(secStack->currentIndex() == 0)
+            faList->closeAllFavoriteList();
+        else if(secStack->currentIndex() == 1)
+            muList->closeAllMusicList();
+        else
+            ;   //什么都不做
+    }
     else
-        ;   //什么都不做
+    {
+        faList->closeAllFavoriteList();
+        muList->closeAllMusicList();
+    }
 
 
     //将播放歌曲传递给最顶层的窗体
     emit SendToTop(OnlyMusic);
+}
+
+
+//专门用来隐藏第三小布局的方法
+void SecFrame::closeDisplayWidget()
+{
+    downloadDisplay->hide();
+
+
 }

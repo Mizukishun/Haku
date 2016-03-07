@@ -3,6 +3,9 @@
 SingleDisplay::SingleDisplay(QWidget *parent) : QWidget(parent)
 {
     createDsingleInterface();
+
+    //设置窗体的属性为关闭时也即可删除
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 

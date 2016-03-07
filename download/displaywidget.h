@@ -15,6 +15,8 @@
 #include <QTreeView>
 #include <QPalette>
 #include <QTextEdit>
+#include <QScrollBar>
+#include <QScrollArea>
 
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -41,6 +43,8 @@ public:
 
     //创建显示出来的歌曲列表
     void createMusicListD();
+    //关闭来自这个窗体的歌曲的播放，以方便其他窗体歌曲的播放
+    void closeDWmusic();
 
 private:
     //创建主界面
@@ -61,7 +65,7 @@ private:
 
 
     //播放歌曲，（其实就是要将歌曲地址传递到主程序中的，让主程序播放)
-    void playMusic(QString musicName);
+    //void playMusic(QString musicName);
 
     //通过歌曲名找到歌曲id
     QString searchMusicID(QString musicname);
@@ -72,6 +76,8 @@ private:
 
 signals:
     //void searchMusics(QString);
+    //发送信号给上层窗体，让其将歌曲传递给上一层窗体，进而播放该首歌曲
+    void DWplayMusic(SingleMusic*, bool);
 
 public slots:
     void search(QString);
@@ -82,6 +88,10 @@ public slots:
     void getAuditionLink(QNetworkReply*);
     //接收下层小窗体的信号，播放其上的歌曲
     void DWplayThisMusic(QString musicname);
+    //当滚动条滑动，值改变时，就隐藏一些歌曲，而现实另外一些歌曲。
+    void showSpecial(int);
+
+    void playMusic(QNetworkReply*);
 
 private:
     /************************主界面上的元素***********************/
@@ -110,6 +120,12 @@ private:
 
     //框架中的歌曲显示
     QVBoxLayout *secondLayout;              //之后可能要被其他船体替代掉
+    //滚动条
+    QScrollBar *DWscrollbar;
+
+    //包围了滚动栏、搜索歌曲显示框架的布局
+    QHBoxLayout *scrollLayout;
+    QScrollArea *DWscrollArea;
 
     /************************************歌曲的信息元素等**********************************/
     //要搜索的歌曲名
@@ -167,6 +183,8 @@ private:
 
     /***********************************************************************************/
 
+    //控制当第一次单击鼠标时并不播放，只有单第二次单击时才播放
+    int firstClick = -1;
 
 
 
@@ -176,7 +194,7 @@ private:
 
 public:
     //获得的歌曲链接地址,因为可能要传递其他窗体进行播放，所以定义成public的
-    QString AuditionLink;
+    QString AuditionLink = "test";
     //播放的这首歌的相应的大壁纸地址
     QString pic_hugeLink;
     //播放的这首歌的歌词地址
@@ -190,6 +208,13 @@ public:
     //获取播放的功能
     SingleMusic *DWsingleMusic;
 
+    //另存一份搜索出的歌曲信息,便于访问布局中的某个特定歌曲窗体
+    QList<SingleDisplay *> SDnumberList;
+    //搜索出的歌曲的数目
+    int size;
+
+    //在发送信号给上层窗体的同时，设置为true，说明要播放这首歌曲，其他正在播放的要歌曲要关闭
+    bool DWoktoplay;
 
 
 

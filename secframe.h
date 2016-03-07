@@ -95,9 +95,19 @@ private slots:
     //一首歌曲可以播放，所以要在这里控制住，使得每传递过来一个信号，就只播放这一首歌曲，而
     //完全关闭其它歌曲的播放
     void OkSendToTop(SingleMusic *, bool);
+
+public:
+    //专门用来关闭第三个小布局的方法
+    void closeDisplayWidget();
 public:
     //只能播放这首歌曲
     SingleMusic *OnlyMusic;
+    //用来确定是否关闭第三个小布局
+    bool okToCloseThreeWidget = true;
+    //一个空的窗体，主要是为了在隐藏第三个小布局时不会使得第一、二个小布局跑到中间去
+    QWidget *emptyWidget;
+    //空窗体的布局
+    QHBoxLayout *emptyLayout;
 
 
 };

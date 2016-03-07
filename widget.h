@@ -118,6 +118,7 @@ private:
     //第三个子布局上的元素
     //播放按钮
     QPushButton *playerBtn;
+    bool playBool;              //用于控制播放按钮的形状
     //上一曲按钮
     QPushButton *preMusicBtn;
     //下一曲按钮

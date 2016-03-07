@@ -59,6 +59,9 @@ public:
     //要播放的歌曲名
     QString DsMusicName;
 
+    //编号，用来控制当滑动条值变化时有哪些歌曲显示出来，其余的则隐藏
+    int SDnumber;
+
 };
 
 #endif // SINGLEDISPLAY_H

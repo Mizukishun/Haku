@@ -14,7 +14,8 @@ void DisplayWidget::createInterface()
     setAutoFillBackground(true);
     setPalette(p);
 
-
+    //首先设置为false,也就是说目前没有来自这个窗体的歌曲要播放
+    DWoktoplay = false;
     //*****************************最顶一栏**************************/
     topFrame = new QFrame;
     topLayout = new QHBoxLayout(topFrame);
@@ -55,16 +56,21 @@ void DisplayWidget::createInterface()
     firstLayout->addWidget(firstControlBtn);
 
     //测试用，显示搜索出来的歌曲
-    secondLayout = new QVBoxLayout;
+    //secondLayout = new QVBoxLayout;
 
     //将上面两个布局添加到显示搜索结果的框架中
     displayFrameLayout->addLayout(firstLayout);
-    displayFrameLayout->addLayout(secondLayout);
+    //displayFrameLayout->addLayout(secondLayout);
+
+    //为了多添加一个滚动栏，在外面在包一层布局,暂时测试
+    scrollLayout = new QHBoxLayout;
+    //scrollLayout->addWidget(displayFrame);
 
     /**********************************主布局**************************************/
     mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(topFrame);
     mainLayout->addWidget(displayFrame);
+    mainLayout->addLayout(scrollLayout);
     mainLayout->addStretch();
 
     //测试用，看把它放在这里能不能直播一首歌
@@ -379,21 +385,44 @@ void DisplayWidget::parseReply(QString ps)
 void DisplayWidget::createMusicListD()
 {
     //为了更好测试，所以暂时性地只显示4个条目
-    for(int k = 0; k < 5; ++k)
+    size = songnameList.size();
+
+    //
+    secondLayout = new QVBoxLayout;
+
+    //添加滚动条，以防止显示过密
+    DWscrollbar = new QScrollBar(Qt::Vertical, this);
+    DWscrollbar->setRange(0, size-9);
+    DWscrollbar->setPageStep(1);
+    DWscrollbar->setSingleStep(1);
+    DWscrollbar->setSliderPosition(0);
+
+    for(int k = 0; k < size; ++k)
     {
         QString singleName = songnameList.at(k);
         SingleDisplay *oneSong = new SingleDisplay();
         oneSong->DsingleMusicBtn->setText(singleName);
+        oneSong->SDnumber = k;
 
 
         //但也要注意，当单击了不同的按钮后，要能够控制只有一首歌曲在播放！！！
         //所以应该就控制只传递一首歌曲名上去
         secondLayout->addWidget(oneSong);
+        SDnumberList.append(oneSong);
+
+        if(oneSong->SDnumber > 8)
+            oneSong->hide();
 
         //关联事件，当单机这个小窗体的歌曲名按钮时能够播放这个小窗体所含有的那首歌曲名
         connect(oneSong, SIGNAL(DsinglePlayThisMusic(QString)),
                 this, SLOT(DWplayThisMusic(QString)));
     }
+
+    //当值改变时，就隐藏一部分歌曲，而现实另外一些窗体;
+    connect(DWscrollbar, SIGNAL(valueChanged(int)), this, SLOT(showSpecial(int)));
+    scrollLayout->addLayout(secondLayout);
+    scrollLayout->addWidget(DWscrollbar);
+
 }
 
 
@@ -434,13 +463,75 @@ void DisplayWidget::clearList()
     if(!sendData.isEmpty())
         sendData.clear();
 
+//    if(!secondLayout->isEmpty())
+//    {
+//        QLayoutItem *ite;
+//        QWidget *widg;
+//        while((ite = secondLayout->takeAt(0)))
+//        {
+//            if((widg = ite->widget())!= 0)
+//            {
+//                widg->hide();
+//                delete widg;
+//            }
+//            else
+//                delete ite;
+//        }
+//        delete secondLayout;
+//        //在删除之前的secondLayout之后，还要重新再创建一个新的空白secondLayout
+//        //并添加到原布局上
+//        secondLayout = new QVBoxLayout;
+//        scrollLayout->addLayout(secondLayout);
+//    }
+
 
     //删除之前显示过的歌曲列表
-    if(!secondLayout->isEmpty())
+//    if(!secondLayout->isEmpty())
+//    {
+//        QLayoutItem *ite;
+//        QWidget *widg;
+//        while((ite = secondLayout->takeAt(0)))
+//        {
+//            if((widg = ite->widget())!= 0)
+//            {
+//                widg->hide();
+//                delete widg;
+//            }
+//            else
+//                delete ite;
+//        }
+//        delete secondLayout;
+//        //在删除之前的secondLayout之后，还要重新再创建一个新的空白secondLayout
+//        //并添加到原布局上
+//        secondLayout = new QVBoxLayout;
+//        displayFrameLayout->addLayout(secondLayout);
+//    }
+
+//    if(!secondLayout->isEmpty())
+//    {
+//        QLayoutItem *iten;
+//        QWidget *widgn;
+//        while((iten = secondLayout->takeAt(0)))
+//        {
+//            if((widgn = iten->widget())!= 0)
+//            {
+//                widgn->hide();
+//                delete widgn;
+//            }
+//            else
+//                delete iten;
+//        }
+//        delete secondLayout;
+//        //在删除之前的secondLayout之后，还要重新再创建一个新的空白secondLayout
+//        //并添加到原布局上
+//        //secondLayout = new QVBoxLayout;
+//    }
+
+    if(!scrollLayout->isEmpty())
     {
         QLayoutItem *ite;
         QWidget *widg;
-        while((ite = secondLayout->takeAt(0)))
+        while((ite = scrollLayout->takeAt(0)))
         {
             if((widg = ite->widget())!= 0)
             {
@@ -450,11 +541,19 @@ void DisplayWidget::clearList()
             else
                 delete ite;
         }
-        delete secondLayout;
+
+        delete scrollLayout;
         //在删除之前的secondLayout之后，还要重新再创建一个新的空白secondLayout
         //并添加到原布局上
-        secondLayout = new QVBoxLayout;
-        displayFrameLayout->addLayout(secondLayout);
+        scrollLayout = new QHBoxLayout;
+        mainLayout->addLayout(scrollLayout);
+    }
+
+    if(!SDnumberList.isEmpty())
+    {
+        foreach(SingleDisplay *e, SDnumberList)
+            e->close();
+        SDnumberList.clear();
     }
 
 
@@ -496,6 +595,8 @@ void DisplayWidget::songPlay(QString sid)
 
     connect(manager2, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(getAuditionLink(QNetworkReply*)));
+//    connect(manager2, SIGNAL(finished(QNetworkReply*)),
+//            this, SLOT(getAuditionLink(QNetworkReply*)));
 }
 
 void DisplayWidget::getAuditionLink(QNetworkReply* reply2)
@@ -596,9 +697,34 @@ void DisplayWidget::parseSongInfo(QString ps2)
 
 }
 
-//这个函数实现播放这个窗体的音乐？？？？？
-void DisplayWidget::playMusic(QString musicName)
+//测试用，作为中介，看能不能消除后置效应
+void DisplayWidget::playMusic(QNetworkReply* reply2)
 {
+    //获取这次的状态码信息
+    QVariant statusCode2 = reply2->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    //如果没有发生错误
+    if(reply2->error() == QNetworkReply::NoError)
+    {
+        //获取收到的字节信息
+        QByteArray bytes2 = reply2->readAll();
+        //将字节信息转换为字符串
+        QString results2(bytes2);
+        //处理字符串的信息
+        parseSongInfo(results2);
+    }
+
+    DWsingleMusic->player->setMedia(QUrl(AuditionLink));
+    //DWsingleMusic->SingleMusicPath = AuditionLink;
+    //设置为true，说明有来自这个窗体的歌曲要播放
+    DWoktoplay = true;
+    emit DWplayMusic(DWsingleMusic, true);
+
+    //songPlay(DWtestID);
+
+//    QTextEdit *testN = new QTextEdit;
+//    testN->setText(AuditionLink);
+//    secondLayout->addWidget(testN);
+
 
 
 }
@@ -606,16 +732,25 @@ void DisplayWidget::playMusic(QString musicName)
 //接收从下层小窗体传递过来的信号，播放该首歌曲，但要控制只播放一首歌曲
 void DisplayWidget::DWplayThisMusic(QString musicname)
 {
+
+
+    //requester2->setUrl(QUrl(AuditionLink));
+    //manager2->get(*requester2);
+
+
     DWmusic = musicname;
 
     //通过歌曲名找到歌曲id,并找到歌曲的播放地址
-    songPlay(searchMusicID(DWmusic));
+    //songPlay(searchMusicID(DWmusic));
+    QString DWtestID = searchMusicID(DWmusic);
+    songPlay(DWtestID);
+
     //通过上面两个函数，则AuditionLink便确定出来的，
 
 
 //    //测试用,看获得的地址是怎么回事
 //    QTextEdit *testM = new QTextEdit;
-//    testM->setText(AuditionLink);
+//    testM->setText(DWtestID);
 //    secondLayout->addWidget(testM);
 
 //    QMediaPlayer *mpl = new QMediaPlayer(this);
@@ -623,9 +758,14 @@ void DisplayWidget::DWplayThisMusic(QString musicname)
 //    mpl->setVolume(50);
 //    mpl->play();
 
-
-
-
+    //测试用，再一次进行请求
+    QNetworkAccessManager *manager3 = new QNetworkAccessManager;
+    QNetworkRequest *requester3 = new QNetworkRequest;
+    //将地址发送出去
+    requester3->setUrl(QUrl(sendURL2));
+    manager3->get(*requester3);
+    connect(manager3, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(playMusic(QNetworkReply*)));
 
 
 
@@ -638,12 +778,68 @@ void DisplayWidget::DWplayThisMusic(QString musicname)
     //双击歌曲名能够播放，但有个问题
     /*当双击一首歌播放之后，再单击 另一首歌，可能会播放前一次点击的那首歌
      */
-    DWsingleMusic->player->setMedia(QUrl(AuditionLink));
-    DWsingleMusic->player->play();
+
+
+//    //测试用，看前后是否一致
+
+
+    //playMusic(DWmusic);
+//    firstClick += 1;
+//    if(!firstClick)
+//    {
+//        firstClick += 1;
+//        return;
+//    }
+
+//    DWsingleMusic->player->setMedia(QUrl(AuditionLink));
+//    //DWsingleMusic->SingleMusicPath = AuditionLink;
+//    //设置为true，说明有来自这个窗体的歌曲要播放
+//    DWoktoplay = true;
+//    emit DWplayMusic(DWsingleMusic, true);
+
+//    songPlay(DWtestID);
+
+//    QTextEdit *testN = new QTextEdit;
+//    testN->setText(AuditionLink);
+//    secondLayout->addWidget(testN);
+
+    //DWsingleMusic->player->play();
+
+
 }
 
+//控制滚动条值变化时，只显示一部分歌曲，而隐藏其他的歌曲
+void DisplayWidget::showSpecial(int n)
+{
+    for(int i = 0; i < size; ++i)
+    {
+        if(n <= (size-8))
+        {
+            if(i<n || i > (n+8))
+                SDnumberList.at(i)->hide();
+            else
+                SDnumberList.at(i)->show();
+        }
+        else
+        {
+            if(i < (size-8))
+                SDnumberList.at(i)->hide();
+            else
+                SDnumberList.at(i)->show();
+        }
 
+    }
 
+}
+
+//下面这个本是要关闭该窗体中播放的歌曲的，但不知道为何下面这样写一点用
+//都没有，所以还需继续修改
+void DisplayWidget::closeDWmusic()
+{
+    DWsingleMusic->resetGUI();
+    DWoktoplay = false;
+
+}
 
 
 
