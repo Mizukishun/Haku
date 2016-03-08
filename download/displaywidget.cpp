@@ -419,6 +419,9 @@ void DisplayWidget::createMusicListD()
         //关联事件，当单机这个小窗体的歌曲名按钮时能够播放这个小窗体所含有的那首歌曲名
         connect(oneSong, SIGNAL(DsinglePlayThisMusic(QString)),
                 this, SLOT(DWplayThisMusic(QString)));
+        //关联下层的下载这首歌曲的信号，使得下载传递过来的歌曲名
+        connect(oneSong, SIGNAL(DsingleDownloadMusic(QString)),
+                this, SLOT(songDownload(QString)));
     }
 
     //当值改变时，就隐藏一部分歌曲，而现实另外一些窗体;
@@ -844,8 +847,318 @@ void DisplayWidget::closeDWmusic()
 
 }
 
+/**********************************下载歌曲的功能**********************************/
+
+//根据歌曲id找到歌曲的下载地址，这里使用的是song.downWeb方法
+void DisplayWidget::songDownloadLink(QString songname)
+{
+    //一个函数只负责下载一首歌曲
+    downloadMusicName = songname;
+
+    //先通过歌曲名找到歌曲的id
+    QString downloadMusicID = searchMusicID(downloadMusicName);
+
+    //通过歌曲id找到歌曲的下载地址
+    QNetworkAccessManager *manager3 = new QNetworkAccessManager(this);
+    QNetworkRequest *requester3 = new QNetworkRequest;
+
+    //选择使用的接口方法为song.downWeb方法
+    QByteArray sendData3;
+    sendData3.append("from=webapp_music&");
+    sendData3.append("method=baidu.ting.song.downWeb&");
+    sendData3.append("format=json&");
+    sendData3.append("songid=" + downloadMusicID + "&");
+    //下面这个bit字段的值为字符串，但不知道是否是下面这样用转义符号？？？？
+    sendData3.append("bit=\"64, 128, 256, 192, 256, 320, flag\"");
+    //要发送的完成地址,请求得到songid对应的下载地址
+    QString sendURL3 = url_baidu_api + QString(sendData3);
+
+    requester3->setUrl(QUrl(sendURL3));
+    manager3->get(*requester3);
+
+    connect(manager3, SIGNAL(finished(QNetworkReply *)),
+            this, SLOT(receiveDownloadLink(QNetworkReply*)));
+
+}
+
+//处理连接网络获得的信息，从而能够进一步处理得到歌曲的下载地址
+void DisplayWidget::receiveDownloadLink(QNetworkReply *reply3)
+{
+    QVariant statusCode3 = reply3->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    if(reply3->error() == QNetworkReply::NoError)
+    {
+        QByteArray bytes3 = reply3->readAll();
+        QString netInfoStr(bytes3);
+        //处理获取的JSon格式的字符串信息,从而获得歌曲的下载地址
+        parseDownloadInfo(netInfoStr);
+    }
+}
+
+//解析上面通过downWeb方法从网络获取的信息，进而获得歌曲的下载地址
+void DisplayWidget::parseDownloadInfo(QString result3)
+{
+    QJsonParseError jerror;
+    QJsonDocument jsInfo = QJsonDocument::fromJson(result3.toUtf8(), &jerror);
+    if(jerror.error == QJsonParseError::NoError)
+    {
+        if(!(jsInfo.isNull() || jsInfo.isEmpty()))
+        {
+            if(jsInfo.isObject())
+            {
+                QJsonObject jsInfoObject = jsInfo.object();
+                if(jsInfoObject.contains("bitrate"))
+                {
+                    QJsonValue bitrateValue = jsInfoObject.take("bitrate");
+                    if(bitrateValue.isArray())
+                    {
+                        QJsonArray bitrateArray = bitrateValue.toArray();
+                        for(int i = 0; i < bitrateArray.size(); ++i)
+                        {
+                            QJsonObject eachBitrateObj = bitrateArray.at(i).toObject();
+                            //对于bitrate数组中的每一个元素，都有一个file_bitrate、
+                            //file_link和file_size三个字段，这三个字段都是一一对应的
+                            if(eachBitrateObj.contains("file_bitrate"))
+                            {
+                                QJsonValue fileBitValue = eachBitrateObj.take("file_bitrate");
+                                //下面这里肯能有问题，因为file_bitrate字段是int型的？？？？
+                                //是否要换成isVariant()呢？？？？？
+                                if(fileBitValue.isString())
+                                {
+                                    QString bitstr = fileBitValue.toString();
+                                    //将这个字符串添加到保存音质的列表中
+                                    file_bitrate_str.append(bitstr);
+                                }
+                            }
+                            //获取歌曲的下载地址（不同音质对应不同的下载地址
+                            if(eachBitrateObj.contains("file_link"))
+                            {
+                                QJsonValue fileLinkValue = eachBitrateObj.take("file_link");
+                                if(fileLinkValue.isString())
+                                {
+                                    QString linkstr = fileLinkValue.toString();
+                                    file_link_str.append(linkstr);
+                                }
+                            }
+                            //获取歌曲的大小（不同音质对应不同的大小
+                            if(eachBitrateObj.contains("file_size"))
+                            {
+                                QJsonValue fileSizeValue = eachBitrateObj.take("file_size");
+                                if(fileSizeValue.isString())
+                                {
+                                    QString sizestr = fileSizeValue.toString();
+                                    file_size_str.append(sizestr);
+                                }
+
+                            }
+                        }
+
+                    }
+                }
+                //以上便是对bitrate字段的处理，其中可以获取不同音质的歌曲及其下载地址
+                //还可以获取不同音质的歌曲大小
+                //以下则是对songinfo字段的处理，可以获得歌词下载及缩略图下载地址
+                if(jsInfoObject.contains("songinfo"))
+                {
+                    QJsonValue songinfoValue = jsInfoObject.take("songinfo");
+                    if(songinfoValue.isObject())
+                    {
+                        QJsonObject songinfoObj = songinfoValue.toObject();
+                        //获取这首歌曲歌词的下载地址
+                        if(songinfoObj.contains("lyclink"))
+                        {
+                            QJsonValue lycValue = songinfoObj.take("lyclink");
+                            if(lycValue.isString())
+                            {
+                                downloadLycLink = lycValue.toString();
+                            }
+                        }
+                        //这首歌曲对应的小图150*150d大小的图的下载地址
+                        if(songinfoObj.contains("pic_big"))
+                        {
+                            QJsonValue pic_bigValue = songinfoObj.take("pic_big");
+                            if(pic_bigValue.isString())
+                            {
+                                pic_bigLink = pic_bigValue.toString();
+                            }
+                        }
+                        //这首歌曲对应的小图90*90的地址
+                        if(songinfoObj.contains("pic_small"))
+                        {
+                            QJsonValue pic_bigValue = songinfoObj.take("pic_small");
+                            if(pic_bigValue.isString())
+                            {
+                                pic_smallLink = pic_bigValue.toString();
+                            }
+                        }
+                    }
+                }
+                //以上便是对songinfo字段的处理,
+            }
+        }
+    }
+}
+
+//下载歌曲
+void DisplayWidget::songDownload(QString downloadSongName)
+{
+    QString dSongName = downloadSongName;
+    //根据歌曲名获取到歌曲的下载地址（不同音质有不同的下载地址
+    songDownloadLink(dSongName);
+
+    //在当前根目录下创建一个目录（文件夹），用于保存下载的歌曲
+    QDir dir("/");
+    QDir downloadDir("/download");
+    if(!downloadDir.exists())
+    {
+        dir.mkdir("downloadMusic");
+
+    }
+
+    //以下载的歌曲名创建一个文件对象
+    file = new QFile("/downloadMusic/" + dSongName);
+    //确保这个文件能够写入
+    if(!file->open(QIODevice::WriteOnly))
+    {
+        //如果不能以写入的方式打开这个文件，则删除这个文件
+        file->close();
+        delete file;
+        file = nullptr;
+    }
+
+    //选择一个较好音质的歌曲地址进行下载
+    int chooseNumber = file_bitrate_str.size();
+    int max = 0;
+    for(int d = 0; d < chooseNumber; ++d)
+    {
+        QString bits = file_bitrate_str.at(d);
+        int bitValue = bits.toInt();
+        if(bitValue > max)
+        {
+            max = bitValue;
+            downloadUrlString = file_link_str.at(d);
+            downloadMusicSize = file_size_str.at(d);
+        }
+    }
+
+    //创建下载歌曲所需的网络对象
+    downloadRequester = new QNetworkRequest;
+    downloadManager = new QNetworkAccessManager;
+    //暂时把下面这句注释掉，之后要还原
+    //downloadRequester->setUrl(QUrl(downloadUrlString));
+    //下面这句是代替上面这句的测试用句，之后得删除
+    QString testurl = "http://yinyueshiting.baidu.com/data2/music/38380704/38380704.mp3?xcode=ef53811881a714ab0c486914f0acd7b6";
+    downloadRequester->setUrl(QUrl(testurl));
+    /*经测试，用上面两句代替的话，就能够下载该地址的文件，
+     * 所以问题出在没有获得正确的歌曲下载地址，所以得修正！！！！
+     * */
+
+    downloadReply = downloadManager->get(*downloadRequester);
+
+    connect(downloadReply, SIGNAL(readyRead()), this, SLOT(isDownloading()));
+    connect(downloadReply, SIGNAL(downloadProgress(qint64, qint64)),
+            this, SLOT(updateDownloadProgress(qint64, qint64)));
+    connect(downloadReply, SIGNAL(finished()), this, SLOT(downloadFinished()));
+
+
+
+//    //以下为测试，看添加后是否真的有在下载
+
+//    //创建下载歌曲所需的网络对象
+//    downloadRequesterTest = new QNetworkRequest;
+//    downloadManagerTest = new QNetworkAccessManager;
+
+//    downloadRequesterTest->setUrl(QUrl(downloadUrlString));
+
+//    downloadReplyTest = downloadManagerTest->get(*downloadRequesterTest);
+
+//    connect(downloadReplyTest, SIGNAL(readyRead()), this, SLOT(isDownloading()));
+
+}
+
+//开始下载网络上的歌曲
+void DisplayWidget::isDownloading()
+{
+
+        //以下为测试，看添加后是否真的有在下载
+
+//        //创建下载歌曲所需的网络对象
+//        downloadRequesterTest = new QNetworkRequest;
+//        downloadManagerTest = new QNetworkAccessManager;
+
+//        downloadRequesterTest->setUrl(QUrl(downloadUrlString));
+
+//        downloadReplyTest = downloadManagerTest->get(*downloadRequesterTest);
+
+//        connect(downloadReplyTest, SIGNAL(readyRead()), this, SLOT(TestisDownloading()));
+
+
+//        connect(downloadReplyTest, SIGNAL(downloadProgress(qint64, qint64)),
+//                this, SLOT(updateDownloadProgress(qint64, qint64)));
+//        connect(downloadReplyTest, SIGNAL(finished()), this, SLOT(downloadFinished()));
 
 
 
 
+
+
+
+
+
+
+    if(file)
+    {
+        file->write(downloadReply->readAll());
+    }
+
+    //如果已经创建了文件，则读取返回的所有数据，并写入文件中
+    //这里暂时还缺少错误的应对机制，之后得补上！！！！
+//    if(file)
+//    {
+//        file->write(downloadReply->readAll());
+//    }
+}
+
+//更新下载进度条
+//之后补上!!!!!!!
+void DisplayWidget::updateDownloadProgress(qint64 readBytes, qint64 totalBytes)
+{
+    downloadedSize = readBytes;
+    totalSize = totalBytes;
+
+    //发送信号，通知其他窗体已下载和总的大小,暂时只是测试用，之后看情况删除
+    emit progressValue(downloadedSize, totalSize);
+}
+
+//下载完成后，要做的事情
+void DisplayWidget::downloadFinished()
+{
+    //这里暂时只是刷新并关闭文件，同时发送下载完成的信号
+    //通知其他窗体已经下载完成了，但目前这里缺乏其它一些
+    //错误的应对机制，所以在之后得补上!!!!!!!
+    file->flush();
+    file->close();
+
+    emit downloadOK(true);
+}
+
+
+//以下三个函数为测试用，看是否需要再次建立网络连接才能下载歌曲
+void DisplayWidget::TestisDownloading()
+{
+
+    if(file)
+    {
+        file->write(downloadReplyTest->readAll());
+    }
+
+}
+
+void DisplayWidget::TestupdateDownloadProgress(qint64, qint64)
+{
+
+}
+
+void DisplayWidget::TestdownloadFinished()
+{
+}
 

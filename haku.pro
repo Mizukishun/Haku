@@ -14,6 +14,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = haku
 TEMPLATE = app
 
+CONFIG += c++11
+
 
 SOURCES += main.cpp\
         widget.cpp \
@@ -31,8 +33,7 @@ SOURCES += main.cpp\
     toolgroup/simplifiedmusic.cpp \
     toolgroup/audiolist.cpp \
     download/displaywidget.cpp \
-    download/singledisplay.cpp \
-    download/download.cpp
+    download/singledisplay.cpp
 
 
 HEADERS  += widget.h \
@@ -50,8 +51,7 @@ HEADERS  += widget.h \
     toolgroup/simplifiedmusic.h \
     toolgroup/audiolist.h \
     download/displaywidget.h \
-    download/singledisplay.h \
-    download/download.h
+    download/singledisplay.h
 
 
 RESOURCES += \

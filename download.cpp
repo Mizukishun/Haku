@@ -14,5 +14,34 @@ Download::Download(QWidget *parent) : QWidget(parent)
     setAutoFillBackground(true);
     setPalette(Dp);
 
+    //创建界面布局
+    createInterface();
+
 }
 
+//创建下载窗体的界面布局
+void Download::createInterface()
+{
+    //主布局
+    mainLayout = new QVBoxLayout(this);
+
+    //测试用的，之后删除
+    testLayout = new QHBoxLayout;
+    progressbar = new QProgressBar;
+    progressbar->setValue(0);
+    testLayout->addWidget(progressbar);
+    DSwidget = new DisplayWidget();
+    connect(DSwidget, SIGNAL(progressValue(qint64, qint64)),
+            this, SLOT(updateProgressBar(qint64, qint64)));
+
+    mainLayout->addLayout(testLayout);
+    mainLayout->addStretch();
+
+}
+
+//测试用，更新测试用的进度条的值
+void Download::updateProgressBar(qint64 updateValue, qint64 max)
+{
+    progressbar->setMaximum(max);
+    progressbar->setValue(updateValue);
+}

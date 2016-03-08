@@ -24,6 +24,7 @@
 #include <QUrl>
 #include <QFile>
 #include <QFileInfo>
+#include <QDir>
 
 #include <QJsonArray>
 #include <QJSonDocument>
@@ -74,6 +75,19 @@ private:
     void songPlay(QString sid);
 
 
+
+
+    /***************************歌曲下载************************/
+
+
+    //根据歌曲名先找到songid再找到歌曲的下载地地址，根据的是song.downWeb方法
+    void songDownloadLink(QString songName);
+    //处理从网络获取的JSon格式的字符串信息，从中解析出歌曲的下载地址
+    void parseDownloadInfo(QString);
+
+    /**********************************************************/
+
+
 signals:
     //void searchMusics(QString);
     //发送信号给上层窗体，让其将歌曲传递给上一层窗体，进而播放该首歌曲
@@ -81,6 +95,12 @@ signals:
 
     //通知secFrame显示搜索结果
     void okToShow(bool);
+
+    //通知其他窗体，下载已经完成
+    void downloadOK(bool);
+
+    //通知其他窗体下载的进度
+    void progressValue(qint64, qint64);
 
 public slots:
     void search(QString);
@@ -95,6 +115,23 @@ public slots:
     void showSpecial(int);
 
     void playMusic(QNetworkReply*);
+
+    //下载歌曲,要下载指定歌曲，只要想下面这个函数传递一个歌曲名
+    void songDownload(QString songName);
+
+    //获取songid对应的下载地址
+    void receiveDownloadLink(QNetworkReply*);
+    //正在下载歌曲
+    void isDownloading();
+    //更新下载进度条
+    void updateDownloadProgress(qint64, qint64);
+    //下载完成
+    void downloadFinished();
+
+    //以下三个函数是测试用，看是否需要再次请求连接网络才能下载数据
+    void TestisDownloading();
+    void TestupdateDownloadProgress(qint64, qint64);
+    void TestdownloadFinished();
 
 private:
     /************************主界面上的元素***********************/
@@ -150,6 +187,24 @@ private:
     QString sendURL2;
     QNetworkAccessManager *manager2;
     QNetworkRequest *requester2;
+
+
+
+
+    //根据歌曲的下载地址下载相应的歌曲所需网络对象
+    QNetworkReply *downloadReply;
+    QNetworkRequest *downloadRequester;
+    QNetworkAccessManager *downloadManager;         //这个会不会太多余了？？？
+    QUrl downloadUrl;
+    QString downloadUrlString;
+    QString downloadMusicSize;
+
+
+//    //下面为测试用，之后删除
+    QNetworkReply *downloadReplyTest;
+    QNetworkAccessManager *downloadManagerTest;
+    QNetworkRequest *downloadRequesterTest;
+
 
 
     /********************搜索时search.catalogSug从网络获取的歌曲信息**************************/
@@ -218,6 +273,29 @@ public:
 
     //在发送信号给上层窗体的同时，设置为true，说明要播放这首歌曲，其他正在播放的要歌曲要关闭
     bool DWoktoplay;
+
+
+    //要下载的歌曲名
+    QString downloadMusicName;
+
+    //下载歌曲时，不同音质的音乐对应不同的下载地址以及大小
+    //用QList<>将其一一对应起来
+    QList<QString> file_bitrate_str;
+    QList<QString> file_link_str;
+    QList<QString> file_size_str;
+    //下载的这首歌曲对应的歌词的地址，（只有一个）
+    QString downloadLycLink;
+    //这首歌曲的小图的地址（150*150大小）
+    QString pic_bigLink;
+    //这首歌曲的小图的地址(90*90大小）
+    QString pic_smallLink;
+    //下载到文件(以所下载的歌曲名命名）
+    QFile *file;
+
+    //这首歌曲总的要下载的大小
+    qint64 totalSize;
+    //已下载的大小
+    qint64 downloadedSize;
 
 
 

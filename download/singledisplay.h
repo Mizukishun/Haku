@@ -31,9 +31,14 @@ signals:
     //发送信号，让上层窗体接收这个信号发送的歌曲名,从而进一步地播放这首歌
     void DsinglePlayThisMusic(QString musicname);
 
+    //发送信号，通知上层窗体要下载这首歌曲
+    void DsingleDownloadMusic(QString downloadMusicName);
+
 public slots:
     //当鼠标单击歌曲名按钮时，播放这首歌曲
     void playThisMusic();
+    //当鼠标单击下载按钮时，就下载这首歌曲
+    void DsDownloadThisMusic();
 
 public:
     //开头的CheckBox
@@ -58,6 +63,8 @@ public:
 
     //要播放的歌曲名
     QString DsMusicName;
+    //要下载的歌曲名
+    QString DsDownloadMusicName;
 
     //编号，用来控制当滑动条值变化时有哪些歌曲显示出来，其余的则隐藏
     int SDnumber;

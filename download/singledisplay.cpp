@@ -31,9 +31,12 @@ void SingleDisplay::createDsingleInterface()
     DsingleAddBtn = new QPushButton;
     DsingleAddBtn->setFlat(true);
     DsingleAddBtn->setIcon(QPixmap(":/images/addToList_30.png"));
+
     DsingleDownloadBtn = new QPushButton;
     DsingleDownloadBtn->setFlat(true);
     DsingleDownloadBtn->setIcon(QPixmap(":/images/downloadIcon.png"));
+    connect(DsingleDownloadBtn, SIGNAL(clicked()),
+            this, SLOT(DsDownloadThisMusic()));
 
     threeBtnLayout = new QHBoxLayout;
     threeBtnLayout->setSpacing(0);
@@ -64,4 +67,13 @@ void SingleDisplay::playThisMusic()
 void SingleDisplay::mouseDoubleClickEvent(QMouseEvent *)
 {
 //    playThisMusic();
+}
+
+//当鼠标单击 下载按钮时，就下载这首歌曲
+void SingleDisplay::DsDownloadThisMusic()
+{
+    DsDownloadMusicName = DsingleMusicBtn->text();
+
+    //发送信号 ，通知上层窗体要下载这首歌曲
+    emit DsingleDownloadMusic(DsDownloadMusicName);
 }
