@@ -102,6 +102,9 @@ signals:
     //通知其他窗体下载的进度
     void progressValue(qint64, qint64);
 
+    //测试用，看是否得到正确的歌曲下载地址
+    void testDownloadUrl(QString);
+
 public slots:
     void search(QString);
 
@@ -188,6 +191,10 @@ private:
     QNetworkAccessManager *manager2;
     QNetworkRequest *requester2;
 
+    QNetworkAccessManager *manager3;
+    QNetworkRequest *requester3;
+    QNetworkReply *replyer3;
+
 
 
 
@@ -204,6 +211,9 @@ private:
     QNetworkReply *downloadReplyTest;
     QNetworkAccessManager *downloadManagerTest;
     QNetworkRequest *downloadRequesterTest;
+
+    //以下测试用，看是否获得了歌曲的下载地址
+    QLineEdit *testUrlLineEdit;
 
 
 

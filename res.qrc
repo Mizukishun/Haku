@@ -50,5 +50,6 @@
         <file>images/tri_30.png</file>
         <file>images/tri_40.png</file>
         <file>images/playerIcon2.png</file>
+        <file>images/defaultBig.jpg</file>
     </qresource>
 </RCC>

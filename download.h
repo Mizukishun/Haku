@@ -7,6 +7,8 @@
 
 //暂时只是测试用，看是否有在下载歌曲
 #include <QProgressBar>
+#include <QLabel>
+#include <QLineEdit>
 #include "download/displaywidget.h"
 
 class Download : public QWidget
@@ -24,6 +26,7 @@ signals:
 public slots:
     //测试用，之后删除
     void updateProgressBar(qint64, qint64);
+    void urlTestLine(QString);
 
 private:
     /*******************************下载窗体的布局*********************/
@@ -33,6 +36,8 @@ private:
     QHBoxLayout *testLayout;
     QProgressBar *progressbar;
     DisplayWidget *DSwidget;
+    QLineEdit *urlLine;
+    QLabel *testUrlLabel;
 };
 
 #endif // DOWNLOAD_H

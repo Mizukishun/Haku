@@ -30,12 +30,20 @@ void Download::createInterface()
     progressbar = new QProgressBar;
     progressbar->setValue(0);
     testLayout->addWidget(progressbar);
-    DSwidget = new DisplayWidget();
+    DSwidget = new DisplayWidget(this);
+    urlLine = new QLineEdit;
+    testUrlLabel = new QLabel;
     connect(DSwidget, SIGNAL(progressValue(qint64, qint64)),
             this, SLOT(updateProgressBar(qint64, qint64)));
+    connect(DSwidget, SIGNAL(testDownloadUrl(QString)), this, SLOT(urlTestLine(QString)));
 
     mainLayout->addLayout(testLayout);
+    mainLayout->addWidget(urlLine);
+    mainLayout->addWidget(testUrlLabel);
+    mainLayout->addWidget(DSwidget);
     mainLayout->addStretch();
+
+    DSwidget->hide();
 
 }
 
@@ -44,4 +52,11 @@ void Download::updateProgressBar(qint64 updateValue, qint64 max)
 {
     progressbar->setMaximum(max);
     progressbar->setValue(updateValue);
+}
+
+//测试用，看是否获得了正确的歌曲下载地址
+void Download::urlTestLine(QString s)
+{
+    urlLine->setText(s);
+    testUrlLabel->setText(s);
 }

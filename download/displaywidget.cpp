@@ -858,9 +858,14 @@ void DisplayWidget::songDownloadLink(QString songname)
     //先通过歌曲名找到歌曲的id
     QString downloadMusicID = searchMusicID(downloadMusicName);
 
+//    //下面测试用，看在这里有没有找到歌曲的id
+//    testUrlLineEdit = new QLineEdit;
+//    testUrlLineEdit->setText(downloadMusicID);
+//    displayFrameLayout->addWidget(testUrlLineEdit);
+
     //通过歌曲id找到歌曲的下载地址
-    QNetworkAccessManager *manager3 = new QNetworkAccessManager(this);
-    QNetworkRequest *requester3 = new QNetworkRequest;
+    manager3 = new QNetworkAccessManager(this);
+    requester3 = new QNetworkRequest;
 
     //选择使用的接口方法为song.downWeb方法
     QByteArray sendData3;
@@ -875,9 +880,13 @@ void DisplayWidget::songDownloadLink(QString songname)
 
     requester3->setUrl(QUrl(sendURL3));
     manager3->get(*requester3);
-
     connect(manager3, SIGNAL(finished(QNetworkReply *)),
-            this, SLOT(receiveDownloadLink(QNetworkReply*)));
+                this, SLOT(receiveDownloadLink(QNetworkReply*)));
+//    replyer3 = manager3->get(*requester3);
+//    connect(replyer3, SIGNAL(finished(QNetworkReply *)),
+//            this, SLOT(receiveDownloadLink(QNetworkReply*)));
+
+
 
 }
 
@@ -912,6 +921,12 @@ void DisplayWidget::parseDownloadInfo(QString result3)
                     if(bitrateValue.isArray())
                     {
                         QJsonArray bitrateArray = bitrateValue.toArray();
+                        //以下测试用，之后删除
+//                        testUrlLineEdit = new QLineEdit;
+//                        testUrlLineEdit->setText(tr("test"));
+//                        displayFrameLayout->addWidget(testUrlLineEdit);
+
+
                         for(int i = 0; i < bitrateArray.size(); ++i)
                         {
                             QJsonObject eachBitrateObj = bitrateArray.at(i).toObject();
@@ -1005,6 +1020,22 @@ void DisplayWidget::songDownload(QString downloadSongName)
     //根据歌曲名获取到歌曲的下载地址（不同音质有不同的下载地址
     songDownloadLink(dSongName);
 
+    /**********************测试用，之后看情况删除*********************/
+
+//   requester3->setUrl(QUrl(sendURL3));
+//    QVariant statusCode3 = replyer3->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+//    if(replyer3->error() == QNetworkReply::NoError)
+//    {
+//        QByteArray bytes3 = replyer3->readAll();
+//        QString netInfoStr(bytes3);
+//        //处理获取的JSon格式的字符串信息,从而获得歌曲的下载地址
+//        parseDownloadInfo(netInfoStr);
+//    }
+
+    /**********************以上为测试，之后删除*********************/
+
+
+
     //在当前根目录下创建一个目录（文件夹），用于保存下载的歌曲
     QDir dir("/");
     QDir downloadDir("/download");
@@ -1014,8 +1045,11 @@ void DisplayWidget::songDownload(QString downloadSongName)
 
     }
 
+    //暂时手动加一个后缀
+    QString tempSuffix = ".mp3";
+
     //以下载的歌曲名创建一个文件对象
-    file = new QFile("/downloadMusic/" + dSongName);
+    file = new QFile("/downloadMusic/" + dSongName + tempSuffix);
     //确保这个文件能够写入
     if(!file->open(QIODevice::WriteOnly))
     {
@@ -1039,15 +1073,21 @@ void DisplayWidget::songDownload(QString downloadSongName)
             downloadMusicSize = file_size_str.at(d);
         }
     }
+    /******************************以下测试，之后看情况删除************************/
+    //测试是否得到了歌曲的下载地址,通过发送信号给其他窗体，让其他窗体显示这个具体地址
+    //emit testDownloadUrl(dSongName);
+
+
+    /******************************以上为测试，之后看情况删除************************/
 
     //创建下载歌曲所需的网络对象
     downloadRequester = new QNetworkRequest;
     downloadManager = new QNetworkAccessManager;
     //暂时把下面这句注释掉，之后要还原
-    //downloadRequester->setUrl(QUrl(downloadUrlString));
+    downloadRequester->setUrl(QUrl(downloadUrlString));
     //下面这句是代替上面这句的测试用句，之后得删除
-    QString testurl = "http://yinyueshiting.baidu.com/data2/music/38380704/38380704.mp3?xcode=ef53811881a714ab0c486914f0acd7b6";
-    downloadRequester->setUrl(QUrl(testurl));
+//    QString testurl = "http://yinyueshiting.baidu.com/data2/music/38380704/38380704.mp3?xcode=ef53811881a714ab0c486914f0acd7b6";
+//    downloadRequester->setUrl(QUrl(testurl));
     /*经测试，用上面两句代替的话，就能够下载该地址的文件，
      * 所以问题出在没有获得正确的歌曲下载地址，所以得修正！！！！
      * */

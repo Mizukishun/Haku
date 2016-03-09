@@ -163,7 +163,7 @@ private:
     /***********************************************************************/
 
     //这是桌面背景 皮肤图片
-    QPixmap skinPic = QPixmap(":/images/default_skin.png");
+    QPixmap skinPic = QPixmap(":/images/defaultBig.jpg");
     //字体
     QFont font;
 
