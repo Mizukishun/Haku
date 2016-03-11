@@ -59,6 +59,8 @@ private:
 
     //在每次搜索时都要把前面搜索过的内容清除掉，防止对本次搜索的干扰
     void clearList();
+    //每次下载前也要把之前存储的下载链接清除
+    void clearDownloadList();
 
     //处理用song.play方法获得歌曲信息，其中包含了歌曲的播放地址信息
     void parseSongInfo(QString);
@@ -86,6 +88,11 @@ private:
     void parseDownloadInfo(QString);
 
     /**********************************************************/
+    //根据获得下载地址，进行具体的歌曲下载
+    void actualDownload();
+
+    //创建下载歌曲的文件夹及相应的文件
+    void createFile();
 
 
 signals:
@@ -124,6 +131,8 @@ public slots:
 
     //获取songid对应的下载地址
     void receiveDownloadLink(QNetworkReply*);
+    //第二次获取,多余的
+    //void receiveDownloadLink2(QNetworkReply*);
     //正在下载歌曲
     void isDownloading();
     //更新下载进度条
@@ -191,9 +200,16 @@ private:
     QNetworkAccessManager *manager2;
     QNetworkRequest *requester2;
 
-    QNetworkAccessManager *manager3;
-    QNetworkRequest *requester3;
-    QNetworkReply *replyer3;
+    QNetworkAccessManager *managerD;
+    QNetworkRequest *requesterD;
+    QNetworkReply *replyerD;
+
+    //要发送的完成地址,请求得到songid对应的下载地址
+    QString sendURL3;
+    QByteArray sendData3;
+
+    QNetworkAccessManager *managerD2;
+    QNetworkRequest *requesterD2;
 
 
 
@@ -253,6 +269,13 @@ private:
 
     //控制当第一次单击鼠标时并不播放，只有单第二次单击时才播放
     int firstClick = -1;
+
+    QString downloadMusicID;
+    QString dsongId;
+    //要下载的歌曲名
+    QString downloadSongName;
+
+
 
 
 

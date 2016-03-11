@@ -253,7 +253,7 @@ void SecFrame::closeDisplayWidget()
 
 }
 
-void SecFrame::okToShowDownload(bool b)
+void SecFrame::okToShowDownload(bool )
 {
     okToShowDownloadBool = true;
     //显示搜索结果的窗体
