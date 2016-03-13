@@ -13,7 +13,7 @@ FavoriteList::FavoriteList(QWidget *parent) : QWidget(parent)
 
     //设置窗体的背景颜色
     QPalette Fp;
-    Fp.setColor(QPalette::Background, Qt::white);
+    Fp.setColor(QPalette::Background, QColor(218, 230, 241, 100));
     setAutoFillBackground(true);
     setPalette(Fp);
 
@@ -33,7 +33,7 @@ FavoriteList::FavoriteList(QWidget *parent) : QWidget(parent)
     favoriteLayout->addStretch();
 
     //下面是测试!!!!
-//    createFavoriteList();
+    createFavoriteList();
 //    createFavoriteList();
 }
 
@@ -41,6 +41,11 @@ FavoriteList::FavoriteList(QWidget *parent) : QWidget(parent)
 void FavoriteList::createFavoriteList()
 {
     AudioList *newList = new AudioList();
+    //隐藏掉“添加本地音乐”这一框架
+    newList->hideAddLocateFrame();
+//    //设置新的列表名
+//    newList->changeListNameS(tr("试听音乐"));
+
     favoriteOnlyList = newList;
 
     //维护这个窗体所持有的列表

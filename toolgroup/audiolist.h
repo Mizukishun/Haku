@@ -26,6 +26,18 @@ public:
     //单纯的关闭列表的功能
     void hideList();
 
+    //隐藏最初的“添加本地音乐”那一布局
+    void hideAddLocateFrame();
+
+    //修改列表名
+    void changeListName();
+    //修改列表名，带参数的
+    void changeListNameS(QString);
+
+
+
+private:
+
 
 
 
@@ -47,6 +59,9 @@ public slots:
 
     //监视音乐对象，如果有某首歌曲的名字发送过来，就说明该可以播放该首歌，其他的则要暂停恢复初始状态
     void OkToPlayMusic(SingleMusic *);
+
+    //添加试听的歌曲到列表中
+    void addDisplayMusic(SingleMusic *);
 
 private:
     /************************添加歌曲按钮的框架部分*******************/
@@ -94,6 +109,9 @@ public:
 
     //唯一性值,便于上层窗体判断是哪个AudioList被激活了
     bool NetID;
+
+    //列表名一栏
+    SimplifiedMusic *newList;
 
 
 

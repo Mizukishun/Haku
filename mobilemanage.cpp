@@ -9,7 +9,7 @@ MobileManage::MobileManage(QWidget *parent) : QWidget(parent)
     setFixedWidth(300);
     //设置背景颜色
     QPalette Mp;
-    Mp.setColor(QPalette::Background, Qt::cyan);
+    Mp.setColor(QPalette::Background, QColor(218, 230, 241, 100));
     setAutoFillBackground(true);
     setPalette(Mp);
 

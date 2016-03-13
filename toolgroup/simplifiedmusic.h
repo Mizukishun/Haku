@@ -43,8 +43,8 @@ private:
 private:
     //展开关闭按钮
     QPushButton *openAndCloseBtn;
-    //列表名按钮
-    QPushButton *listNameBtn;
+//    //列表名按钮
+//    QPushButton *listNameBtn;
     //列表菜单按钮
     QPushButton *listMenuBtn;
 
@@ -55,6 +55,8 @@ public:
     //一个布尔值，用于判断是打开、还是关闭列表，
     //其实也就是用于切换openAndCloseBtn用哪个图标而已,默认是关闭的
     bool closeBtn;
+    //列表名按钮，为了能够修改列表名，故设置为public
+    QPushButton *listNameBtn;
 
 
 };

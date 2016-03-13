@@ -35,7 +35,7 @@ AudioList::AudioList(QWidget *parent) : QWidget(parent)
 //当有歌曲文件时，便添加到这个框架中，并显示出来
 void AudioList::createList()
 {
-    SimplifiedMusic *newList = new SimplifiedMusic();
+    newList = new SimplifiedMusic();
     //通过监视SimplifiedMusic对象的鼠标按下事件，来显示豁隐藏歌曲列表
     connect(newList, SIGNAL(isPressed(bool)), this, SLOT(AudioFrameHideOrShow(bool)));
     AudioLayout->addWidget(newList);
@@ -151,9 +151,32 @@ void AudioList::hideList()
 
 }
 
+//隐藏最初的“添加本地音乐”那一框架
+void AudioList::hideAddLocateFrame()
+{
+    //addLocateFrame->hide();
+    addLocateFrame->close();
+}
 
+//修改列表名
+void AudioList::changeListName()
+{
+    QString str;
+    //利用带有参数的进行修改
+    changeListNameS(str);
+}
 
+//修改列表名（带有参数的)
+void AudioList::changeListNameS(QString para)
+{
+    //将字符串参数直接设置为列表名按钮的文本
+    newList->listNameBtn->setText(para);
+}
 
+//将试听的歌曲添加到列表中
+void AudioList::addDisplayMusic(SingleMusic *s)
+{
+    newAudioLayout->addWidget(s);
+    newAudioFrame->show();
 
-
-
+}

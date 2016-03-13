@@ -25,6 +25,7 @@ void SingleDisplay::createDsingleInterface()
     DsinglePlayBtn = new QPushButton;
     DsinglePlayBtn->setFlat(true);
     DsinglePlayBtn->setIcon(QPixmap(":/images/tri_30.png"));
+    //当鼠标单击播放按钮时，就播放这首歌曲
     connect(DsinglePlayBtn, SIGNAL(clicked()),
             this, SLOT(playThisMusic()));
 

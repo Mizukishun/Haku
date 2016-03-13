@@ -15,14 +15,11 @@ MusicList::MusicList(QWidget *parent)
     //设置固定的宽度
     setFixedWidth(300);
 
-    //设置窗体的背景颜色
+    //设置窗体的背景颜色,并通过QColor()中的最后一个参数使窗体显得透明
     QPalette p;
-    p.setColor(QPalette::Background, Qt::lightGray);
+    p.setColor(QPalette::Background, QColor(218, 230, 241, 100));
     setAutoFillBackground(true);
     this->setPalette(p);
-    //设置音乐列表为透明的
-    //setAttribute(Qt::WA_TranslucentBackground, true);
-    setWindowOpacity(0.4);
 
 
     //音乐列表中的总体布局

@@ -416,7 +416,7 @@ void DisplayWidget::createMusicListD()
         if(oneSong->SDnumber > 8)
             oneSong->hide();
 
-        //关联事件，当单机这个小窗体的歌曲名按钮时能够播放这个小窗体所含有的那首歌曲名
+        //关联事件，当单击这个小窗体的歌曲名按钮时能够播放这个小窗体所含有的那首歌曲名
         connect(oneSong, SIGNAL(DsinglePlayThisMusic(QString)),
                 this, SLOT(DWplayThisMusic(QString)));
         //关联下层的下载这首歌曲的信号，使得下载传递过来的歌曲名
