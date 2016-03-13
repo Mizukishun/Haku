@@ -45,7 +45,7 @@ public:
     //创建显示出来的歌曲列表
     void createMusicListD();
     //关闭来自这个窗体的歌曲的播放，以方便其他窗体歌曲的播放
-    void closeDWmusic();
+    //void closeDWmusic();
 
 private:
     //创建主界面
@@ -141,9 +141,9 @@ public slots:
     void downloadFinished();
 
     //以下三个函数是测试用，看是否需要再次请求连接网络才能下载数据
-    void TestisDownloading();
-    void TestupdateDownloadProgress(qint64, qint64);
-    void TestdownloadFinished();
+//    void TestisDownloading();
+//    void TestupdateDownloadProgress(qint64, qint64);
+//    void TestdownloadFinished();
 
 private:
     /************************主界面上的元素***********************/

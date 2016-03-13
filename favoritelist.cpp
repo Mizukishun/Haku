@@ -33,8 +33,8 @@ FavoriteList::FavoriteList(QWidget *parent) : QWidget(parent)
     favoriteLayout->addStretch();
 
     //下面是测试!!!!
-    createFavoriteList();
-    createFavoriteList();
+//    createFavoriteList();
+//    createFavoriteList();
 }
 
 //新建一个喜爱歌曲列表

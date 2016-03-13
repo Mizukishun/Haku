@@ -80,6 +80,11 @@ public:
 signals:
     //通知最顶层窗体，可以对这首歌曲进行播放控制了
     void SendToTop(SingleMusic *);
+    //通知顶层窗体，关闭此前正在播放的音乐
+    void closePrevMusic();
+
+    //通知顶层窗体，使得播放试听音乐时，一开始就能让播放按钮和进度条反映出歌曲正在播放
+    //void changeBtnIcon(bool);
 
     //以下是尝试对按钮点击事件的重载，希望能够实现切换不同的窗体(待删除
 private slots:
@@ -98,6 +103,9 @@ private slots:
 
     //专门用来接收搜索结果显示时的信号，此时要讲搜索结果显示出来
     void okToShowDownload(bool);
+private:
+    //判断是从试听界面传递过来的歌曲，还是从本地音乐列表中传递过来的音乐
+    void whichInterface();
 
 public:
     //显示或隐藏空窗体及搜索结果显示窗体

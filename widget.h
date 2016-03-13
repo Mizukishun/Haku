@@ -60,6 +60,9 @@ private slots:
     //点击最小化按钮所关联的槽函数
     void minWidget();
 
+    //接收从secFrame传递过来的信号,在暂停与播放的控制之前，增添一个停止之前播放的
+    //音乐功能，从而使得能够专注播放当前传递过来的歌曲，而停止其他任何歌曲
+    void PreplayOrpauseMusic(SingleMusic *);
     //最顶层窗体，接收内层窗体发送过来的可以播放歌曲的信号,控制传递过来的歌曲的播放与暂停
     void playOrpauseMusic(SingleMusic *);
 
@@ -73,6 +76,12 @@ private slots:
 
     //接收最底层的singlemusic.h窗体的通知，知道现在是在播放音乐
     void currentIsPlaying(bool);
+
+    //接收从下层窗体过来的closePrevMusic信号，关闭之前播放的音乐
+    void closePreMusic();
+
+    //播放上一首歌曲，但暂时做测试用，之后换回真正的功能
+    void prevMusic();
 
 
 

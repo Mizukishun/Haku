@@ -123,12 +123,16 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
 
     //接收从第二个子布局发送过来的可以播放的信号，对传递过来的这首歌曲进行播放控制
     connect(secFrameLayout, SIGNAL(SendToTop(SingleMusic *)),
-            this, SLOT(playOrpauseMusic(SingleMusic*)));
+            this, SLOT(PreplayOrpauseMusic(SingleMusic*)));
 
     //接收从主界面传递过来的搜索音乐的信号，让downloadDisplay窗体直接进行实际的搜索
     connect(this, SIGNAL(searchMusicString(QString)),
             secFrameLayout->downloadDisplay,
             SLOT(search(QString)));
+    //试听音乐时，能够及时反映出播放按钮及进度条的显示
+    //connect(secFrameLayout, SIGNAL(changeBtnIcon(bool)), this, SLOT(currentIsPlaying(bool)));
+
+    connect(secFrameLayout, SIGNAL(closePrevMusic()), this, SLOT(closePreMusic()));
 
     /***********************************************************************/
     //创建第三个子布局
@@ -144,6 +148,8 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     preMusicBtn->setFlat(true);
     preMusicBtn->setIcon(QPixmap(":/images/preMusicIcon.png"));
     preMusicBtn->setIconSize(QPixmap(":/images/preMusicIcon.png").size());
+    //下面是测试用，之后用其正统的功能（即播放上一首歌曲）替换掉
+    connect(preMusicBtn, SIGNAL(clicked()), this, SLOT(prevMusic()));
 
     nextMusicBtn = new QPushButton;
     nextMusicBtn->setFlat(true);
@@ -267,10 +273,30 @@ void Widget::mouseMoveEvent(QMouseEvent *event)
     this->move(event->globalPos() - disPos);
 }
 
+//接收从secFrame窗体传递过来的信号，控制歌曲的暂停播放功能之前，增添一个
+//关闭之前播放歌曲的功能，使得即使从其他窗体传递过来了歌曲也只有一首歌曲播放
+void Widget::PreplayOrpauseMusic(SingleMusic *mu)
+{
+    //在控制歌曲播放与暂停功能之前，先关闭之前播放的歌曲
+    if(mainMusic != nullptr)
+        closePreMusic();
 
-//控制歌曲的播放
+    //再将传递过来的歌曲传递给playOrpauseMusic()函数进行播放
+    playOrpauseMusic(mu);
+
+    //测试用，看能够解决播放试听音乐开始没有进度条进行
+    connect(mainMusic->player, SIGNAL(positionChanged(qint64)),
+            this, SLOT(setSliderValue(qint64)));
+    connect(mainMusic, SIGNAL(isPlaying(bool)), this, SLOT(currentIsPlaying(bool)));
+    //player();
+    //currentIsPlaying(true);
+}
+
+//单纯控制歌曲的播放与暂停
 void Widget::playOrpauseMusic(SingleMusic *para)
 {
+
+
     //这就是要播放或暂停的歌曲
     mainMusic = para;
     mainMusicName = mainMusic->SingleMusicName;
@@ -283,10 +309,8 @@ void Widget::playOrpauseMusic(SingleMusic *para)
     //暂停或播放这首歌曲
 
     mainMusic->playAndPause();
+
     connect(mainMusic, SIGNAL(isPlaying(bool)), this, SLOT(currentIsPlaying(bool)));
-
-
-
 }
 
 //由于Qt信号槽机制的类型安全，所以由下面这个函数中介一下对音乐的播放控制
@@ -422,4 +446,20 @@ void Widget::currentIsPlaying(bool playingBool)
     //是时间条的滑块也相应地变化
     connect(mainMusic->player, SIGNAL(positionChanged(qint64)),
             this, SLOT(setSliderValue(qint64)));
+}
+
+//接收下层窗体的信号closePrevMusic，关闭之前的音乐播放
+void Widget::closePreMusic()
+{
+    if(mainMusic->player->state() == QMediaPlayer::InvalidMedia)
+    {
+        return;
+    }
+    mainMusic->stopMusic();
+}
+
+//播放上一首歌曲，但暂时做测试用，之后用真正的功能替换回来
+void Widget::prevMusic()
+{
+    mainMusic->stopMusic();
 }

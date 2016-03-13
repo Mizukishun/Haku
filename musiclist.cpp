@@ -20,6 +20,10 @@ MusicList::MusicList(QWidget *parent)
     p.setColor(QPalette::Background, Qt::lightGray);
     setAutoFillBackground(true);
     this->setPalette(p);
+    //设置音乐列表为透明的
+    //setAttribute(Qt::WA_TranslucentBackground, true);
+    setWindowOpacity(0.4);
+
 
     //音乐列表中的总体布局
     mulistLayout = new QVBoxLayout(this);

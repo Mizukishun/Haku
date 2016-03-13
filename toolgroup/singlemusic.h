@@ -111,13 +111,15 @@ public:
     //在这个最底层窗体中定义一个QMediaPlayer对象，由它来控制歌曲的播放
     QMediaPlayer *player;
 
+public:
     //激活窗体，其实就是创建QMediaPlayer对象，并修改时长等按钮的文本
     void active();
 
     //如果选中(或者说单击）了这首歌，就可以进行播放,默认是不播放的
     bool ok;
 
-
+    //单纯地关闭音乐的播放
+    void stopMusic();
 
 
 

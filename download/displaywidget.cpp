@@ -800,12 +800,13 @@ void DisplayWidget::showSpecial(int n)
 
 //下面这个本是要关闭该窗体中播放的歌曲的，但不知道为何下面这样写一点用
 //都没有，所以还需继续修改
-void DisplayWidget::closeDWmusic()
-{
-    DWsingleMusic->resetGUI();
-    DWoktoplay = false;
+//void DisplayWidget::closeDWmusic()
+//{
+//    DWsingleMusic->stopMusic();
+//    delete DWsingleMusic;
+//    DWoktoplay = false;
 
-}
+//}
 
 /**********************************下载歌曲的功能**********************************/
 
@@ -1258,24 +1259,17 @@ void DisplayWidget::downloadFinished()
 
 
 //以下三个函数为测试用，看是否需要再次建立网络连接才能下载歌曲
-void DisplayWidget::TestisDownloading()
-{
+//void DisplayWidget::TestisDownloading()
+//{
 
-    if(file)
-    {
-        file->write(downloadReplyTest->readAll());
-    }
+//    if(file)
+//    {
+//        file->write(downloadReplyTest->readAll());
+//    }
 
-}
+//}
 
-void DisplayWidget::TestupdateDownloadProgress(qint64, qint64)
-{
 
-}
-
-void DisplayWidget::TestdownloadFinished()
-{
-}
 
 //在下载之前，要清除上一次的下载链接等
 void DisplayWidget::clearDownloadList()

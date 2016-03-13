@@ -246,6 +246,12 @@ void SingleMusic::resetGUI()
     musicNameLengthLabel->show();
 }
 
+//只是单纯地关闭音乐
+void SingleMusic::stopMusic()
+{
+    player->stop();
+}
+
 SingleMusic::~SingleMusic()
 {
 }

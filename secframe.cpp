@@ -198,24 +198,9 @@ void SecFrame::OkSendToTop(SingleMusic *sFmusic, bool bOk)
 {
     OnlyMusic = sFmusic;
 
-    //通过控制当前选中的索引号来控制另外一个窗体的所欲列表音乐都关闭
-    if(!downloadDisplay->DWoktoplay)
-    {
-        downloadDisplay->DWsingleMusic->player->stop();
-
-        if(secStack->currentIndex() == 0)
-            faList->closeAllFavoriteList();
-        else if(secStack->currentIndex() == 1)
-            muList->closeAllMusicList();
-        else
-            ;   //什么都不做
-    }
-    else
-    {
-        faList->closeAllFavoriteList();
-        muList->closeAllMusicList();
-    }
-
+    //判断是从哪个界面传递过来的歌曲，选择性地进行播放，但试听界面的歌曲与本地音乐的播放
+    //矛盾是在Widget窗体中解决的，增加了一个PreplayOrpauseMusic()函数来控制播放的唯一性！
+    whichInterface();
 
     //将播放歌曲传递给最顶层的窗体
     emit SendToTop(OnlyMusic);
@@ -262,3 +247,28 @@ void SecFrame::okToShowDownload(bool )
     emptyWidget->hide();
 }
 
+void SecFrame::whichInterface()
+{
+
+    //emit closePrevMusic();
+    //首先判断是从试听列表还是从本地音乐列表中传递过来的音乐
+    if(!downloadDisplay->DWoktoplay)
+    {
+        //不是从试听界面传递过来的音乐
+
+        //通过控制当前选中的索引号来控制另外一个窗体的所欲列表音乐都关闭
+        if(secStack->currentIndex() == 0)
+            faList->closeAllFavoriteList();
+        else if(secStack->currentIndex() == 1)
+            muList->closeAllMusicList();
+        else
+            ;   //什么都不做
+    }
+    else
+    {
+        //如果是从试听界面传递过来的歌曲，则关闭所有本地音乐的播放
+        faList->closeAllFavoriteList();
+        muList->closeAllMusicList();
+
+    }
+}
