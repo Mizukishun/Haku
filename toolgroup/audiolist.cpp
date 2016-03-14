@@ -189,3 +189,12 @@ void AudioList::addDisplayMusic(SingleMusic *s)
     isShow = true;
 
 }
+
+//清空这个列表中的所有歌曲
+void AudioList::clearAudioList()
+{
+    foreach(SingleMusic *ea, musicObjectList)
+    {
+        delete ea;
+    }
+}

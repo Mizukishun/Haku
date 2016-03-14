@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include <QMenu>
 #include <QAction>
+#include <QPoint>
 
 
 class MusicList : public QWidget
@@ -28,9 +29,10 @@ private:
     //创建菜单命令
     void createActions();
 
-public:
-    //重载上下文菜单函数
-    void contextMenuEvent(QContextMenuEvent *);
+
+protected:
+//    //重载上下文菜单函数
+//    void contextMenuEvent(QContextMenuEvent *);
 
 signals:
     //同时发送信号OkToPlayFinally，通知最顶层的窗体可以播放这首歌曲了
@@ -39,6 +41,24 @@ signals:
 public slots:
     //接收从内层窗体发送过来的OkToPlayAudio信号，说明可以播放这首歌曲了
     void OkToPlayMusicOver(SingleMusic *, bool);
+
+    //显示右键菜单
+    void showRightMenu(QPoint);
+
+    //右键菜单的具体功能实现
+    //新建列表
+    void newList();
+    //添加本地歌曲文件？？？
+    void addLocateMusic();
+    //添加本地歌曲文件夹
+    void addLocateMusicFile();
+    //清空列表
+    void clearList();
+    //删除列表
+    void deleteList();
+    //重命名列表
+    void renameList();
+
 
 private:
     //维护一个新建列表的列表

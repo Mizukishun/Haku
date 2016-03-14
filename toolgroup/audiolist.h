@@ -37,6 +37,9 @@ public:
     //添加试听的歌曲到列表中
     void addDisplayMusic(SingleMusic *);
 
+    //清空这个列表中的所有歌曲
+    void clearAudioList();
+
 
 
 private:
