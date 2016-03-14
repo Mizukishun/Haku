@@ -422,6 +422,10 @@ void DisplayWidget::createMusicListD()
         //关联下层的下载这首歌曲的信号，使得下载传递过来的歌曲名
         connect(oneSong, SIGNAL(DsingleDownloadMusic(QString)),
                 this, SLOT(songDownload(QString)));
+
+        //关联下层（SingleDisplay)的添加到列表信号，使得将这首歌曲添加到“试听音乐”列表中
+        connect(oneSong, SIGNAL(DsingleAddMusic(QString)),
+                this, SLOT(addToList(QString)));
     }
 
     //当值改变时，就隐藏一部分歌曲，而现实另外一些窗体;
@@ -651,7 +655,9 @@ void DisplayWidget::parseSongInfo(QString ps2)
                             if(AuditionLinkValue.isString())
                             {
                                 //下面这个变革这首歌曲的（试听？）地址
-                                AuditionLink = AuditionLinkValue.toString();
+                                QString bofangLink = AuditionLinkValue.toString();
+                                AuditionLink = bofangLink;
+                                addMusicLink = bofangLink;
                             }
                         }
                         //以上，便从bitrate字段获得了歌曲的播放地址，
@@ -1308,5 +1314,53 @@ void DisplayWidget::createFile()
         delete file;
         file = nullptr;
     }
+
+}
+
+/****************************添加到列表**************************************/
+//当点击“添加”按钮或者”播放"按钮时，自动将该首歌曲添加到“试听音乐”列表
+void DisplayWidget::addToList(QString addMusicName)
+{
+    //要添加到列表中的歌曲名
+    DWaddMusicName = addMusicName;
+
+    //搜索歌曲名对应的歌曲id
+    QString addMusicID = searchMusicID(DWaddMusicName);
+    //根据歌曲id找到歌曲的试听地址
+    songPlay(addMusicID);
+
+
+    //暂时是仿照实现试听功能的代码DWplayThisMusic(musicname)
+    QNetworkAccessManager *managerAdd = new QNetworkAccessManager;
+    QNetworkRequest *requesterAdd = new QNetworkRequest;
+    //将地址发送出去
+    requesterAdd->setUrl(QUrl(sendURL2));
+    managerAdd->get(*requesterAdd);
+    connect(managerAdd, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(addMusic(QNetworkReply*)));
+}
+
+void DisplayWidget::addMusic(QNetworkReply* replyAdd)
+{
+    //获取这次的状态码信息
+    QVariant statusCode2 = replyAdd->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    //如果没有发生错误
+    if(replyAdd->error() == QNetworkReply::NoError)
+    {
+        //获取收到的字节信息
+        QByteArray bytes2 = replyAdd->readAll();
+        //将字节信息转换为字符串
+        QString results2(bytes2);
+        //处理字符串的信息
+        parseSongInfo(results2);
+    }
+    addSingleMusic = new SingleMusic();
+    addSingleMusic->active();
+    addSingleMusic->SingleMusicName = DWaddMusicName;
+    addSingleMusic->musicNameBtn->setText(DWaddMusicName);
+    addSingleMusic->player->setMedia(QUrl(addMusicLink));
+
+    //发送信号，通知上层窗体要将这首歌曲添加到“试听音乐“列表中
+    emit addThisMusicToListDis(addSingleMusic);
 
 }

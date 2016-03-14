@@ -112,6 +112,11 @@ signals:
     //测试用，看是否得到正确的歌曲下载地址
     void testDownloadUrl(QString);
 
+    //通知上层窗体，将这首歌曲添加到“试听音乐”列表
+    void addThisMusicToListDis(SingleMusic*);
+
+    //通知上层窗体
+
 public slots:
     void search(QString);
 
@@ -139,6 +144,10 @@ public slots:
     void updateDownloadProgress(qint64, qint64);
     //下载完成
     void downloadFinished();
+
+    //添加到列表的功能(当点击“添加”按钮或者点击了播放按钮时，自动将该首歌曲添加到“试听音乐”列表
+    void addToList(QString);
+    void addMusic(QNetworkReply*);
 
     //以下三个函数是测试用，看是否需要再次请求连接网络才能下载数据
 //    void TestisDownloading();
@@ -298,6 +307,8 @@ public:
 
     //获取播放的功能
     SingleMusic *DWsingleMusic;
+    //添加时的具体歌曲
+    SingleMusic *addSingleMusic;
 
     //另存一份搜索出的歌曲信息,便于访问布局中的某个特定歌曲窗体
     QList<SingleDisplay *> SDnumberList;
@@ -329,6 +340,11 @@ public:
     qint64 totalSize;
     //已下载的大小
     qint64 downloadedSize;
+
+    //要添加到“试听音乐”列表的歌曲名
+    QString DWaddMusicName;
+    //试听歌曲的地址
+    QString addMusicLink;
 
 
 

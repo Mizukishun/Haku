@@ -32,10 +32,14 @@ void SingleDisplay::createDsingleInterface()
     DsingleAddBtn = new QPushButton;
     DsingleAddBtn->setFlat(true);
     DsingleAddBtn->setIcon(QPixmap(":/images/addToList_30.png"));
+    //当鼠标单击“添加”按钮时，就将这首歌曲自动添加到“试听音乐”列表
+    connect(DsingleAddBtn, SIGNAL(clicked()),
+            this, SLOT(addThisMusic()));
 
     DsingleDownloadBtn = new QPushButton;
     DsingleDownloadBtn->setFlat(true);
     DsingleDownloadBtn->setIcon(QPixmap(":/images/downloadIcon.png"));
+    //当书包单击“下载”按钮时，就下载这首歌曲
     connect(DsingleDownloadBtn, SIGNAL(clicked()),
             this, SLOT(DsDownloadThisMusic()));
 
@@ -78,3 +82,13 @@ void SingleDisplay::DsDownloadThisMusic()
     //发送信号 ，通知上层窗体要下载这首歌曲
     emit DsingleDownloadMusic(DsDownloadMusicName);
 }
+
+//当鼠标单击“添加”按钮时，将这首歌曲自动添加到“试听音乐”列表中
+void SingleDisplay::addThisMusic()
+{
+    DsAddMusicName = DsingleMusicBtn->text();
+
+    //发送信号，通知上层窗体要添加这首歌曲到“试听音乐"列表
+    emit DsingleAddMusic(DsAddMusicName);
+}
+

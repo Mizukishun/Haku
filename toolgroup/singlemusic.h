@@ -14,6 +14,8 @@
 #include <QFrame>
 #include <QMediaPlayer>
 #include <QMouseEvent>
+#include <QCursor>
+
 
 class SingleMusic : public QWidget
 {
@@ -27,6 +29,8 @@ private:
     void createInterface();
     //创建QMediaPlayer对象，并修改界面上的按钮的文本显示
     void createObject();
+    //当鼠标移动到窗体时颜色改变
+    void changeColor();
 
 signals:
     void OkToPlay(SingleMusic *);
@@ -51,6 +55,9 @@ public slots:
 
     //恢复初始状态的界面
     void resetGUI();
+
+    //更新窗体的透明度
+    void visible();
 
 
 private:

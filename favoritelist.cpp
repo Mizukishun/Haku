@@ -34,6 +34,8 @@ FavoriteList::FavoriteList(QWidget *parent) : QWidget(parent)
 
     //下面是测试!!!!
     createFavoriteList();
+    //修改列表名
+    favoriteOnlyList->changeListNameS(tr("试听音乐"));
 //    createFavoriteList();
 }
 
@@ -43,10 +45,16 @@ void FavoriteList::createFavoriteList()
     AudioList *newList = new AudioList();
     //隐藏掉“添加本地音乐”这一框架
     newList->hideAddLocateFrame();
-//    //设置新的列表名
-//    newList->changeListNameS(tr("试听音乐"));
-
     favoriteOnlyList = newList;
+
+    //创建DisplayWidget对象的实例，以方便将试听的音乐添加到列表中
+//    disWidget = new DisplayWidget(this);
+//    disWidget->hide();
+    //接收从DisplayWidget传递过来的添加信号，将这首歌曲添加到“试听音乐列表”
+//    connect(disWidget, SIGNAL(addThisMusicToListDis(SingleMusic*)),
+//            this, SLOT(addMusicToList(SingleMusic*)));
+
+
 
     //维护这个窗体所持有的列表
     favoriteLists.insert(favoriteLists.end(), favoriteOnlyList);
@@ -96,3 +104,12 @@ void FavoriteList::closeAllFavoriteList()
     favoriteNetID = false;
 }
 
+//将DisplayWidget传递过来的试听歌曲添加到试听列表
+void FavoriteList::addMusicToList(SingleMusic *mus)
+{
+    favoriteOnlyMusic = mus;
+    //调用AudioList类的public函数addDisplayMusic()
+    favoriteOnlyList->addDisplayMusic(favoriteOnlyMusic);
+    favoriteOnlyList->show();
+
+}

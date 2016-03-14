@@ -128,6 +128,11 @@ SecFrame::SecFrame(QWidget *parent)
     //当有搜索结果时，就通知是否显示搜索结果页面
     connect(downloadDisplay, SIGNAL(okToShow(bool)),
             this, SLOT(okToShowDownload(bool)));
+
+    //当单击了添加按钮之后，要将相应的歌曲添加到favorite窗体中的“试听音乐”列表中
+    connect(downloadDisplay, SIGNAL(addThisMusicToListDis(SingleMusic*)),
+            this, SLOT(addToFavoriteList(SingleMusic*)));
+
     //当没有搜索时，这个窗体时隐藏的，只有当有搜索结果时才显示出来
     downloadDisplay->hide();
 
@@ -271,4 +276,11 @@ void SecFrame::whichInterface()
         muList->closeAllMusicList();
 
     }
+}
+
+//单击了添加按钮后，将相应的歌曲添加到favoritelist中的“试听音乐”列表中
+void SecFrame::addToFavoriteList(SingleMusic *addmus)
+{
+
+    faList->addMusicToList(addmus);
 }

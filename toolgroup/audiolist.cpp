@@ -89,7 +89,7 @@ void AudioList::addMusic()
     //此列表默认维护着第一首歌曲
     temp = musicObjectList.at(0);
 
-    //添加歌曲文件后，就隐藏之前的“添加本地歌曲”那块区域，而现实歌曲列表
+    //添加歌曲文件后，就隐藏之前的“添加本地歌曲”那块区域，而显示歌曲列表
     newAudioFrame->show();
     addLocateFrame->hide();
     isShow = true;
@@ -156,6 +156,9 @@ void AudioList::hideAddLocateFrame()
 {
     //addLocateFrame->hide();
     addLocateFrame->close();
+
+    //下面测试，看歌曲列列表是否显示
+    //newAudioFrame->show();
 }
 
 //修改列表名
@@ -176,7 +179,13 @@ void AudioList::changeListNameS(QString para)
 //将试听的歌曲添加到列表中
 void AudioList::addDisplayMusic(SingleMusic *s)
 {
-    newAudioLayout->addWidget(s);
+    //s->active();
+    //该首音乐添加到歌曲对象列表
+    musicObjectList.insert(musicObjectList.end(), s);
+
     newAudioFrame->show();
+    newAudioLayout->addWidget(s);
+
+    isShow = true;
 
 }

@@ -1,11 +1,18 @@
 #include "singlemusic.h"
 #include <QFont>
+#include <QTimer>
 
 
 SingleMusic::SingleMusic(QWidget *parent) : QWidget(parent)
 {
     //首先便是创建主界面
     createInterface();
+
+    //设置当鼠标移动到这个窗体上时，窗体颜色加深，表示移动到了这首歌曲上
+    //首先设置鼠标捕捉
+    setMouseTracking(true);
+    //当鼠标移动到窗体时修改其颜色
+    changeColor();
 
 }
 
@@ -251,6 +258,37 @@ void SingleMusic::stopMusic()
 {
     player->stop();
 }
+
+//当鼠标移动到此窗体上时，就改变窗体的颜色
+void SingleMusic::changeColor()
+{
+    //获取鼠标的全局位置
+    int curX = QCursor::pos().x();
+    int curY = QCursor::pos().y();
+    //判断鼠标是否在窗体上,如果在窗体上，则将其透明度加深
+    //如果不在窗体上，则按其原来的颜色
+    if(curX >= x() && curX <= x() + width() && curY >= y() && curY <= y() + height())
+    {
+        QPalette p;
+        p.setColor(QPalette::Background, QColor(218, 230, 241, 255));
+        setAutoFillBackground(true);
+        this->setPalette(p);
+    }
+    else
+    {
+        setWindowOpacity(1);
+    }
+
+    //计时器，每个50ms自动调用该函数，从而实时更新窗体颜色
+//    QTimer::singleShot(50, this, SLOT(visible()));
+}
+
+////更新窗体透明度
+//void SingleMusic::visible()
+//{
+//    changeColor();
+//}
+
 
 SingleMusic::~SingleMusic()
 {

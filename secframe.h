@@ -103,6 +103,9 @@ private slots:
 
     //专门用来接收搜索结果显示时的信号，此时要讲搜索结果显示出来
     void okToShowDownload(bool);
+
+    //将displaywidget中被单击添加按钮的歌曲添加到favoritelist中的“试听音乐”列表中
+    void addToFavoriteList(SingleMusic*);
 private:
     //判断是从试听界面传递过来的歌曲，还是从本地音乐列表中传递过来的音乐
     void whichInterface();

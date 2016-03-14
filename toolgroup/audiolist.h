@@ -34,6 +34,9 @@ public:
     //修改列表名，带参数的
     void changeListNameS(QString);
 
+    //添加试听的歌曲到列表中
+    void addDisplayMusic(SingleMusic *);
+
 
 
 private:
@@ -60,8 +63,7 @@ public slots:
     //监视音乐对象，如果有某首歌曲的名字发送过来，就说明该可以播放该首歌，其他的则要暂停恢复初始状态
     void OkToPlayMusic(SingleMusic *);
 
-    //添加试听的歌曲到列表中
-    void addDisplayMusic(SingleMusic *);
+
 
 private:
     /************************添加歌曲按钮的框架部分*******************/
