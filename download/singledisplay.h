@@ -12,6 +12,7 @@
 #include <QHBoxLayout>
 #include <QCheckBox>
 #include <QPixmap>
+#include <QPalette>
 
 
 class SingleDisplay : public QWidget
@@ -25,6 +26,10 @@ public:
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent *);
+
+    //重新实现进入和离开事件，使得当鼠标移动到该首歌曲时，显示不同的颜色
+    void leaveEvent(QEvent *);
+    void enterEvent(QEvent *);
 
 
 signals:
@@ -77,6 +82,9 @@ public:
 
     //编号，用来控制当滑动条值变化时有哪些歌曲显示出来，其余的则隐藏
     int SDnumber;
+
+    //设置窗体的背景颜色
+    QPalette p;
 
 };
 

@@ -6,6 +6,11 @@ SingleDisplay::SingleDisplay(QWidget *parent) : QWidget(parent)
 
     //设置窗体的属性为关闭时也即可删除
     setAttribute(Qt::WA_DeleteOnClose);
+
+    //设置窗体的背景颜色
+    p.setColor(QPalette::Background, QColor(255, 255, 255, 0));
+    setAutoFillBackground(true);
+    setPalette(p);
 }
 
 
@@ -92,3 +97,15 @@ void SingleDisplay::addThisMusic()
     emit DsingleAddMusic(DsAddMusicName);
 }
 
+//重新实现进入窗体事件，使得当鼠标移进该首歌时能够显示不同的界面颜色
+void SingleDisplay::enterEvent(QEvent *)
+{
+    p.setColor(QPalette::Background, QColor(255, 255, 255, 255));
+    setPalette(p);
+}
+//重新实现离开窗体事件
+void SingleDisplay::leaveEvent(QEvent *)
+{
+    p.setColor(QPalette::Background, QColor(255, 255, 255, 0));
+    setPalette(p);
+}

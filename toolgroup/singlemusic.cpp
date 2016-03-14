@@ -12,7 +12,13 @@ SingleMusic::SingleMusic(QWidget *parent) : QWidget(parent)
     //首先设置鼠标捕捉
     setMouseTracking(true);
     //当鼠标移动到窗体时修改其颜色
-    changeColor();
+    //changeColor();
+
+    //设置窗体颜色
+    //p.setColor(QPalette::Background, QColor(218, 230, 241, 255));
+    p.setColor(QPalette::Background, QColor(218, 230, 241, 0));
+    setAutoFillBackground(true);
+    this->setPalette(p);
 
 }
 
@@ -262,33 +268,72 @@ void SingleMusic::stopMusic()
 //当鼠标移动到此窗体上时，就改变窗体的颜色
 void SingleMusic::changeColor()
 {
-    //获取鼠标的全局位置
-    int curX = QCursor::pos().x();
-    int curY = QCursor::pos().y();
-    //判断鼠标是否在窗体上,如果在窗体上，则将其透明度加深
-    //如果不在窗体上，则按其原来的颜色
-    if(curX >= x() && curX <= x() + width() && curY >= y() && curY <= y() + height())
-    {
-        QPalette p;
-        p.setColor(QPalette::Background, QColor(218, 230, 241, 255));
-        setAutoFillBackground(true);
-        this->setPalette(p);
-    }
-    else
-    {
-        setWindowOpacity(1);
-    }
+//    //获取鼠标的全局位置
+//    int curX = QCursor::pos().x();
+//    int curY = QCursor::pos().y();
+//    //判断鼠标是否在窗体上,如果在窗体上，则将其透明度加深
+//    //如果不在窗体上，则按其原来的颜色
+//    if(curX >= x() && curX <= x() + width() && curY >= y() && curY <= y() + height())
+//    {
+//        QPalette p;
+//        p.setColor(QPalette::Background, QColor(218, 230, 241, 255));
+//        setAutoFillBackground(true);
+//        this->setPalette(p);
+//    }
+//    else
+//    {
+//        setWindowOpacity(1);
+//    }
 
     //计时器，每个50ms自动调用该函数，从而实时更新窗体颜色
 //    QTimer::singleShot(50, this, SLOT(visible()));
 }
+
+
+//重载鼠标移动事件，使得当鼠标移动到窗体内部时改变窗体的颜色
+void SingleMusic::mouseMoveEvent(QMouseEvent *event)
+{
+//    if(event->globalX() >= x() && event->globalX() <= (x() + width())
+//            && event->globalY() >= y() && event->globalY() <= (y() + height()))
+//    {
+//        p.setColor(QPalette::Background, QColor(218, 230, 241, 255));
+//        this->setPalette(p);
+//    }
+//    else
+//    {
+//        p.setColor(QPalette::Background, QColor(0, 0, 241, 50));
+//        this->setPalette(p);
+//    }
+
+
+}
+
+//重新实现进入窗体事件，使得进入窗体后颜色加深
+void SingleMusic::enterEvent(QEvent* )
+{
+    p.setColor(QPalette::Background, QColor(218, 230, 241, 255));
+    this->setPalette(p);
+}
+
+//重新啊实现离开窗体事件，使得离开窗体后颜色还原
+void SingleMusic::leaveEvent(QEvent *)
+{
+    p.setColor(QPalette::Background, QColor(218, 230, 241, 0));
+    this->setPalette(p);
+}
+
+
+
 
 ////更新窗体透明度
 //void SingleMusic::visible()
 //{
 //    changeColor();
 //}
-
+//重载鼠标释放事件，但暂时不具体实现其
+void SingleMusic::mouseReleaseEvent(QMouseEvent *)
+{
+}
 
 SingleMusic::~SingleMusic()
 {

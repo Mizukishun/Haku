@@ -5,6 +5,8 @@ SecFrame::SecFrame(QWidget *parent)
 {
     //设置它的透明度
     setWindowOpacity(0.8);
+    //设置鼠标捕捉
+    //setMouseTracking(true);
     //主布局
     secMainLayout = new QHBoxLayout(this);
 

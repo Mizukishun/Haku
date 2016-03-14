@@ -13,6 +13,9 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     //设置窗体标题
     setWindowTitle(tr("Haku"));
 
+    //设置鼠标跟踪
+    //setMouseTracking(true);
+
     //设置窗体标题栏，自定义，此时可以缩放，但不能移动，所以可能需要重新实现鼠标移动事件
     flags = Qt::CustomizeWindowHint;
     flags |= Qt::FramelessWindowHint; //无边框，会无法移动以及缩放

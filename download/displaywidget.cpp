@@ -4,6 +4,12 @@
 DisplayWidget::DisplayWidget(QWidget *parent) : QWidget(parent)
 {
     createInterface();
+
+    //设置这一窗体的背景颜色
+    QPalette p;
+    p.setColor(QPalette::Background, QColor(255, 255, 255, 150));
+    setAutoFillBackground(true);
+    setPalette(p);
 }
 
 void DisplayWidget::createInterface()

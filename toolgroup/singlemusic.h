@@ -45,6 +45,18 @@ public slots:
     void mouseDoubleClickEvent(QMouseEvent *);
     //重载鼠标单击事件，如果单击了，则说明这首可以进行播放，而其他的歌就不能播放
     void mousePressEvent(QMouseEvent *);
+    //重载鼠标的移动事件,使得鼠标移动到窗体内部时改变窗体的颜色
+    void mouseMoveEvent(QMouseEvent *);
+    //重载鼠标释放事件，但暂时不具体实现
+    void mouseReleaseEvent(QMouseEvent *);
+
+    //通过重新实现进入和离开事件，使得窗体的颜色随鼠标进入的不同而不同
+    //重新实现进入窗体事件
+    void leaveEvent(QEvent *);
+    //重现实现离开窗体事件
+    void enterEvent(QEvent *);
+
+
 
     //控制音乐的播放与暂停
     void playAndPause();
@@ -57,7 +69,7 @@ public slots:
     void resetGUI();
 
     //更新窗体的透明度
-    void visible();
+    //void visible();
 
 
 private:
@@ -117,6 +129,9 @@ public:
 
     //在这个最底层窗体中定义一个QMediaPlayer对象，由它来控制歌曲的播放
     QMediaPlayer *player;
+
+    //设置窗体的背景颜色
+    QPalette p;
 
 public:
     //激活窗体，其实就是创建QMediaPlayer对象，并修改时长等按钮的文本
