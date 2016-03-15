@@ -22,11 +22,11 @@
 #include "mobilemanage.h"
 #include "download.h"
 #include "more.h"
-#include "lyframe.h"
 #include "packupwidget.h"
 #include "toolgroup/singlemusic.h"
 #include "toolgroup/singlemusic.h"
 #include "download/displaywidget.h"
+#include "lyric/lyricwidget.h"
 
 
 class SecFrame : public QFrame
@@ -42,9 +42,8 @@ public:
     //第二个小布局上的窗体
     QStackedWidget *secStack;
     //第三个小布局上的布局及窗体
-    //QHBoxLayout *lyLayout;
-    //LyricWidget *lyWidget;
-    //lyFrame *lyf;
+
+
 
 
 
@@ -76,6 +75,8 @@ public:
     /**************************************************************/
     //第三个小布局上的元素
     DisplayWidget *downloadDisplay;
+    //显示歌词的窗体
+    LyricWidget *lyricWidget;
 
 signals:
     //通知最顶层窗体，可以对这首歌曲进行播放控制了
@@ -109,17 +110,31 @@ private slots:
 private:
     //判断是从试听界面传递过来的歌曲，还是从本地音乐列表中传递过来的音乐
     void whichInterface();
+    //只显示空窗体、歌词窗体、搜索显示窗体中的一个窗体
+    void showOnlyOneWidget();
 
 public:
-    //显示或隐藏空窗体及搜索结果显示窗体
-    void closeDisplayWidget();
+//    //显示或隐藏空窗体及搜索结果显示窗体
+//    void closeDisplayWidget();
+
+    //只显示歌词窗体
+    void showLyric();
+    //只显示搜索结果窗体
+    void showDisplay();
+    //只显示空窗体
+    void showEmpty();
+
 public:
     //只能播放这首歌曲
     SingleMusic *OnlyMusic;
+
     //用来确定是否要显示搜索结果,默认是不显示，只有当有搜索了才显示
     bool okToShowDownloadBool = false;
     //用来确定是否显示空窗体，默认是显示的
     bool okToShowEmptyWidget = true;
+    //用来确定是否显示歌词窗体,默认是不显示的
+    bool okToShowLyric = false;
+
     //一个空的窗体，主要是为了在隐藏第三个小布局时不会使得第一、二个小布局跑到中间去
     QWidget *emptyWidget;
     //空窗体的布局

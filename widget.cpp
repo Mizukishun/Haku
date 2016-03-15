@@ -73,6 +73,8 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     skinBtn->setFlat(true);
     skinBtn->setIcon(QPixmap(":/images/skinIcon.png"));
     skinBtn->setToolTip(tr("更换皮肤"));
+    //连接更换皮肤的槽函数
+    connect(skinBtn, SIGNAL(clicked()), this, SLOT(changeSkin()));
 
     preferenceBtn = new QPushButton;
     preferenceBtn->setFlat(true);
@@ -465,4 +467,17 @@ void Widget::closePreMusic()
 void Widget::prevMusic()
 {
     mainMusic->stopMusic();
+}
+
+//更换皮肤
+void Widget::changeSkin()
+{
+    /*暂时只是实现将选中的图片保存到一个专门的皮肤文件夹内，
+     * 将所选择的图片设置为窗体的皮肤,所以暂时能想到的操作主要有：
+     * 打开文件选择对话框；将所选中的文件复制到专门的文件夹内，将该文件
+     * 设置为窗体皮肤
+     * */
+
+    //注意：之后要完善这个换肤的功能，使得像酷狗一样能够弹出一个专门的换肤窗体。
+
 }

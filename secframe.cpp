@@ -120,8 +120,7 @@ SecFrame::SecFrame(QWidget *parent)
 
 
     /******************************************************************************/
-    //创建第三个小布局，也即歌词窗口那部分
-    //lyf = new lyFrame();
+    //创建第三个小布局，也即搜索显示窗口那部分
     downloadDisplay = new DisplayWidget();
 
     //连接displaywidget的发送的播放歌曲的信号
@@ -143,6 +142,14 @@ SecFrame::SecFrame(QWidget *parent)
     emptyLayout = new QHBoxLayout(emptyWidget);
     emptyLayout->addStretch();
 
+    //歌词显示窗体
+    lyricWidget = new LyricWidget();
+
+    //测试用，有歌词窗体之后就隐藏掉空窗体,
+    //之后要修改完整，使得歌词窗体与搜索窗体进行切换
+    emptyWidget->hide();
+
+
 
     /*****************************************************************************/
     //对主布局的完成
@@ -155,6 +162,9 @@ SecFrame::SecFrame(QWidget *parent)
     //添加第三个小布局
     secMainLayout->addWidget(downloadDisplay);
     secMainLayout->addWidget(emptyWidget);
+
+    //添加歌词窗体
+    secMainLayout->addWidget(lyricWidget);
     //secMainLayout->setStretch(0);
 
 
@@ -167,28 +177,39 @@ SecFrame::SecFrame(QWidget *parent)
 
 void SecFrame::on_favoriteBtn_clicked()
 {
+    secStack->show();
     emit secStack->setCurrentIndex(1);
 
 }
 
 void SecFrame::on_musicListBtn_clicked()
 {
+    secStack->show();
     emit secStack->setCurrentIndex(0);
 
 }
 
 void SecFrame::on_mobileBtn_clicked()
 {
+    secStack->show();
     emit secStack->setCurrentIndex(2);
+
+    //测试用，显示歌词窗体，之后删除
+    showLyric();
 }
 
 void SecFrame::on_downloadBtn_clicked()
 {
+    secStack->show();
     emit secStack->setCurrentIndex(3);
+
+    //测试用，显示搜索结果，之后删除
+    showDisplay();
 }
 
 void SecFrame::on_moreBtn_clicked()
 {
+    secStack->show();
     emit secStack->setCurrentIndex(4);
 }
 
@@ -196,8 +217,16 @@ void SecFrame::on_packUpBtn_clicked()
 {
     emit secStack->setCurrentIndex(5);
 
-    //显示或隐藏空窗体及搜索结果显示窗体
-    closeDisplayWidget();
+    //连第二小布局都隐藏
+    secStack->hide();
+
+    //显示空窗体
+    //showEmpty();
+    //测试下全屏显示歌词
+    showLyric();
+
+//    //显示或隐藏空窗体及搜索结果显示窗体
+//    closeDisplayWidget();
 }
 
 //接收从六个小窗体传递过来的可以播放信号，但这里要控制住，使得只能播放一首歌曲
@@ -215,43 +244,45 @@ void SecFrame::OkSendToTop(SingleMusic *sFmusic, bool bOk)
 
 
 //显示或隐藏空窗体及搜索结果显示窗体
-void SecFrame::closeDisplayWidget()
-{
-    if(!okToShowDownloadBool)
-    {
-        //如果没有搜索，则不管怎样都是要显示空窗体的
-        emptyWidget->show();
-    }
-    else
-    {
-        //如果有搜索结果了，则要看点击按钮的情况,
-        if(okToShowEmptyWidget)
-        {
-            //如果允许你空窗体显示就显示空窗体，隐藏搜索结果窗体
-            emptyWidget->show();
-            downloadDisplay->hide();
-            //同时设置下次就隐藏空窗体，显示搜索结果窗体
-            okToShowEmptyWidget = false;
-        }
-        else
-        {
-            //如果不允许空窗体显示，就隐藏空窗体，显示搜索窗体
-            emptyWidget->hide();
-            downloadDisplay->show();
-            //同时设置下次就可以显示空窗体了
-            okToShowEmptyWidget = true;
-        }
-    }
+//void SecFrame::closeDisplayWidget()
+//{
+//    if(!okToShowDownloadBool)
+//    {
+//        //如果没有搜索，则不管怎样都是要显示空窗体的
+//        emptyWidget->show();
+//    }
+//    else
+//    {
+//        //如果有搜索结果了，则要看点击按钮的情况,
+//        if(okToShowEmptyWidget)
+//        {
+//            //如果允许你空窗体显示就显示空窗体，隐藏搜索结果窗体
+//            emptyWidget->show();
+//            downloadDisplay->hide();
+//            //同时设置下次就隐藏空窗体，显示搜索结果窗体
+//            okToShowEmptyWidget = false;
+//        }
+//        else
+//        {
+//            //如果不允许空窗体显示，就隐藏空窗体，显示搜索窗体
+//            emptyWidget->hide();
+//            downloadDisplay->show();
+//            //同时设置下次就可以显示空窗体了
+//            okToShowEmptyWidget = true;
+//        }
+//    }
 
-}
+//}
 
 void SecFrame::okToShowDownload(bool )
 {
-    okToShowDownloadBool = true;
-    //显示搜索结果的窗体
-    downloadDisplay->show();
-    //同时也要将空窗体隐藏
-    emptyWidget->hide();
+//    okToShowDownloadBool = true;
+//    //显示搜索结果的窗体
+//    downloadDisplay->show();
+//    //同时也要将空窗体隐藏
+//    emptyWidget->hide();
+
+    showDisplay();
 }
 
 void SecFrame::whichInterface()
@@ -285,4 +316,67 @@ void SecFrame::addToFavoriteList(SingleMusic *addmus)
 {
 
     faList->addMusicToList(addmus);
+}
+
+//只显示空窗体、歌词窗体、搜索显示窗体中的唯一个窗体
+void SecFrame::showOnlyOneWidget()
+{
+    if(okToShowEmptyWidget)
+    {
+        //如果空窗体能够显示，则其它两个窗体就要关闭
+        emptyWidget->show();
+        downloadDisplay->hide();
+        lyricWidget->hide();
+        okToShowDownloadBool = false;
+        okToShowLyric = false;
+    }
+    else
+    {
+        //如果空窗体没有显示，则显示剩下两个窗体中的一个
+        if(okToShowDownloadBool)
+        {
+            //如果搜索结果窗体能够显示，则另两个窗体要关闭
+            downloadDisplay->show();
+            emptyWidget->hide();
+            lyricWidget->hide();
+            okToShowLyric = false;
+        }
+        else
+        {
+            //如果空窗体没有显示则显示歌词窗体，关闭其它两个窗体
+            lyricWidget->show();
+            downloadDisplay->hide();
+            emptyWidget->hide();
+            okToShowLyric = true;
+        }
+    }
+}
+
+//只显示歌词窗体
+void SecFrame::showLyric()
+{
+    okToShowLyric = true;
+    okToShowEmptyWidget = false;
+    okToShowDownloadBool = false;
+    showOnlyOneWidget();
+}
+
+//只显示搜索结果窗体
+void SecFrame::showDisplay()
+{
+
+    okToShowDownloadBool = true;
+    okToShowEmptyWidget = false;
+    okToShowLyric = false;
+    showOnlyOneWidget();
+
+}
+
+//只显示空窗体
+void SecFrame::showEmpty()
+{
+    okToShowEmptyWidget = true;
+    okToShowDownloadBool = false;
+    okToShowLyric = false;
+    showOnlyOneWidget();
 }

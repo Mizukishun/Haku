@@ -26,6 +26,7 @@
 #include "secframe.h"
 #include "toolgroup/singlemusic.h"
 #include "toolgroup/audiolist.h"
+#include "lyric/lyricwidget.h"
 
 
 class Widget : public QWidget
@@ -82,6 +83,9 @@ private slots:
 
     //播放上一首歌曲，但暂时做测试用，之后换回真正的功能
     void prevMusic();
+
+    //换肤
+    void changeSkin();
 
 
 

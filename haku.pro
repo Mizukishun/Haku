@@ -25,15 +25,14 @@ SOURCES += main.cpp\
     mobilemanage.cpp \
     download.cpp \
     more.cpp \
-    lyricwidget.cpp \
-    lyframe.cpp \
     packupwidget.cpp \
     toolgroup/selfgroup.cpp \
     toolgroup/singlemusic.cpp \
     toolgroup/simplifiedmusic.cpp \
     toolgroup/audiolist.cpp \
     download/displaywidget.cpp \
-    download/singledisplay.cpp
+    download/singledisplay.cpp \
+    lyric/lyricwidget.cpp
 
 
 HEADERS  += widget.h \
@@ -43,15 +42,14 @@ HEADERS  += widget.h \
     mobilemanage.h \
     download.h \
     more.h \
-    lyricwidget.h \
-    lyframe.h \
     packupwidget.h \
     toolgroup/selfgroup.h \
     toolgroup/singlemusic.h \
     toolgroup/simplifiedmusic.h \
     toolgroup/audiolist.h \
     download/displaywidget.h \
-    download/singledisplay.h
+    download/singledisplay.h \
+    lyric/lyricwidget.h
 
 
 RESOURCES += \
