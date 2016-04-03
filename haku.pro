@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     toolgroup/audiolist.cpp \
     download/displaywidget.cpp \
     download/singledisplay.cpp \
-    lyric/lyricwidget.cpp
+    lyric/lyricwidget.cpp \
+    lyric/lyricfile.cpp
 
 
 HEADERS  += widget.h \
@@ -49,7 +50,8 @@ HEADERS  += widget.h \
     toolgroup/audiolist.h \
     download/displaywidget.h \
     download/singledisplay.h \
-    lyric/lyricwidget.h
+    lyric/lyricwidget.h \
+    lyric/lyricfile.h
 
 
 RESOURCES += \
