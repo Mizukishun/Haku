@@ -70,7 +70,7 @@ void More::openKugou()
 
     //这里直接用自己电脑的KuGou.exe的路径，之后得修改
     kugouProcess->start("D:\\Programs\\KuGou2012\\KuGou.exe");
-    //因为我的电脑是windows的，所以是\\
+    //因为我的电脑是windows的，所以是
 
     //注意，这里还没有错误处理，所以之后得补充一个错误处理的东东
 }

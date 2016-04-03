@@ -41,6 +41,25 @@ void Download::createInterface()
     mainLayout->addWidget(urlLine);
     mainLayout->addWidget(testUrlLabel);
     mainLayout->addWidget(DSwidget);
+
+    //测试是否正确解析了歌词
+    lyT = new LyricFile();
+
+    teStr = lyT->openTest;
+
+    lyLine1 = new QLineEdit;
+    lyLine1->setText(teStr);
+
+    lyText1 = new QTextEdit;
+    lyText1->setText(teStr);
+    //lyText1->setText(tr("Test"));
+    //lyBtn = new QPushButton(tr("TestBtn"));
+    //connect(lyBtn, SIGNAL(clicked()), this, SLOT(lyricTest()));
+
+
+    mainLayout->addWidget(lyLine1);
+    mainLayout->addWidget(lyText1);
+    //mainLayout->addWidget(lyBtn);
     mainLayout->addStretch();
 
     DSwidget->hide();
@@ -59,4 +78,10 @@ void Download::urlTestLine(QString s)
 {
     urlLine->setText(s);
     testUrlLabel->setText(s);
+}
+
+//测试用，看歌词在点击按钮后是否重新显示
+void Download::lyricTest()
+{
+    lyText1->setText(teStr);
 }

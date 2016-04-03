@@ -6,8 +6,14 @@ LyricWidget::LyricWidget(QWidget *parent) : QWidget(parent)
     p.setColor(QPalette::Background, QColor(0, 0, 0, 0));
     setPalette(p);
 
+
+    //建立歌词文件对象LyricFile
+    Ly = new LyricFile();
+
     //创建歌词窗体的界面
     createLyricInterface();
+
+
 
 }
 
@@ -72,40 +78,6 @@ void LyricWidget::createLyricInterface()
     lyBtn9->setEnabled(false);
 
 
-
-
-//    //主标签，即正在播放的那句歌词
-//    mainLabel = new QLabel;
-
-//    mainLabel->setText(tr("正在播放的歌词"));
-
-
-//    //测试用，看是否有在主界面中显示出歌词窗体
-//    testBtn1 = new QPushButton(tr("测试歌词窗体，,测试按钮的歌词长度是否会不能显示，所以设置长一点"));
-//    testBtn1->setFlat(true);
-
-//    testBtn2 = new QPushButton(tr("测试歌词是否用按钮显示"));
-//    testBtn2->setFlat(true);
-//    //测试按钮不能按
-//    testBtn2->setEnabled(false);
-//    //尝试设置按钮的字体颜色
-//    QPalette p;
-//    p.setColor(QPalette::ButtonText, QColor(255, 0, 0, 255));
-//    testBtn2->setPalette(p);
-
-//    testLabel1 = new QLabel(tr("第一个测试标签,顺带测试歌词长度"));
-//    testLabel2 = new QLabel(tr("第二个测试标签"));
-
-//    lyFrameLayout->addWidget(testBtn1);
-//    lyFrameLayout->addWidget(testBtn2);
-//    lyFrameLayout->addWidget(testLabel1);
-//    lyFrameLayout->addWidget(mainLabel);
-//    lyFrameLayout->addWidget(testLabel2);
-
-    //testLabel1->hide();
-
-
-
     //向歌词框架添加显示九条歌词的按钮
     lyFrameLayout->addWidget(lyBtn1);
     lyFrameLayout->addWidget(lyBtn2);
@@ -117,8 +89,8 @@ void LyricWidget::createLyricInterface()
     lyFrameLayout->addWidget(lyBtn8);
     lyFrameLayout->addWidget(lyBtn9);
 
-
-
+    //替换上歌词
+    showLyric();
 
 
     /******************************不要把代码再添加到后面了，在上面去添加代码********************/
@@ -129,4 +101,49 @@ void LyricWidget::createLyricInterface()
     lyricLayout->addWidget(lyricFrame);
     //最后，在最外层布局的最右边添加一个addStretch()
     lyricLayout->addStretch();
+}
+
+//显示歌词
+void LyricWidget::showLyric()
+{
+    //建立歌词文件对象LyricFile
+    //Ly = new LyricFile();
+
+    //每一个按钮对应的一句歌词
+    QString ly1;
+    QString ly2;
+    QString ly3;
+    QString ly4;
+    QString ly5;
+    QString ly6;
+    QString ly7;
+    QString ly8;
+    QString ly9;
+
+    //暂时只是做测试用，只显示前面的几句歌词，还没有实现随时间滚动歌词显示的效果，之后得补上！！！
+    /* 解释下，Ly->totalLyric.at(1)得到第二句歌词（测试用，暂时忽略掉第一句歌词）QStringList，
+     * 所以第二个at(1)就是一句歌词中的歌词部分，因为at(0)是时间部分了
+     * */
+    ly1 = Ly->totalLyric.value(1).value(1);
+    ly2 = Ly->totalLyric.value(2).value(1);
+    ly3 = Ly->totalLyric.value(3).value(1);
+    ly4 = Ly->totalLyric.value(4).value(1);
+    ly5 = Ly->totalLyric.value(5).value(1);
+    ly6 = Ly->totalLyric.value(6).value(1);
+    ly7 = Ly->totalLyric.value(7).value(1);
+    ly8 = Ly->totalLyric.value(8).value(1);
+    ly9 = Ly->totalLyric.value(15).value(1);
+
+
+    //设置每个歌词按钮的歌词文本显示
+    lyBtn1->setText(ly1);
+    lyBtn2->setText(ly2);
+    lyBtn3->setText(ly3);
+    lyBtn4->setText(ly4);
+    lyBtn5->setText(ly5);
+    lyBtn6->setText(ly6);
+    lyBtn7->setText(ly7);
+    lyBtn8->setText(ly8);
+    lyBtn9->setText(ly9);
+
 }

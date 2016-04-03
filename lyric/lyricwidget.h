@@ -15,6 +15,8 @@
 #include <QHBoxLayout>
 #include <QFrame>
 
+#include "lyricfile.h"
+
 
 
 class LyricWidget : public QWidget
@@ -26,6 +28,9 @@ public:
 private:
     //创建歌词窗体的布局
     void createLyricInterface();
+
+    //显示歌词(暂时还实现随时间滚动的效果，之后补上
+    void showLyric();
 
 signals:
 
@@ -53,19 +58,13 @@ private:
     QPushButton *lyBtn8;
     QPushButton *lyBtn9;
 
-    //主标签，即正在播放的那句歌词,但暂时不确定是否用QLabel
-    QLabel *mainLabel;
+
+    //歌词文件对象
+    LyricFile *Ly;
+    //一句歌词(包含时间及歌词，at(1)才是歌词，at(0)是时间字符串）
+    //QStringList *singleLyric;
 
 
-
-
-
-
-    //测试用，看是否将窗体放好了,之后都得删除
-    QPushButton *testBtn1;
-    QPushButton *testBtn2;
-    QLabel *testLabel1;
-    QLabel *testLabel2;
 
 
 
