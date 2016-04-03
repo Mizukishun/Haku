@@ -51,5 +51,8 @@
         <file>images/tri_40.png</file>
         <file>images/playerIcon2.png</file>
         <file>images/defaultBig.jpg</file>
+        <file>images/kugou.png</file>
+        <file>images/kugou2.png</file>
+        <file>images/github2.png</file>
     </qresource>
 </RCC>
