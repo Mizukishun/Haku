@@ -300,7 +300,8 @@ void SecFrame::whichInterface()
         else if(secStack->currentIndex() == 1)
             muList->closeAllMusicList();
         else
-            ;   //什么都不做
+        {
+        }   //什么都不做
     }
     else
     {

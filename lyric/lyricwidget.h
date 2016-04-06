@@ -14,6 +14,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFrame>
+#include <QTimer>
 
 #include "lyricfile.h"
 
@@ -25,16 +26,29 @@ class LyricWidget : public QWidget
 public:
     explicit LyricWidget(QWidget *parent = 0);
 
+    //隐藏全部歌词
+    void hideAllLyric();
+
+    // 没有歌词就显示相应的通知
+    void havingNoLyric();
+
 private:
     //创建歌词窗体的布局
     void createLyricInterface();
 
-    //显示歌词(暂时还实现随时间滚动的效果，之后补上
-    void showLyric();
+    //初始显示的歌词
+    void initShowLyric();
+
+    //设置按钮要显示的文本
+    void showLyricOnBtn();
 
 signals:
 
+
 public slots:
+    //随计时器而滚动歌词的显示
+    void scrollShow();
+
 
 private:
     //设置歌词窗体的背景色
@@ -58,9 +72,26 @@ private:
     QPushButton *lyBtn8;
     QPushButton *lyBtn9;
 
+    //每一个按钮对应的一句歌词
+    QString ly1;
+    QString ly2;
+    QString ly3;
+    QString ly4;
+    QString ly5;
+    QString ly6;
+    QString ly7;
+    QString ly8;
+    QString ly9;
 
     //歌词文件对象
     LyricFile *Ly;
+
+    //测试用，计时器对象，使歌词随其而变化滚动
+    QTimer *testTimer;
+
+    //计数对象，使得随时间变化能够替换为不同的歌词
+    qint8 ki;
+
     //一句歌词(包含时间及歌词，at(1)才是歌词，at(0)是时间字符串）
     //QStringList *singleLyric;
 

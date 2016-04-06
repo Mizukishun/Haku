@@ -16,6 +16,9 @@
 #include <QDataStream>
 #include <QTextCodec>
 
+//测试用的计时器
+#include <QTimer>
+
 
 
 class LyricFile : public QObject
@@ -36,6 +39,10 @@ public:
     //将一行字符串分割成两个子字符串（分别为时间与歌词的字符串),并分别赋予lyricList和timeList
     void twoParts(QString);
 
+//public slots:
+//    //测试用，随着计时器而滚动歌词的显示
+//    void scrollShow();
+
 public:
     //歌词文件(这里有很大疑问，是不是该指针？还是不要*
     //QFile *lyric;
@@ -55,7 +62,9 @@ public:
     //测试用，观察是哪部分出问题了
     QString openTest /*= "The First"*/;
 
-
+//private:
+//    //测试用的计时器，看是否能够实现每隔一定时间滚动显示歌词
+//    QTimer *testTimer;
 
 //    //具体歌词的每一行（只含歌词）
 //    QStringList lyricList;

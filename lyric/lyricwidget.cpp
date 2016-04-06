@@ -6,12 +6,16 @@ LyricWidget::LyricWidget(QWidget *parent) : QWidget(parent)
     p.setColor(QPalette::Background, QColor(0, 0, 0, 0));
     setPalette(p);
 
-
     //建立歌词文件对象LyricFile
     Ly = new LyricFile();
 
     //创建歌词窗体的界面
     createLyricInterface();
+
+    //创建QTimer对象，使歌词随其变化滚动，测试用，之后删除
+    testTimer = new QTimer(this);
+    connect(testTimer, SIGNAL(timeout()), this, SLOT(scrollShow()));
+    testTimer->start(1000);
 
 
 
@@ -89,8 +93,9 @@ void LyricWidget::createLyricInterface()
     lyFrameLayout->addWidget(lyBtn8);
     lyFrameLayout->addWidget(lyBtn9);
 
-    //替换上歌词
-    showLyric();
+    //替换上初始的歌词
+    ki = 0;
+    initShowLyric();
 
 
     /******************************不要把代码再添加到后面了，在上面去添加代码********************/
@@ -104,35 +109,28 @@ void LyricWidget::createLyricInterface()
 }
 
 //显示歌词
-void LyricWidget::showLyric()
+void LyricWidget::initShowLyric()
 {
     //建立歌词文件对象LyricFile
     //Ly = new LyricFile();
 
-    //每一个按钮对应的一句歌词
-    QString ly1;
-    QString ly2;
-    QString ly3;
-    QString ly4;
-    QString ly5;
-    QString ly6;
-    QString ly7;
-    QString ly8;
-    QString ly9;
+
 
     //暂时只是做测试用，只显示前面的几句歌词，还没有实现随时间滚动歌词显示的效果，之后得补上！！！
     /* 解释下，Ly->totalLyric.at(1)得到第二句歌词（测试用，暂时忽略掉第一句歌词）QStringList，
      * 所以第二个at(1)就是一句歌词中的歌词部分，因为at(0)是时间部分了
      * */
-    ly1 = Ly->totalLyric.value(1).value(1);
-    ly2 = Ly->totalLyric.value(2).value(1);
-    ly3 = Ly->totalLyric.value(3).value(1);
-    ly4 = Ly->totalLyric.value(4).value(1);
-    ly5 = Ly->totalLyric.value(5).value(1);
-    ly6 = Ly->totalLyric.value(6).value(1);
-    ly7 = Ly->totalLyric.value(7).value(1);
-    ly8 = Ly->totalLyric.value(8).value(1);
-    ly9 = Ly->totalLyric.value(15).value(1);
+
+    //ki = 0;
+    ly1 = Ly->totalLyric.value(ki).value(1);
+    ly2 = Ly->totalLyric.value(ki+1).value(1);
+    ly3 = Ly->totalLyric.value(ki+2).value(1);
+    ly4 = Ly->totalLyric.value(ki+3).value(1);
+    ly5 = Ly->totalLyric.value(ki+4).value(1);
+    ly6 = Ly->totalLyric.value(ki+5).value(1);
+    ly7 = Ly->totalLyric.value(ki+6).value(1);
+    ly8 = Ly->totalLyric.value(ki+7).value(1);
+    ly9 = Ly->totalLyric.value(ki+8).value(1);
 
 
     //设置每个歌词按钮的歌词文本显示
@@ -146,4 +144,47 @@ void LyricWidget::showLyric()
     lyBtn8->setText(ly8);
     lyBtn9->setText(ly9);
 
+}
+
+//随计时器滚动歌词的显示
+void LyricWidget::scrollShow()
+{
+    //每次调用都会增加
+    ki += 1;
+
+    //如果歌词还有的话,就可以滚动显示歌词
+    if(ki < Ly->totalLyric.size() - 4)
+    {
+        initShowLyric();
+    }
+
+
+}
+
+//隐藏全部歌词
+void LyricWidget::hideAllLyric()
+{
+    lyBtn1->hide();
+    lyBtn2->hide();
+    lyBtn3->hide();
+    lyBtn4->hide();
+    lyBtn5->hide();
+    lyBtn6->hide();
+    lyBtn7->hide();
+    lyBtn8->hide();
+    lyBtn9->hide();
+}
+
+//没有歌词，就显示相应的通知
+void LyricWidget::havingNoLyric()
+{
+    lyBtn1->setText(tr(""));
+    lyBtn2->setText(tr(""));
+    lyBtn3->setText(tr(""));
+    lyBtn4->setText(tr(""));
+    lyBtn5->setText(tr("该歌曲暂无歌词"));
+    lyBtn6->setText(tr(""));
+    lyBtn7->setText(tr(""));
+    lyBtn8->setText(tr(""));
+    lyBtn9->setText(tr(""));
 }
