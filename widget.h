@@ -53,6 +53,9 @@ signals:
 
     void searchMusicString(QString);
 
+//    //将信号发送歌词显示窗口，通知其歌曲播放了的时间值
+//    void playedTimeLyric(qint64);
+
 
 
 private slots:
@@ -87,6 +90,8 @@ private slots:
     //换肤
     void changeSkin();
 
+//    //关联上歌词的滚动显示
+//    void lyricScroll(qint64);
 
 
 

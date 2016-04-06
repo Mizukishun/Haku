@@ -97,7 +97,8 @@ void LyricFile::splitLyricFile(QStringList singleLineList)
     //在歌词文件totalLyric前面和后面度添加四条空字符串，以方便显示
     for(int d = 0; d < 4; ++d)
     {
-        totalLyric.append({"测试上", "测试上面"});
+        //之后用空字符串替代
+        totalLyric.append({"", ""});
     }
 
 
@@ -132,9 +133,10 @@ void LyricFile::splitLyricFile(QStringList singleLineList)
     }
 
     //在歌词文件totalLyric最后面添加4条空字符串记录，以方便显示
-    for(int s = 0; s < 4; ++s)
+    for(int s = 0; s < 5; ++s)
     {
-        totalLyric.append({"测试下", "测试下面"});
+        //之后用空字符串替代
+        totalLyric.append({"", ""});
     }
 }
 
@@ -146,7 +148,14 @@ void LyricFile::twoParts(QString str)
     twoPartsList = str.split("]");
     //通过上面这样，twoPartsList就保存了一句歌词的两部分，分别在at(0)和at(1)中
 
-    openTest += "\n" + twoPartsList.value(0);
+    //将时间部分单纯地保存在一个QList<QString>对象中，以方便后面转换为具体的时间值
+    //timePartList.append(twoPartsList.value(0));
+    qint64 testStr = QStringToqint64(twoPartsList.value(0));
+
+    lyricTimeList.append(testStr);
+
+    //下面是为了测试，而显示在download窗体中的文本
+    openTest += "\n" + QString::number(testStr);
 
     //将已经被分割的每一句歌词再次保存到另外一个QList中
     totalLyric.append(twoPartsList);
@@ -155,8 +164,68 @@ void LyricFile::twoParts(QString str)
 
 }
 
-////随着计时器而滚动显示歌词
+//随着计时器而滚动显示歌词
 //void LyricFile::scrollShow()
 //{
 
 //}
+
+
+//将字符串型的时间转换为数值型的时间值，方便后面的比较
+qint64  LyricFile::QStringToqint64(QString str)
+{
+
+    //要确实包含歌词文件中的那种形式的字符时间，才要进行转换
+    if(str.contains(":"))
+    {
+        QStringList tem1 = str.split(":");
+        QString str1 = tem1.value(0);
+        //分割出来的分钟部分
+        int minu = str1.toInt();
+
+        //分割出来的秒及毫秒部分
+        QString str2 = tem1.value(1);
+        QStringList tem2 = str2.split(".");
+        QString str3 = tem2.value(0);
+        QString str4 = tem2.value(1);
+        int sec = str3.toInt();
+        int msec = str4.toInt();
+
+        if(IsD(str1)&&IsD(str3)&&IsD(str4))
+        {
+            //计算总时间,是这样计算吗？？？
+            qint64 totalTime = minu*60*1000 + sec*1000 + msec*10;
+            //返回总时间
+            return totalTime;
+        }
+        else
+        {
+            //如果时间标签不是纯数字型的，就返回0,
+            return 0;
+        }
+    }
+}
+
+
+//判断QString中的是否为纯数字
+bool LyricFile::IsD(QString qs)
+{
+    QByteArray ba = qs.toLatin1();
+    char *charQStr = ba.data();
+    //如果还有内容，并且是在0~9之间，则说明是纯数字型的
+    while(*charQStr && *charQStr >= '0' && *charQStr <= '9')
+    {
+        ++charQStr;
+    }
+
+    //如果海油内容就退出来了，就说明是有不是数字的字符
+    if(*charQStr)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+

@@ -48,7 +48,7 @@ void Download::createInterface()
     teStr = lyT->openTest;
 
     lyLine1 = new QLineEdit;
-    lyLine1->setText(teStr);
+    //lyLine1->setText(teStr);
 
     lyText1 = new QTextEdit;
     lyText1->setText(teStr);

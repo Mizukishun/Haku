@@ -448,9 +448,16 @@ void Widget::currentIsPlaying(bool playingBool)
         //playBool = true;
     }
 
+    //测试用，看在这里能够修改间隔时间
+    mainMusic->player->setNotifyInterval(10);
+
     //是时间条的滑块也相应地变化
     connect(mainMusic->player, SIGNAL(positionChanged(qint64)),
             this, SLOT(setSliderValue(qint64)));
+
+    //还得关联上歌词的滚动显示
+    connect(mainMusic->player, SIGNAL(positionChanged(qint64)),
+            secFrameLayout->lyricWidget, SLOT(lyricScroll(qint64)));
 }
 
 //接收下层窗体的信号closePrevMusic，关闭之前的音乐播放
@@ -481,3 +488,10 @@ void Widget::changeSkin()
     //注意：之后要完善这个换肤的功能，使得像酷狗一样能够弹出一个专门的换肤窗体。
 
 }
+
+////歌曲已播放时长关联还是那个歌词的滚动显示，通知歌词窗口已经播放了多少时间
+//void Widget::lyricScroll(qint64 lyPlayedTime)
+//{
+//    //发送信号，通知歌词窗口已经播放了多少时间
+//    emit playedTimeLyric(lyPlayedTime);
+//}

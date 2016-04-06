@@ -130,8 +130,18 @@ void SingleMusic::createObject()
     player->setVolume(100);
 
     musicNameBtn->setText(SingleMusicName);
+
+    player->setNotifyInterval(10);
+
+
     //关联上歌曲的总时长
     connect(player, SIGNAL(durationChanged(qint64)), this, SLOT(musicLength(qint64)));
+
+    //为了使能够滚动歌词，也即按10毫秒的间距发送positionChanged(qint64)信号，需要设置间隔周期为10毫秒
+    //但这样就会使得播放时间轴显示太细，该怎么办呢？？？下面这句当测试用，之后可能需要修改musicLength()函数
+
+
+
     //同时连接上已播放时长的事件
     connect(player, SIGNAL(positionChanged(qint64)), this, SLOT(musicPlayed(qint64)));
 }

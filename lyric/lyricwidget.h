@@ -49,6 +49,10 @@ public slots:
     //随计时器而滚动歌词的显示
     void scrollShow();
 
+    //接收主窗体的positionChanged(qint64)信号，知道了歌曲已播放的时间值
+    //就要相应的改变歌词的显示
+    void lyricScroll(qint64);
+
 
 private:
     //设置歌词窗体的背景色
@@ -86,8 +90,8 @@ private:
     //歌词文件对象
     LyricFile *Ly;
 
-    //测试用，计时器对象，使歌词随其而变化滚动
-    QTimer *testTimer;
+//    //测试用，计时器对象，使歌词随其而变化滚动
+//    QTimer *testTimer;
 
     //计数对象，使得随时间变化能够替换为不同的歌词
     qint8 ki;

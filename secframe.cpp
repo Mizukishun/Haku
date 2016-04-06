@@ -145,6 +145,8 @@ SecFrame::SecFrame(QWidget *parent)
     //歌词显示窗体
     lyricWidget = new LyricWidget();
 
+
+
     //测试用，有歌词窗体之后就隐藏掉空窗体,
     //之后要修改完整，使得歌词窗体与搜索窗体进行切换
     emptyWidget->hide();

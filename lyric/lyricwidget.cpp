@@ -12,10 +12,10 @@ LyricWidget::LyricWidget(QWidget *parent) : QWidget(parent)
     //创建歌词窗体的界面
     createLyricInterface();
 
-    //创建QTimer对象，使歌词随其变化滚动，测试用，之后删除
-    testTimer = new QTimer(this);
-    connect(testTimer, SIGNAL(timeout()), this, SLOT(scrollShow()));
-    testTimer->start(1000);
+//    //创建QTimer对象，使歌词随其变化滚动，测试用，之后删除
+//    testTimer = new QTimer(this);
+//    connect(testTimer, SIGNAL(timeout()), this, SLOT(scrollShow()));
+//    testTimer->start(1000);
 
 
 
@@ -44,20 +44,20 @@ void LyricWidget::createLyricInterface()
 
     //设置窗体所有按钮的文本颜色（初始的）
     QPalette p;
-    p.setColor(QPalette::ButtonText, QColor(255, 0, 0, 255));
+    p.setColor(QPalette::ButtonText, QColor(0, 0, 255, 255));
     setPalette(p);
 
 
     //添加显示九条歌词的按钮(其中的文本之后得删除!!!
-    lyBtn1 = new QPushButton(tr("歌词2：设置成长度不一样的"));
-    lyBtn2 = new QPushButton(tr("歌词1："));
-    lyBtn3 = new QPushButton(tr("歌词3：这样就可以更好第进行测试，看能不能显示出来"));
-    lyBtn4 = new QPushButton(tr("歌词4：这丫也行"));
-    lyBtn5 = new QPushButton(tr("歌词5：这一条歌词就设置为正在播放的歌词吧"));
-    lyBtn6 = new QPushButton(tr("歌词6：这样就行了"));
-    lyBtn7 = new QPushButton(tr("歌词7：怎样"));
-    lyBtn8 = new QPushButton(tr("歌词8:弄一个好长的歌词这样就可以更好的第装逼了哈哈哈哈哈哈哈哈哈哈"));
-    lyBtn9 = new QPushButton(tr("歌词9:算了"));
+    lyBtn1 = new QPushButton();
+    lyBtn2 = new QPushButton();
+    lyBtn3 = new QPushButton();
+    lyBtn4 = new QPushButton();
+    lyBtn5 = new QPushButton();
+    lyBtn6 = new QPushButton();
+    lyBtn7 = new QPushButton();
+    lyBtn8 = new QPushButton();
+    lyBtn9 = new QPushButton();
 
     //所有按钮都设置为setFlat(true);
     lyBtn1->setFlat(true);
@@ -187,4 +187,32 @@ void LyricWidget::havingNoLyric()
     lyBtn7->setText(tr(""));
     lyBtn8->setText(tr(""));
     lyBtn9->setText(tr(""));
+}
+
+//从主窗体接收了positionChanged(qint64)信号，知道了歌曲的已播放时间
+//滚动播放歌词
+void LyricWidget::lyricScroll(qint64 playedTime)
+{
+    //测试用，看是否会持续把已播放时间传递过来
+    //scrollShow();
+
+    //如果记录歌词时间的lyricTimeList中还有歌词
+    if(!Ly->lyricTimeList.isEmpty())
+    {
+        qint64 firstValue = Ly->lyricTimeList.first();
+        if(playedTime >= firstValue)
+        {
+            //就滚动一格
+            scrollShow();
+
+            //为了防止多次比较同一个歌词的时间值，所以第一个时间值从QList中删除
+            Ly->lyricTimeList.removeFirst();
+        }
+    }
+
+    QPalette p2;
+    p2.setColor(QPalette::ButtonText, QColor(255, 0, 0, 255));
+    lyBtn4->setPalette(p2);
+    //lyBtn4->setMinimumHeight(20);
+
 }

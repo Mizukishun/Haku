@@ -39,6 +39,12 @@ public:
     //将一行字符串分割成两个子字符串（分别为时间与歌词的字符串),并分别赋予lyricList和timeList
     void twoParts(QString);
 
+    //将字符串形式的时间，转换为数值形式的时间值，方便比较
+    qint64 QStringToqint64(QString);
+
+    //判断QString中的是否为纯数字型
+    bool IsD(QString);
+
 //public slots:
 //    //测试用，随着计时器而滚动歌词的显示
 //    void scrollShow();
@@ -61,6 +67,11 @@ public:
 
     //测试用，观察是哪部分出问题了
     QString openTest /*= "The First"*/;
+
+    //单纯保存时间那部分，以方便转换为具体的时间值
+    QList<QString> timePartList;
+    //保存数值形式的时间值
+    QList<qint64> lyricTimeList;
 
 //private:
 //    //测试用的计时器，看是否能够实现每隔一定时间滚动显示歌词
