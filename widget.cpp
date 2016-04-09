@@ -27,6 +27,10 @@ Widget::Widget(QWidget *parent, Qt::WindowFlags flags)
     //setWindowOpacity(0);
 
     //设置皮肤
+    //this->setAutoFillBackground(true);
+    //QPalette mainPalette;
+    //mainPalette.setBrush(QPalette::Background, QBrush(skinPic));
+    //this->setPalette(mainPalette);
     setSkin(skinPic);
 
     //设置窗体的字体
@@ -476,7 +480,7 @@ void Widget::prevMusic()
     mainMusic->stopMusic();
 }
 
-//更换皮肤
+//更换皮肤，之后得补充错误检测及扩充一个额外的皮肤选择窗体
 void Widget::changeSkin()
 {
     /*暂时只是实现将选中的图片保存到一个专门的皮肤文件夹内，
@@ -490,7 +494,7 @@ void Widget::changeSkin()
     //注意：之后要完善这个换肤的功能，使得像酷狗一样能够弹出一个专门的换肤窗体。
     //先在当前路径下创建一个文件夹（目录）skin用于保存要设置的皮肤图片
     QString path = QDir::currentPath();
-    QString skinPathStr = path + "\\skin";
+    QString skinPathStr = path + "/skin/";
 
     QDir dir(path);
     QDir skinDir(skinPathStr);
@@ -500,31 +504,32 @@ void Widget::changeSkin()
     }
     //bool subdir = dir.mkdir(skin);
 
-//    //测试用
-//    searchEdit->setText(skinPathStr);
+
 
     //然后在打开文件选择对话框，选择图片文件
     //获取选择的文件的路径名
     QString skinFilePathStr = QFileDialog::getOpenFileName(this, tr("Change Skin"), "/",
-                                            tr("Skin Picture(*.jpg; *.png;*.jpeg;*.bmp"));
+                                            tr("Skin(*.jpg *.png *.jpeg *.bmp)"));
     //获取选择的图片基本信息
     QString picBaseName = QFileInfo(skinFilePathStr).baseName();
     QString picName = QFileInfo(skinFilePathStr).fileName();
 
-    //在文件夹skin中新建文件
-    QFile picFile;
-    QDir::setCurrent(skinPathStr);
-    picFile.setFileName(picName);
-    if(!picFile.open(QIODevice::ReadOnly))
-    {
-    }
-
-    //判断图片的信息是否满足一定的宽高值，若不满足，则提示出错，重新选择
+    //当图片的宽度或高度小于主窗体的宽高值时，需要提示重新选择，
+    //但这里暂时没有实现，之后补充！！！
 
 
+    //待复制的皮肤图片的路径及文件全名
+    QString newSkinName = skinPathStr + picName;
 
-    //如果满足，则将选择的文件复制到skip文件夹下，并将其设置为播放器的当前皮肤
+    //复制选择的图片到特定的文件夹下
+    QFile::copy(skinFilePathStr, newSkinName);
+    //上面复制到特定文件夹后，图片的名字应该统一一下，但这里暂时还没实现，之后得补上！！！
 
+    //设置皮肤，暂时测试用，之后修改具体的图片
+    QPixmap changedPic = QPixmap(newSkinName);
+
+    this->setSkin(changedPic);
+    this->update();
 
 }
 

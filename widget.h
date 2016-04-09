@@ -184,6 +184,7 @@ private:
     /***********************************************************************/
 
     //这是桌面背景 皮肤图片
+    QPalette mainPalette;
     QPixmap skinPic = QPixmap(":/images/defaultBig.jpg");
     //字体
     QFont font;
