@@ -23,6 +23,9 @@
 #include <QSlider>
 #include <QFrame>
 #include <QStyle>
+#include <QFile>
+#include <QDir>
+#include <QFileInfo>
 #include "secframe.h"
 #include "toolgroup/singlemusic.h"
 #include "toolgroup/audiolist.h"

@@ -483,9 +483,48 @@ void Widget::changeSkin()
      * 将所选择的图片设置为窗体的皮肤,所以暂时能想到的操作主要有：
      * 打开文件选择对话框；将所选中的文件复制到专门的文件夹内，将该文件
      * 设置为窗体皮肤
+     * 之后要补充的是：弹出一个皮肤选择对话框，能够让用户选择在skin文件夹下之前设置过的
+     * 皮肤，也可以重新选择新的图片作为皮肤
      * */
 
     //注意：之后要完善这个换肤的功能，使得像酷狗一样能够弹出一个专门的换肤窗体。
+    //先在当前路径下创建一个文件夹（目录）skin用于保存要设置的皮肤图片
+    QString path = QDir::currentPath();
+    QString skinPathStr = path + "\\skin";
+
+    QDir dir(path);
+    QDir skinDir(skinPathStr);
+    if(!skinDir.exists())
+    {
+        dir.mkdir("skin");
+    }
+    //bool subdir = dir.mkdir(skin);
+
+//    //测试用
+//    searchEdit->setText(skinPathStr);
+
+    //然后在打开文件选择对话框，选择图片文件
+    //获取选择的文件的路径名
+    QString skinFilePathStr = QFileDialog::getOpenFileName(this, tr("Change Skin"), "/",
+                                            tr("Skin Picture(*.jpg; *.png;*.jpeg;*.bmp"));
+    //获取选择的图片基本信息
+    QString picBaseName = QFileInfo(skinFilePathStr).baseName();
+    QString picName = QFileInfo(skinFilePathStr).fileName();
+
+    //在文件夹skin中新建文件
+    QFile picFile;
+    QDir::setCurrent(skinPathStr);
+    picFile.setFileName(picName);
+    if(!picFile.open(QIODevice::ReadOnly))
+    {
+    }
+
+    //判断图片的信息是否满足一定的宽高值，若不满足，则提示出错，重新选择
+
+
+
+    //如果满足，则将选择的文件复制到skip文件夹下，并将其设置为播放器的当前皮肤
+
 
 }
 
