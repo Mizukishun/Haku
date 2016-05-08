@@ -22,66 +22,8 @@ Download::Download(QWidget *parent) : QWidget(parent)
 //创建下载窗体的界面布局
 void Download::createInterface()
 {
-    //主布局
-    mainLayout = new QVBoxLayout(this);
-
-    //测试用的，之后删除
-    testLayout = new QHBoxLayout;
-    progressbar = new QProgressBar;
-    progressbar->setValue(0);
-    testLayout->addWidget(progressbar);
-    DSwidget = new DisplayWidget(this);
-    urlLine = new QLineEdit;
-    testUrlLabel = new QLabel;
-    connect(DSwidget, SIGNAL(progressValue(qint64, qint64)),
-            this, SLOT(updateProgressBar(qint64, qint64)));
-    connect(DSwidget, SIGNAL(testDownloadUrl(QString)), this, SLOT(urlTestLine(QString)));
-
-    mainLayout->addLayout(testLayout);
-    mainLayout->addWidget(urlLine);
-    mainLayout->addWidget(testUrlLabel);
-    mainLayout->addWidget(DSwidget);
-
-    //测试是否正确解析了歌词
-    lyT = new LyricFile();
-
-    teStr = lyT->openTest;
-
-    lyLine1 = new QLineEdit;
-    //lyLine1->setText(teStr);
-
-    lyText1 = new QTextEdit;
-    lyText1->setText(teStr);
-    //lyText1->setText(tr("Test"));
-    //lyBtn = new QPushButton(tr("TestBtn"));
-    //connect(lyBtn, SIGNAL(clicked()), this, SLOT(lyricTest()));
 
 
-    mainLayout->addWidget(lyLine1);
-    mainLayout->addWidget(lyText1);
-    //mainLayout->addWidget(lyBtn);
-    mainLayout->addStretch();
-
-    DSwidget->hide();
 
 }
 
-//测试用，更新测试用的进度条的值
-void Download::updateProgressBar(qint64 updateValue, qint64 max)
-{
-    progressbar->setMaximum(max);
-    progressbar->setValue(updateValue);
-}
-
-//测试用，看是否获得了正确的歌曲下载地址
-void Download::urlTestLine(QString s)
-{
-    urlLine->setText(s);
-    testUrlLabel->setText(s);
-}
-
-//测试用，看歌词在点击按钮后是否重新显示
-void Download::lyricTest()
-{
-    lyText1->setText(teStr);
-}
